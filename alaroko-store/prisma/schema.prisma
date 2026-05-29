@@ -11,3 +11,50 @@ generator client {
 datasource db {
   provider = "mysql"
 }
+
+model User {
+  id      String @id
+  email   String @unique
+  name    String?
+  pedidos Pedido[]
+
+}
+
+model Pedido {
+  id        String @id
+  status    String
+  valor     Float
+  created   DateTime @default(now())
+  clientId String
+
+  client    User @relation(fields: [clientId],references: [id])
+  pagamento Pagamento? 
+  entrega   Entrega? 
+
+  
+}
+
+model Product {
+  id      String @id
+  name    String
+  price   Float
+
+
+}
+
+model Pagamento {
+  id String @id
+  metodo String 
+  status String 
+  pedidoId String @unique
+  Pedido Pedido @relation(fields: [pedidoId], references: [id])
+
+}
+
+model Entrega {
+  id String @id
+  endereco String
+  cidade String
+  pedidoId String @unique
+  pedido Pedido @relation(fields: [pedidoId], references: [id])
+}
