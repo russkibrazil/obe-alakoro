@@ -40,6 +40,6 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
-/generated/prisma
-
-/generated/prisma
+# enquanto não configurarmos o docker para @isabellydemelolima48-sudo
+# precisamos commitar os prisma types
+# /generated/prisma
