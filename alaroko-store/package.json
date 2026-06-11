@@ -8,8 +8,12 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
+    "prisma:push": "prisma db push",
     "prisma:migrate": "prisma migrate dev",
-    "prisma:generate": "prisma generate"
+    "prisma:generate": "prisma generate",
+    "prisma:reset": "prisma migrate reset",
+    "prisma:sync": "prisma db pull",
+    "prisma:deploy": "prisma migrate deploy"
   },
   "dependencies": {
     "@prisma/adapter-mariadb": "^7.6.0",

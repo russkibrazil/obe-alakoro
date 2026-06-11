@@ -2,12 +2,10 @@ services:
   db:
     image: mysql:8.0
     container_name: shop-db
-    restart: always
+    restart: unless-stopped
     environment:
       MYSQL_DATABASE: loja_virtual
       MYSQL_ROOT_PASSWORD: root_password_here
-      MYSQL_USER: user_app
-      MYSQL_PASSWORD: user_password_here
     ports:
       - "3306:3306"
     volumes:
@@ -16,16 +14,19 @@ services:
   app:
     build:
       context: ./alaroko-store
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile.override
     container_name: nextjs-app
-    restart: always
+    restart: on-failure
     depends_on:
       - db
     ports:
       - "3000:3000"
     environment:
-      DATABASE_URL: mysql://user_app:user_password_here@db:3306/loja_virtual
-      NODE_ENV: production
+      DATABASE_URL: mysql://root:root_password_here@db:3306/loja_virtual
+      NODE_ENV: development
+    volumes:
+      - ./alaroko-store/generated:/app/generated # @isabellydemelolima48-sudo needs this
+      - ./alaroko-store/prisma:/app/prisma
 
 volumes:
   mysql_data:

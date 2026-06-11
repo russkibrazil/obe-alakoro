@@ -11,7 +11,7 @@ WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
-RUN npx prisma generate
+RUN npm run prisma:deploy
 RUN npm run build
 
 # Estágio 3: Runner
@@ -35,6 +35,5 @@ USER nextjs
 EXPOSE 3000
 
 ENV PORT 3000
-HOST 0.0.0.0
 
 CMD ["npm", "start"]
