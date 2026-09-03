@@ -13,48 +13,150 @@ datasource db {
 }
 
 model User {
-  id      String @id
-  email   String @unique
-  name    String?
-  pedidos Pedido[]
+  id        String   @id @default(cuid())
+  email     String   @unique
+  name      String?
+  cpf       String?  @unique
+  phone     String?
 
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  pedidos   Pedido[]
+  enderecos Endereco[]
+  carrinho  Carrinho?
 }
 
-model Pedido {
-  id        String @id
-  status    String
-  valor     Float
-  created   DateTime @default(now())
-  clientId String
-
-  client    User @relation(fields: [clientId],references: [id])
-  pagamento Pagamento? 
-  entrega   Entrega? 
-
-  
-}
 
 model Product {
-  id      String @id
-  name    String
-  price   Float
+  id          String   @id @default(cuid())
+  name        String
+  description String?
+  price       Decimal
+  stock       Int      @default(0)
+  sku         String   @unique
+  image       String?
+  active      Boolean  @default(true)
+
+  categoriaId String?
+  categoria   Categoria? @relation(fields: [categoriaId], references: [id])
+
+  itensPedido ItemPedido[]
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
 
 
+model Categoria {
+  id        String    @id @default(cuid())
+  name      String
+  slug      String    @unique
+
+  products  Product[]
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+}
+
+
+model ItemPedido {
+  id         String   @id @default(cuid())
+  quantidade Int
+  preco      Decimal
+
+  pedidoId   String
+  pedido     Pedido   @relation(fields: [pedidoId], references: [id])
+
+  productId  String
+  product    Product  @relation(fields: [productId], references: [id])
+
+  createdAt  DateTime @default(now())
+
+  @@unique([pedidoId, productId])
+}
+
+
+
+model Pedido {
+  id        String   @id @default(cuid())
+  status    StatusPedido
+  valor     Decimal
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  clientId  String
+  client    User     @relation(fields: [clientId], references: [id])
+
+  pagamento Pagamento?
+  entrega   Entrega?
+
+  itens     ItemPedido[]
 }
 
 model Pagamento {
-  id String @id
-  metodo String 
-  status String 
-  pedidoId String @unique
-  Pedido Pedido @relation(fields: [pedidoId], references: [id])
+  id            String          @id @default(cuid())
+  metodo        MetodoPagamento
+  status        StatusPagamento
+  valor         Decimal
 
+  transactionId String?
+
+  pedidoId      String          @unique
+  pedido        Pedido          @relation(fields: [pedidoId], references: [id])
+
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
+}
+
+enum MetodoPagamento {
+  PIX
+  CARTAO_CREDITO
+  CARTAO_DEBITO
+  BOLETO
+}
+
+enum StatusPagamento {
+  PENDENTE
+  PROCESSANDO
+  APROVADO
+  RECUSADO
+  CANCELADO
+  ESTORNADO
 }
 
 model Entrega {
-  id String @id
-  endereco String
-  cidade String
+  id String @id @default(cuid())
+
+  status StatusEntrega @default(PENDENTE)
+
+  endereco    String
+  numero      String
+  complemento String?
+  bairro      String
+  cidade      String
+  estado      String
+  cep         String
+
+  transportadora String?
+  codigoRastreio String?
+
+  valorFrete Decimal
+
   pedidoId String @unique
-  pedido Pedido @relation(fields: [pedidoId], references: [id])
+  pedido   Pedido @relation(fields: [pedidoId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+enum StatusEntrega {
+  PENDENTE
+  PREPARANDO
+  ENVIADO
+  EM_TRANSITO
+  SAIU_PARA_ENTREGA
+  ENTREGUE
+  CANCELADO
 }
