@@ -23,10 +23,71 @@ model User {
   updatedAt DateTime @updatedAt
 
   pedidos   Pedido[]
-  enderecos Endereco[]
-  carrinho  Carrinho?
+  enderecos Address[]
+  carrinho  Cart?
 }
 
+model Address {
+  id String @id @default(cuid())
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  // Identificação amigável do endereço
+  label String? // Ex.: "Casa", "Trabalho"
+
+  // Destinatário
+  recipientName String
+
+  // Endereço
+  zipCode      String // CEP: 01310-100
+  street       String // Logradouro
+  number       String
+  complement   String?
+  neighborhood String // Bairro
+  city         String
+  state        String // UF: SP, RJ, MG...
+
+  // Controle
+  isDefault Boolean @default(false)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([userId])
+  @@index([zipCode])
+}
+
+model Cart {
+  id String @id @default(cuid())
+
+  userId String @unique
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  items CartItem[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model CartItem {
+  id String @id @default(cuid())
+
+  cartId String
+  cart   Cart   @relation(fields: [cartId], references: [id], onDelete: Cascade)
+
+  productId String
+  product   Product @relation(fields: [productId], references: [id], onDelete: Restrict)
+
+  quantity Int
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Um produto só pode aparecer uma vez no mesmo carrinho.
+  @@unique([cartId, productId])
+  @@index([productId])
+}
 
 model Product {
   id          String   @id @default(cuid())
@@ -34,7 +95,7 @@ model Product {
   description String?
   price       Decimal
   stock       Int      @default(0)
-  sku         String   @unique
+  sku         String?  @unique
   image       String?
   active      Boolean  @default(true)
 
@@ -42,6 +103,7 @@ model Product {
   categoria   Categoria? @relation(fields: [categoriaId], references: [id])
 
   itensPedido ItemPedido[]
+  cartItems   CartItem[]
 
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
@@ -71,6 +133,9 @@ model ItemPedido {
   productId  String
   product    Product  @relation(fields: [productId], references: [id])
 
+  unitPrice Decimal
+  quantity  Int
+
   createdAt  DateTime @default(now())
 
   @@unique([pedidoId, productId])
@@ -80,7 +145,7 @@ model ItemPedido {
 
 model Pedido {
   id        String   @id @default(cuid())
-  status    StatusPedido
+  status    OrderStatus @default(PENDING)
   valor     Decimal
 
   createdAt DateTime @default(now())
@@ -159,4 +224,14 @@ enum StatusEntrega {
   SAIU_PARA_ENTREGA
   ENTREGUE
   CANCELADO
+}
+
+enum OrderStatus {
+  PENDING       // Pedido criado, aguardando pagamento
+  CONFIRMED     // Pagamento confirmado
+  PROCESSING    // Pedido em preparação
+  SHIPPED       // Pedido enviado
+  DELIVERED     // Pedido entregue
+  CANCELED      // Pedido cancelado
+  REFUNDED      // Pedido estornado
 }
