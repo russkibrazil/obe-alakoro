@@ -23,15 +23,40 @@ export * from './enums';
  */
 export type User = Prisma.UserModel
 /**
- * Model Pedido
+ * Model Address
  * 
  */
-export type Pedido = Prisma.PedidoModel
+export type Address = Prisma.AddressModel
+/**
+ * Model Cart
+ * 
+ */
+export type Cart = Prisma.CartModel
+/**
+ * Model CartItem
+ * 
+ */
+export type CartItem = Prisma.CartItemModel
 /**
  * Model Product
  * 
  */
 export type Product = Prisma.ProductModel
+/**
+ * Model Categoria
+ * 
+ */
+export type Categoria = Prisma.CategoriaModel
+/**
+ * Model ItemPedido
+ * 
+ */
+export type ItemPedido = Prisma.ItemPedidoModel
+/**
+ * Model Pedido
+ * 
+ */
+export type Pedido = Prisma.PedidoModel
 /**
  * Model Pagamento
  * 

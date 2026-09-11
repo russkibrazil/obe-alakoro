@@ -20,52 +20,136 @@ export type EntregaModel = runtime.Types.Result.DefaultSelection<Prisma.$Entrega
 
 export type AggregateEntrega = {
   _count: EntregaCountAggregateOutputType | null
+  _avg: EntregaAvgAggregateOutputType | null
+  _sum: EntregaSumAggregateOutputType | null
   _min: EntregaMinAggregateOutputType | null
   _max: EntregaMaxAggregateOutputType | null
 }
 
+export type EntregaAvgAggregateOutputType = {
+  valorFrete: runtime.Decimal | null
+}
+
+export type EntregaSumAggregateOutputType = {
+  valorFrete: runtime.Decimal | null
+}
+
 export type EntregaMinAggregateOutputType = {
   id: string | null
+  status: $Enums.StatusEntrega | null
   endereco: string | null
+  numero: string | null
+  complemento: string | null
+  bairro: string | null
   cidade: string | null
+  estado: string | null
+  cep: string | null
+  transportadora: string | null
+  codigoRastreio: string | null
+  valorFrete: runtime.Decimal | null
   pedidoId: string | null
+  createdAt: Date | null
+  updatedAt: Date | null
 }
 
 export type EntregaMaxAggregateOutputType = {
   id: string | null
+  status: $Enums.StatusEntrega | null
   endereco: string | null
+  numero: string | null
+  complemento: string | null
+  bairro: string | null
   cidade: string | null
+  estado: string | null
+  cep: string | null
+  transportadora: string | null
+  codigoRastreio: string | null
+  valorFrete: runtime.Decimal | null
   pedidoId: string | null
+  createdAt: Date | null
+  updatedAt: Date | null
 }
 
 export type EntregaCountAggregateOutputType = {
   id: number
+  status: number
   endereco: number
+  numero: number
+  complemento: number
+  bairro: number
   cidade: number
+  estado: number
+  cep: number
+  transportadora: number
+  codigoRastreio: number
+  valorFrete: number
   pedidoId: number
+  createdAt: number
+  updatedAt: number
   _all: number
 }
 
 
+export type EntregaAvgAggregateInputType = {
+  valorFrete?: true
+}
+
+export type EntregaSumAggregateInputType = {
+  valorFrete?: true
+}
+
 export type EntregaMinAggregateInputType = {
   id?: true
+  status?: true
   endereco?: true
+  numero?: true
+  complemento?: true
+  bairro?: true
   cidade?: true
+  estado?: true
+  cep?: true
+  transportadora?: true
+  codigoRastreio?: true
+  valorFrete?: true
   pedidoId?: true
+  createdAt?: true
+  updatedAt?: true
 }
 
 export type EntregaMaxAggregateInputType = {
   id?: true
+  status?: true
   endereco?: true
+  numero?: true
+  complemento?: true
+  bairro?: true
   cidade?: true
+  estado?: true
+  cep?: true
+  transportadora?: true
+  codigoRastreio?: true
+  valorFrete?: true
   pedidoId?: true
+  createdAt?: true
+  updatedAt?: true
 }
 
 export type EntregaCountAggregateInputType = {
   id?: true
+  status?: true
   endereco?: true
+  numero?: true
+  complemento?: true
+  bairro?: true
   cidade?: true
+  estado?: true
+  cep?: true
+  transportadora?: true
+  codigoRastreio?: true
+  valorFrete?: true
   pedidoId?: true
+  createdAt?: true
+  updatedAt?: true
   _all?: true
 }
 
@@ -107,6 +191,18 @@ export type EntregaAggregateArgs<ExtArgs extends runtime.Types.Extensions.Intern
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
    * 
+   * Select which fields to average
+  **/
+  _avg?: EntregaAvgAggregateInputType
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+   * 
+   * Select which fields to sum
+  **/
+  _sum?: EntregaSumAggregateInputType
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+   * 
    * Select which fields to find the minimum value
   **/
   _min?: EntregaMinAggregateInputType
@@ -137,16 +233,31 @@ export type EntregaGroupByArgs<ExtArgs extends runtime.Types.Extensions.Internal
   take?: number
   skip?: number
   _count?: EntregaCountAggregateInputType | true
+  _avg?: EntregaAvgAggregateInputType
+  _sum?: EntregaSumAggregateInputType
   _min?: EntregaMinAggregateInputType
   _max?: EntregaMaxAggregateInputType
 }
 
 export type EntregaGroupByOutputType = {
   id: string
+  status: $Enums.StatusEntrega
   endereco: string
+  numero: string
+  complemento: string | null
+  bairro: string
   cidade: string
+  estado: string
+  cep: string
+  transportadora: string | null
+  codigoRastreio: string | null
+  valorFrete: runtime.Decimal
   pedidoId: string
+  createdAt: Date
+  updatedAt: Date
   _count: EntregaCountAggregateOutputType | null
+  _avg: EntregaAvgAggregateOutputType | null
+  _sum: EntregaSumAggregateOutputType | null
   _min: EntregaMinAggregateOutputType | null
   _max: EntregaMaxAggregateOutputType | null
 }
@@ -171,17 +282,39 @@ export type EntregaWhereInput = {
   OR?: Prisma.EntregaWhereInput[]
   NOT?: Prisma.EntregaWhereInput | Prisma.EntregaWhereInput[]
   id?: Prisma.StringFilter<"Entrega"> | string
+  status?: Prisma.EnumStatusEntregaFilter<"Entrega"> | $Enums.StatusEntrega
   endereco?: Prisma.StringFilter<"Entrega"> | string
+  numero?: Prisma.StringFilter<"Entrega"> | string
+  complemento?: Prisma.StringNullableFilter<"Entrega"> | string | null
+  bairro?: Prisma.StringFilter<"Entrega"> | string
   cidade?: Prisma.StringFilter<"Entrega"> | string
+  estado?: Prisma.StringFilter<"Entrega"> | string
+  cep?: Prisma.StringFilter<"Entrega"> | string
+  transportadora?: Prisma.StringNullableFilter<"Entrega"> | string | null
+  codigoRastreio?: Prisma.StringNullableFilter<"Entrega"> | string | null
+  valorFrete?: Prisma.DecimalFilter<"Entrega"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   pedidoId?: Prisma.StringFilter<"Entrega"> | string
+  createdAt?: Prisma.DateTimeFilter<"Entrega"> | Date | string
+  updatedAt?: Prisma.DateTimeFilter<"Entrega"> | Date | string
   pedido?: Prisma.XOR<Prisma.PedidoScalarRelationFilter, Prisma.PedidoWhereInput>
 }
 
 export type EntregaOrderByWithRelationInput = {
   id?: Prisma.SortOrder
+  status?: Prisma.SortOrder
   endereco?: Prisma.SortOrder
+  numero?: Prisma.SortOrder
+  complemento?: Prisma.SortOrderInput | Prisma.SortOrder
+  bairro?: Prisma.SortOrder
   cidade?: Prisma.SortOrder
+  estado?: Prisma.SortOrder
+  cep?: Prisma.SortOrder
+  transportadora?: Prisma.SortOrderInput | Prisma.SortOrder
+  codigoRastreio?: Prisma.SortOrderInput | Prisma.SortOrder
+  valorFrete?: Prisma.SortOrder
   pedidoId?: Prisma.SortOrder
+  createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
   pedido?: Prisma.PedidoOrderByWithRelationInput
   _relevance?: Prisma.EntregaOrderByRelevanceInput
 }
@@ -192,19 +325,43 @@ export type EntregaWhereUniqueInput = Prisma.AtLeast<{
   AND?: Prisma.EntregaWhereInput | Prisma.EntregaWhereInput[]
   OR?: Prisma.EntregaWhereInput[]
   NOT?: Prisma.EntregaWhereInput | Prisma.EntregaWhereInput[]
+  status?: Prisma.EnumStatusEntregaFilter<"Entrega"> | $Enums.StatusEntrega
   endereco?: Prisma.StringFilter<"Entrega"> | string
+  numero?: Prisma.StringFilter<"Entrega"> | string
+  complemento?: Prisma.StringNullableFilter<"Entrega"> | string | null
+  bairro?: Prisma.StringFilter<"Entrega"> | string
   cidade?: Prisma.StringFilter<"Entrega"> | string
+  estado?: Prisma.StringFilter<"Entrega"> | string
+  cep?: Prisma.StringFilter<"Entrega"> | string
+  transportadora?: Prisma.StringNullableFilter<"Entrega"> | string | null
+  codigoRastreio?: Prisma.StringNullableFilter<"Entrega"> | string | null
+  valorFrete?: Prisma.DecimalFilter<"Entrega"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  createdAt?: Prisma.DateTimeFilter<"Entrega"> | Date | string
+  updatedAt?: Prisma.DateTimeFilter<"Entrega"> | Date | string
   pedido?: Prisma.XOR<Prisma.PedidoScalarRelationFilter, Prisma.PedidoWhereInput>
 }, "id" | "pedidoId">
 
 export type EntregaOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
+  status?: Prisma.SortOrder
   endereco?: Prisma.SortOrder
+  numero?: Prisma.SortOrder
+  complemento?: Prisma.SortOrderInput | Prisma.SortOrder
+  bairro?: Prisma.SortOrder
   cidade?: Prisma.SortOrder
+  estado?: Prisma.SortOrder
+  cep?: Prisma.SortOrder
+  transportadora?: Prisma.SortOrderInput | Prisma.SortOrder
+  codigoRastreio?: Prisma.SortOrderInput | Prisma.SortOrder
+  valorFrete?: Prisma.SortOrder
   pedidoId?: Prisma.SortOrder
+  createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
   _count?: Prisma.EntregaCountOrderByAggregateInput
+  _avg?: Prisma.EntregaAvgOrderByAggregateInput
   _max?: Prisma.EntregaMaxOrderByAggregateInput
   _min?: Prisma.EntregaMinOrderByAggregateInput
+  _sum?: Prisma.EntregaSumOrderByAggregateInput
 }
 
 export type EntregaScalarWhereWithAggregatesInput = {
@@ -212,57 +369,145 @@ export type EntregaScalarWhereWithAggregatesInput = {
   OR?: Prisma.EntregaScalarWhereWithAggregatesInput[]
   NOT?: Prisma.EntregaScalarWhereWithAggregatesInput | Prisma.EntregaScalarWhereWithAggregatesInput[]
   id?: Prisma.StringWithAggregatesFilter<"Entrega"> | string
+  status?: Prisma.EnumStatusEntregaWithAggregatesFilter<"Entrega"> | $Enums.StatusEntrega
   endereco?: Prisma.StringWithAggregatesFilter<"Entrega"> | string
+  numero?: Prisma.StringWithAggregatesFilter<"Entrega"> | string
+  complemento?: Prisma.StringNullableWithAggregatesFilter<"Entrega"> | string | null
+  bairro?: Prisma.StringWithAggregatesFilter<"Entrega"> | string
   cidade?: Prisma.StringWithAggregatesFilter<"Entrega"> | string
+  estado?: Prisma.StringWithAggregatesFilter<"Entrega"> | string
+  cep?: Prisma.StringWithAggregatesFilter<"Entrega"> | string
+  transportadora?: Prisma.StringNullableWithAggregatesFilter<"Entrega"> | string | null
+  codigoRastreio?: Prisma.StringNullableWithAggregatesFilter<"Entrega"> | string | null
+  valorFrete?: Prisma.DecimalWithAggregatesFilter<"Entrega"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   pedidoId?: Prisma.StringWithAggregatesFilter<"Entrega"> | string
+  createdAt?: Prisma.DateTimeWithAggregatesFilter<"Entrega"> | Date | string
+  updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Entrega"> | Date | string
 }
 
 export type EntregaCreateInput = {
-  id: string
+  id?: string
+  status?: $Enums.StatusEntrega
   endereco: string
+  numero: string
+  complemento?: string | null
+  bairro: string
   cidade: string
+  estado: string
+  cep: string
+  transportadora?: string | null
+  codigoRastreio?: string | null
+  valorFrete: runtime.Decimal | runtime.DecimalJsLike | number | string
+  createdAt?: Date | string
+  updatedAt?: Date | string
   pedido: Prisma.PedidoCreateNestedOneWithoutEntregaInput
 }
 
 export type EntregaUncheckedCreateInput = {
-  id: string
+  id?: string
+  status?: $Enums.StatusEntrega
   endereco: string
+  numero: string
+  complemento?: string | null
+  bairro: string
   cidade: string
+  estado: string
+  cep: string
+  transportadora?: string | null
+  codigoRastreio?: string | null
+  valorFrete: runtime.Decimal | runtime.DecimalJsLike | number | string
   pedidoId: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
 }
 
 export type EntregaUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumStatusEntregaFieldUpdateOperationsInput | $Enums.StatusEntrega
   endereco?: Prisma.StringFieldUpdateOperationsInput | string
+  numero?: Prisma.StringFieldUpdateOperationsInput | string
+  complemento?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bairro?: Prisma.StringFieldUpdateOperationsInput | string
   cidade?: Prisma.StringFieldUpdateOperationsInput | string
+  estado?: Prisma.StringFieldUpdateOperationsInput | string
+  cep?: Prisma.StringFieldUpdateOperationsInput | string
+  transportadora?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  codigoRastreio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  valorFrete?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   pedido?: Prisma.PedidoUpdateOneRequiredWithoutEntregaNestedInput
 }
 
 export type EntregaUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumStatusEntregaFieldUpdateOperationsInput | $Enums.StatusEntrega
   endereco?: Prisma.StringFieldUpdateOperationsInput | string
+  numero?: Prisma.StringFieldUpdateOperationsInput | string
+  complemento?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bairro?: Prisma.StringFieldUpdateOperationsInput | string
   cidade?: Prisma.StringFieldUpdateOperationsInput | string
+  estado?: Prisma.StringFieldUpdateOperationsInput | string
+  cep?: Prisma.StringFieldUpdateOperationsInput | string
+  transportadora?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  codigoRastreio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  valorFrete?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   pedidoId?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type EntregaCreateManyInput = {
-  id: string
+  id?: string
+  status?: $Enums.StatusEntrega
   endereco: string
+  numero: string
+  complemento?: string | null
+  bairro: string
   cidade: string
+  estado: string
+  cep: string
+  transportadora?: string | null
+  codigoRastreio?: string | null
+  valorFrete: runtime.Decimal | runtime.DecimalJsLike | number | string
   pedidoId: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
 }
 
 export type EntregaUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumStatusEntregaFieldUpdateOperationsInput | $Enums.StatusEntrega
   endereco?: Prisma.StringFieldUpdateOperationsInput | string
+  numero?: Prisma.StringFieldUpdateOperationsInput | string
+  complemento?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bairro?: Prisma.StringFieldUpdateOperationsInput | string
   cidade?: Prisma.StringFieldUpdateOperationsInput | string
+  estado?: Prisma.StringFieldUpdateOperationsInput | string
+  cep?: Prisma.StringFieldUpdateOperationsInput | string
+  transportadora?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  codigoRastreio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  valorFrete?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type EntregaUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumStatusEntregaFieldUpdateOperationsInput | $Enums.StatusEntrega
   endereco?: Prisma.StringFieldUpdateOperationsInput | string
+  numero?: Prisma.StringFieldUpdateOperationsInput | string
+  complemento?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bairro?: Prisma.StringFieldUpdateOperationsInput | string
   cidade?: Prisma.StringFieldUpdateOperationsInput | string
+  estado?: Prisma.StringFieldUpdateOperationsInput | string
+  cep?: Prisma.StringFieldUpdateOperationsInput | string
+  transportadora?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  codigoRastreio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  valorFrete?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   pedidoId?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type EntregaNullableScalarRelationFilter = {
@@ -278,23 +523,64 @@ export type EntregaOrderByRelevanceInput = {
 
 export type EntregaCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  status?: Prisma.SortOrder
   endereco?: Prisma.SortOrder
+  numero?: Prisma.SortOrder
+  complemento?: Prisma.SortOrder
+  bairro?: Prisma.SortOrder
   cidade?: Prisma.SortOrder
+  estado?: Prisma.SortOrder
+  cep?: Prisma.SortOrder
+  transportadora?: Prisma.SortOrder
+  codigoRastreio?: Prisma.SortOrder
+  valorFrete?: Prisma.SortOrder
   pedidoId?: Prisma.SortOrder
+  createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
+}
+
+export type EntregaAvgOrderByAggregateInput = {
+  valorFrete?: Prisma.SortOrder
 }
 
 export type EntregaMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  status?: Prisma.SortOrder
   endereco?: Prisma.SortOrder
+  numero?: Prisma.SortOrder
+  complemento?: Prisma.SortOrder
+  bairro?: Prisma.SortOrder
   cidade?: Prisma.SortOrder
+  estado?: Prisma.SortOrder
+  cep?: Prisma.SortOrder
+  transportadora?: Prisma.SortOrder
+  codigoRastreio?: Prisma.SortOrder
+  valorFrete?: Prisma.SortOrder
   pedidoId?: Prisma.SortOrder
+  createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
 }
 
 export type EntregaMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  status?: Prisma.SortOrder
   endereco?: Prisma.SortOrder
+  numero?: Prisma.SortOrder
+  complemento?: Prisma.SortOrder
+  bairro?: Prisma.SortOrder
   cidade?: Prisma.SortOrder
+  estado?: Prisma.SortOrder
+  cep?: Prisma.SortOrder
+  transportadora?: Prisma.SortOrder
+  codigoRastreio?: Prisma.SortOrder
+  valorFrete?: Prisma.SortOrder
   pedidoId?: Prisma.SortOrder
+  createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
+}
+
+export type EntregaSumOrderByAggregateInput = {
+  valorFrete?: Prisma.SortOrder
 }
 
 export type EntregaCreateNestedOneWithoutPedidoInput = {
@@ -329,16 +615,42 @@ export type EntregaUncheckedUpdateOneWithoutPedidoNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.EntregaUpdateToOneWithWhereWithoutPedidoInput, Prisma.EntregaUpdateWithoutPedidoInput>, Prisma.EntregaUncheckedUpdateWithoutPedidoInput>
 }
 
+export type EnumStatusEntregaFieldUpdateOperationsInput = {
+  set?: $Enums.StatusEntrega
+}
+
 export type EntregaCreateWithoutPedidoInput = {
-  id: string
+  id?: string
+  status?: $Enums.StatusEntrega
   endereco: string
+  numero: string
+  complemento?: string | null
+  bairro: string
   cidade: string
+  estado: string
+  cep: string
+  transportadora?: string | null
+  codigoRastreio?: string | null
+  valorFrete: runtime.Decimal | runtime.DecimalJsLike | number | string
+  createdAt?: Date | string
+  updatedAt?: Date | string
 }
 
 export type EntregaUncheckedCreateWithoutPedidoInput = {
-  id: string
+  id?: string
+  status?: $Enums.StatusEntrega
   endereco: string
+  numero: string
+  complemento?: string | null
+  bairro: string
   cidade: string
+  estado: string
+  cep: string
+  transportadora?: string | null
+  codigoRastreio?: string | null
+  valorFrete: runtime.Decimal | runtime.DecimalJsLike | number | string
+  createdAt?: Date | string
+  updatedAt?: Date | string
 }
 
 export type EntregaCreateOrConnectWithoutPedidoInput = {
@@ -359,23 +671,56 @@ export type EntregaUpdateToOneWithWhereWithoutPedidoInput = {
 
 export type EntregaUpdateWithoutPedidoInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumStatusEntregaFieldUpdateOperationsInput | $Enums.StatusEntrega
   endereco?: Prisma.StringFieldUpdateOperationsInput | string
+  numero?: Prisma.StringFieldUpdateOperationsInput | string
+  complemento?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bairro?: Prisma.StringFieldUpdateOperationsInput | string
   cidade?: Prisma.StringFieldUpdateOperationsInput | string
+  estado?: Prisma.StringFieldUpdateOperationsInput | string
+  cep?: Prisma.StringFieldUpdateOperationsInput | string
+  transportadora?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  codigoRastreio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  valorFrete?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type EntregaUncheckedUpdateWithoutPedidoInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.EnumStatusEntregaFieldUpdateOperationsInput | $Enums.StatusEntrega
   endereco?: Prisma.StringFieldUpdateOperationsInput | string
+  numero?: Prisma.StringFieldUpdateOperationsInput | string
+  complemento?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bairro?: Prisma.StringFieldUpdateOperationsInput | string
   cidade?: Prisma.StringFieldUpdateOperationsInput | string
+  estado?: Prisma.StringFieldUpdateOperationsInput | string
+  cep?: Prisma.StringFieldUpdateOperationsInput | string
+  transportadora?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  codigoRastreio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  valorFrete?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 
 
 export type EntregaSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
+  status?: boolean
   endereco?: boolean
+  numero?: boolean
+  complemento?: boolean
+  bairro?: boolean
   cidade?: boolean
+  estado?: boolean
+  cep?: boolean
+  transportadora?: boolean
+  codigoRastreio?: boolean
+  valorFrete?: boolean
   pedidoId?: boolean
+  createdAt?: boolean
+  updatedAt?: boolean
   pedido?: boolean | Prisma.PedidoDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["entrega"]>
 
@@ -383,12 +728,23 @@ export type EntregaSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
 
 export type EntregaSelectScalar = {
   id?: boolean
+  status?: boolean
   endereco?: boolean
+  numero?: boolean
+  complemento?: boolean
+  bairro?: boolean
   cidade?: boolean
+  estado?: boolean
+  cep?: boolean
+  transportadora?: boolean
+  codigoRastreio?: boolean
+  valorFrete?: boolean
   pedidoId?: boolean
+  createdAt?: boolean
+  updatedAt?: boolean
 }
 
-export type EntregaOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "endereco" | "cidade" | "pedidoId", ExtArgs["result"]["entrega"]>
+export type EntregaOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "status" | "endereco" | "numero" | "complemento" | "bairro" | "cidade" | "estado" | "cep" | "transportadora" | "codigoRastreio" | "valorFrete" | "pedidoId" | "createdAt" | "updatedAt", ExtArgs["result"]["entrega"]>
 export type EntregaInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   pedido?: boolean | Prisma.PedidoDefaultArgs<ExtArgs>
 }
@@ -400,9 +756,20 @@ export type $EntregaPayload<ExtArgs extends runtime.Types.Extensions.InternalArg
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
+    status: $Enums.StatusEntrega
     endereco: string
+    numero: string
+    complemento: string | null
+    bairro: string
     cidade: string
+    estado: string
+    cep: string
+    transportadora: string | null
+    codigoRastreio: string | null
+    valorFrete: runtime.Decimal
     pedidoId: string
+    createdAt: Date
+    updatedAt: Date
   }, ExtArgs["result"]["entrega"]>
   composites: {}
 }
@@ -774,9 +1141,20 @@ export interface Prisma__EntregaClient<T, Null = never, ExtArgs extends runtime.
  */
 export interface EntregaFieldRefs {
   readonly id: Prisma.FieldRef<"Entrega", 'String'>
+  readonly status: Prisma.FieldRef<"Entrega", 'StatusEntrega'>
   readonly endereco: Prisma.FieldRef<"Entrega", 'String'>
+  readonly numero: Prisma.FieldRef<"Entrega", 'String'>
+  readonly complemento: Prisma.FieldRef<"Entrega", 'String'>
+  readonly bairro: Prisma.FieldRef<"Entrega", 'String'>
   readonly cidade: Prisma.FieldRef<"Entrega", 'String'>
+  readonly estado: Prisma.FieldRef<"Entrega", 'String'>
+  readonly cep: Prisma.FieldRef<"Entrega", 'String'>
+  readonly transportadora: Prisma.FieldRef<"Entrega", 'String'>
+  readonly codigoRastreio: Prisma.FieldRef<"Entrega", 'String'>
+  readonly valorFrete: Prisma.FieldRef<"Entrega", 'Decimal'>
   readonly pedidoId: Prisma.FieldRef<"Entrega", 'String'>
+  readonly createdAt: Prisma.FieldRef<"Entrega", 'DateTime'>
+  readonly updatedAt: Prisma.FieldRef<"Entrega", 'DateTime'>
 }
     
 

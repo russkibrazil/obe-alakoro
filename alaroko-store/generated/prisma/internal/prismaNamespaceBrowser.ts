@@ -52,8 +52,13 @@ export const AnyNull = runtime.AnyNull
 
 export const ModelName = {
   User: 'User',
-  Pedido: 'Pedido',
+  Address: 'Address',
+  Cart: 'Cart',
+  CartItem: 'CartItem',
   Product: 'Product',
+  Categoria: 'Categoria',
+  ItemPedido: 'ItemPedido',
+  Pedido: 'Pedido',
   Pagamento: 'Pagamento',
   Entrega: 'Entrega'
 } as const
@@ -77,37 +82,121 @@ export type TransactionIsolationLevel = (typeof TransactionIsolationLevel)[keyof
 export const UserScalarFieldEnum = {
   id: 'id',
   email: 'email',
-  name: 'name'
+  name: 'name',
+  cpf: 'cpf',
+  phone: 'phone',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
 } as const
 
 export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
+
+
+export const AddressScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  label: 'label',
+  recipientName: 'recipientName',
+  zipCode: 'zipCode',
+  street: 'street',
+  number: 'number',
+  complement: 'complement',
+  neighborhood: 'neighborhood',
+  city: 'city',
+  state: 'state',
+  isDefault: 'isDefault',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type AddressScalarFieldEnum = (typeof AddressScalarFieldEnum)[keyof typeof AddressScalarFieldEnum]
+
+
+export const CartScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type CartScalarFieldEnum = (typeof CartScalarFieldEnum)[keyof typeof CartScalarFieldEnum]
+
+
+export const CartItemScalarFieldEnum = {
+  id: 'id',
+  cartId: 'cartId',
+  productId: 'productId',
+  quantity: 'quantity',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type CartItemScalarFieldEnum = (typeof CartItemScalarFieldEnum)[keyof typeof CartItemScalarFieldEnum]
+
+
+export const ProductScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  description: 'description',
+  price: 'price',
+  stock: 'stock',
+  sku: 'sku',
+  image: 'image',
+  active: 'active',
+  categoriaId: 'categoriaId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type ProductScalarFieldEnum = (typeof ProductScalarFieldEnum)[keyof typeof ProductScalarFieldEnum]
+
+
+export const CategoriaScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  slug: 'slug',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type CategoriaScalarFieldEnum = (typeof CategoriaScalarFieldEnum)[keyof typeof CategoriaScalarFieldEnum]
+
+
+export const ItemPedidoScalarFieldEnum = {
+  id: 'id',
+  quantidade: 'quantidade',
+  preco: 'preco',
+  pedidoId: 'pedidoId',
+  productId: 'productId',
+  unitPrice: 'unitPrice',
+  quantity: 'quantity',
+  createdAt: 'createdAt'
+} as const
+
+export type ItemPedidoScalarFieldEnum = (typeof ItemPedidoScalarFieldEnum)[keyof typeof ItemPedidoScalarFieldEnum]
 
 
 export const PedidoScalarFieldEnum = {
   id: 'id',
   status: 'status',
   valor: 'valor',
-  created: 'created',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
   clientId: 'clientId'
 } as const
 
 export type PedidoScalarFieldEnum = (typeof PedidoScalarFieldEnum)[keyof typeof PedidoScalarFieldEnum]
 
 
-export const ProductScalarFieldEnum = {
-  id: 'id',
-  name: 'name',
-  price: 'price'
-} as const
-
-export type ProductScalarFieldEnum = (typeof ProductScalarFieldEnum)[keyof typeof ProductScalarFieldEnum]
-
-
 export const PagamentoScalarFieldEnum = {
   id: 'id',
   metodo: 'metodo',
   status: 'status',
-  pedidoId: 'pedidoId'
+  valor: 'valor',
+  transactionId: 'transactionId',
+  pedidoId: 'pedidoId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
 } as const
 
 export type PagamentoScalarFieldEnum = (typeof PagamentoScalarFieldEnum)[keyof typeof PagamentoScalarFieldEnum]
@@ -115,9 +204,20 @@ export type PagamentoScalarFieldEnum = (typeof PagamentoScalarFieldEnum)[keyof t
 
 export const EntregaScalarFieldEnum = {
   id: 'id',
+  status: 'status',
   endereco: 'endereco',
+  numero: 'numero',
+  complemento: 'complemento',
+  bairro: 'bairro',
   cidade: 'cidade',
-  pedidoId: 'pedidoId'
+  estado: 'estado',
+  cep: 'cep',
+  transportadora: 'transportadora',
+  codigoRastreio: 'codigoRastreio',
+  valorFrete: 'valorFrete',
+  pedidoId: 'pedidoId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
 } as const
 
 export type EntregaScalarFieldEnum = (typeof EntregaScalarFieldEnum)[keyof typeof EntregaScalarFieldEnum]
@@ -142,33 +242,89 @@ export type NullsOrder = (typeof NullsOrder)[keyof typeof NullsOrder]
 export const UserOrderByRelevanceFieldEnum = {
   id: 'id',
   email: 'email',
-  name: 'name'
+  name: 'name',
+  cpf: 'cpf',
+  phone: 'phone'
 } as const
 
 export type UserOrderByRelevanceFieldEnum = (typeof UserOrderByRelevanceFieldEnum)[keyof typeof UserOrderByRelevanceFieldEnum]
 
 
+export const AddressOrderByRelevanceFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  label: 'label',
+  recipientName: 'recipientName',
+  zipCode: 'zipCode',
+  street: 'street',
+  number: 'number',
+  complement: 'complement',
+  neighborhood: 'neighborhood',
+  city: 'city',
+  state: 'state'
+} as const
+
+export type AddressOrderByRelevanceFieldEnum = (typeof AddressOrderByRelevanceFieldEnum)[keyof typeof AddressOrderByRelevanceFieldEnum]
+
+
+export const CartOrderByRelevanceFieldEnum = {
+  id: 'id',
+  userId: 'userId'
+} as const
+
+export type CartOrderByRelevanceFieldEnum = (typeof CartOrderByRelevanceFieldEnum)[keyof typeof CartOrderByRelevanceFieldEnum]
+
+
+export const CartItemOrderByRelevanceFieldEnum = {
+  id: 'id',
+  cartId: 'cartId',
+  productId: 'productId'
+} as const
+
+export type CartItemOrderByRelevanceFieldEnum = (typeof CartItemOrderByRelevanceFieldEnum)[keyof typeof CartItemOrderByRelevanceFieldEnum]
+
+
+export const ProductOrderByRelevanceFieldEnum = {
+  id: 'id',
+  name: 'name',
+  description: 'description',
+  sku: 'sku',
+  image: 'image',
+  categoriaId: 'categoriaId'
+} as const
+
+export type ProductOrderByRelevanceFieldEnum = (typeof ProductOrderByRelevanceFieldEnum)[keyof typeof ProductOrderByRelevanceFieldEnum]
+
+
+export const CategoriaOrderByRelevanceFieldEnum = {
+  id: 'id',
+  name: 'name',
+  slug: 'slug'
+} as const
+
+export type CategoriaOrderByRelevanceFieldEnum = (typeof CategoriaOrderByRelevanceFieldEnum)[keyof typeof CategoriaOrderByRelevanceFieldEnum]
+
+
+export const ItemPedidoOrderByRelevanceFieldEnum = {
+  id: 'id',
+  pedidoId: 'pedidoId',
+  productId: 'productId'
+} as const
+
+export type ItemPedidoOrderByRelevanceFieldEnum = (typeof ItemPedidoOrderByRelevanceFieldEnum)[keyof typeof ItemPedidoOrderByRelevanceFieldEnum]
+
+
 export const PedidoOrderByRelevanceFieldEnum = {
   id: 'id',
-  status: 'status',
   clientId: 'clientId'
 } as const
 
 export type PedidoOrderByRelevanceFieldEnum = (typeof PedidoOrderByRelevanceFieldEnum)[keyof typeof PedidoOrderByRelevanceFieldEnum]
 
 
-export const ProductOrderByRelevanceFieldEnum = {
-  id: 'id',
-  name: 'name'
-} as const
-
-export type ProductOrderByRelevanceFieldEnum = (typeof ProductOrderByRelevanceFieldEnum)[keyof typeof ProductOrderByRelevanceFieldEnum]
-
-
 export const PagamentoOrderByRelevanceFieldEnum = {
   id: 'id',
-  metodo: 'metodo',
-  status: 'status',
+  transactionId: 'transactionId',
   pedidoId: 'pedidoId'
 } as const
 
@@ -178,7 +334,14 @@ export type PagamentoOrderByRelevanceFieldEnum = (typeof PagamentoOrderByRelevan
 export const EntregaOrderByRelevanceFieldEnum = {
   id: 'id',
   endereco: 'endereco',
+  numero: 'numero',
+  complemento: 'complemento',
+  bairro: 'bairro',
   cidade: 'cidade',
+  estado: 'estado',
+  cep: 'cep',
+  transportadora: 'transportadora',
+  codigoRastreio: 'codigoRastreio',
   pedidoId: 'pedidoId'
 } as const
 

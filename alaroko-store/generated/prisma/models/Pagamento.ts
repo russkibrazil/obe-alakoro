@@ -20,52 +20,94 @@ export type PagamentoModel = runtime.Types.Result.DefaultSelection<Prisma.$Pagam
 
 export type AggregatePagamento = {
   _count: PagamentoCountAggregateOutputType | null
+  _avg: PagamentoAvgAggregateOutputType | null
+  _sum: PagamentoSumAggregateOutputType | null
   _min: PagamentoMinAggregateOutputType | null
   _max: PagamentoMaxAggregateOutputType | null
 }
 
+export type PagamentoAvgAggregateOutputType = {
+  valor: runtime.Decimal | null
+}
+
+export type PagamentoSumAggregateOutputType = {
+  valor: runtime.Decimal | null
+}
+
 export type PagamentoMinAggregateOutputType = {
   id: string | null
-  metodo: string | null
-  status: string | null
+  metodo: $Enums.MetodoPagamento | null
+  status: $Enums.StatusPagamento | null
+  valor: runtime.Decimal | null
+  transactionId: string | null
   pedidoId: string | null
+  createdAt: Date | null
+  updatedAt: Date | null
 }
 
 export type PagamentoMaxAggregateOutputType = {
   id: string | null
-  metodo: string | null
-  status: string | null
+  metodo: $Enums.MetodoPagamento | null
+  status: $Enums.StatusPagamento | null
+  valor: runtime.Decimal | null
+  transactionId: string | null
   pedidoId: string | null
+  createdAt: Date | null
+  updatedAt: Date | null
 }
 
 export type PagamentoCountAggregateOutputType = {
   id: number
   metodo: number
   status: number
+  valor: number
+  transactionId: number
   pedidoId: number
+  createdAt: number
+  updatedAt: number
   _all: number
 }
 
+
+export type PagamentoAvgAggregateInputType = {
+  valor?: true
+}
+
+export type PagamentoSumAggregateInputType = {
+  valor?: true
+}
 
 export type PagamentoMinAggregateInputType = {
   id?: true
   metodo?: true
   status?: true
+  valor?: true
+  transactionId?: true
   pedidoId?: true
+  createdAt?: true
+  updatedAt?: true
 }
 
 export type PagamentoMaxAggregateInputType = {
   id?: true
   metodo?: true
   status?: true
+  valor?: true
+  transactionId?: true
   pedidoId?: true
+  createdAt?: true
+  updatedAt?: true
 }
 
 export type PagamentoCountAggregateInputType = {
   id?: true
   metodo?: true
   status?: true
+  valor?: true
+  transactionId?: true
   pedidoId?: true
+  createdAt?: true
+  updatedAt?: true
   _all?: true
 }
 
@@ -107,6 +149,18 @@ export type PagamentoAggregateArgs<ExtArgs extends runtime.Types.Extensions.Inte
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
    * 
+   * Select which fields to average
+  **/
+  _avg?: PagamentoAvgAggregateInputType
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+   * 
+   * Select which fields to sum
+  **/
+  _sum?: PagamentoSumAggregateInputType
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+   * 
    * Select which fields to find the minimum value
   **/
   _min?: PagamentoMinAggregateInputType
@@ -137,16 +191,24 @@ export type PagamentoGroupByArgs<ExtArgs extends runtime.Types.Extensions.Intern
   take?: number
   skip?: number
   _count?: PagamentoCountAggregateInputType | true
+  _avg?: PagamentoAvgAggregateInputType
+  _sum?: PagamentoSumAggregateInputType
   _min?: PagamentoMinAggregateInputType
   _max?: PagamentoMaxAggregateInputType
 }
 
 export type PagamentoGroupByOutputType = {
   id: string
-  metodo: string
-  status: string
+  metodo: $Enums.MetodoPagamento
+  status: $Enums.StatusPagamento
+  valor: runtime.Decimal
+  transactionId: string | null
   pedidoId: string
+  createdAt: Date
+  updatedAt: Date
   _count: PagamentoCountAggregateOutputType | null
+  _avg: PagamentoAvgAggregateOutputType | null
+  _sum: PagamentoSumAggregateOutputType | null
   _min: PagamentoMinAggregateOutputType | null
   _max: PagamentoMaxAggregateOutputType | null
 }
@@ -171,18 +233,26 @@ export type PagamentoWhereInput = {
   OR?: Prisma.PagamentoWhereInput[]
   NOT?: Prisma.PagamentoWhereInput | Prisma.PagamentoWhereInput[]
   id?: Prisma.StringFilter<"Pagamento"> | string
-  metodo?: Prisma.StringFilter<"Pagamento"> | string
-  status?: Prisma.StringFilter<"Pagamento"> | string
+  metodo?: Prisma.EnumMetodoPagamentoFilter<"Pagamento"> | $Enums.MetodoPagamento
+  status?: Prisma.EnumStatusPagamentoFilter<"Pagamento"> | $Enums.StatusPagamento
+  valor?: Prisma.DecimalFilter<"Pagamento"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  transactionId?: Prisma.StringNullableFilter<"Pagamento"> | string | null
   pedidoId?: Prisma.StringFilter<"Pagamento"> | string
-  Pedido?: Prisma.XOR<Prisma.PedidoScalarRelationFilter, Prisma.PedidoWhereInput>
+  createdAt?: Prisma.DateTimeFilter<"Pagamento"> | Date | string
+  updatedAt?: Prisma.DateTimeFilter<"Pagamento"> | Date | string
+  pedido?: Prisma.XOR<Prisma.PedidoScalarRelationFilter, Prisma.PedidoWhereInput>
 }
 
 export type PagamentoOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   metodo?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  valor?: Prisma.SortOrder
+  transactionId?: Prisma.SortOrderInput | Prisma.SortOrder
   pedidoId?: Prisma.SortOrder
-  Pedido?: Prisma.PedidoOrderByWithRelationInput
+  createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
+  pedido?: Prisma.PedidoOrderByWithRelationInput
   _relevance?: Prisma.PagamentoOrderByRelevanceInput
 }
 
@@ -192,19 +262,29 @@ export type PagamentoWhereUniqueInput = Prisma.AtLeast<{
   AND?: Prisma.PagamentoWhereInput | Prisma.PagamentoWhereInput[]
   OR?: Prisma.PagamentoWhereInput[]
   NOT?: Prisma.PagamentoWhereInput | Prisma.PagamentoWhereInput[]
-  metodo?: Prisma.StringFilter<"Pagamento"> | string
-  status?: Prisma.StringFilter<"Pagamento"> | string
-  Pedido?: Prisma.XOR<Prisma.PedidoScalarRelationFilter, Prisma.PedidoWhereInput>
+  metodo?: Prisma.EnumMetodoPagamentoFilter<"Pagamento"> | $Enums.MetodoPagamento
+  status?: Prisma.EnumStatusPagamentoFilter<"Pagamento"> | $Enums.StatusPagamento
+  valor?: Prisma.DecimalFilter<"Pagamento"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  transactionId?: Prisma.StringNullableFilter<"Pagamento"> | string | null
+  createdAt?: Prisma.DateTimeFilter<"Pagamento"> | Date | string
+  updatedAt?: Prisma.DateTimeFilter<"Pagamento"> | Date | string
+  pedido?: Prisma.XOR<Prisma.PedidoScalarRelationFilter, Prisma.PedidoWhereInput>
 }, "id" | "pedidoId">
 
 export type PagamentoOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   metodo?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  valor?: Prisma.SortOrder
+  transactionId?: Prisma.SortOrderInput | Prisma.SortOrder
   pedidoId?: Prisma.SortOrder
+  createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
   _count?: Prisma.PagamentoCountOrderByAggregateInput
+  _avg?: Prisma.PagamentoAvgOrderByAggregateInput
   _max?: Prisma.PagamentoMaxOrderByAggregateInput
   _min?: Prisma.PagamentoMinOrderByAggregateInput
+  _sum?: Prisma.PagamentoSumOrderByAggregateInput
 }
 
 export type PagamentoScalarWhereWithAggregatesInput = {
@@ -212,57 +292,89 @@ export type PagamentoScalarWhereWithAggregatesInput = {
   OR?: Prisma.PagamentoScalarWhereWithAggregatesInput[]
   NOT?: Prisma.PagamentoScalarWhereWithAggregatesInput | Prisma.PagamentoScalarWhereWithAggregatesInput[]
   id?: Prisma.StringWithAggregatesFilter<"Pagamento"> | string
-  metodo?: Prisma.StringWithAggregatesFilter<"Pagamento"> | string
-  status?: Prisma.StringWithAggregatesFilter<"Pagamento"> | string
+  metodo?: Prisma.EnumMetodoPagamentoWithAggregatesFilter<"Pagamento"> | $Enums.MetodoPagamento
+  status?: Prisma.EnumStatusPagamentoWithAggregatesFilter<"Pagamento"> | $Enums.StatusPagamento
+  valor?: Prisma.DecimalWithAggregatesFilter<"Pagamento"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  transactionId?: Prisma.StringNullableWithAggregatesFilter<"Pagamento"> | string | null
   pedidoId?: Prisma.StringWithAggregatesFilter<"Pagamento"> | string
+  createdAt?: Prisma.DateTimeWithAggregatesFilter<"Pagamento"> | Date | string
+  updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Pagamento"> | Date | string
 }
 
 export type PagamentoCreateInput = {
-  id: string
-  metodo: string
-  status: string
-  Pedido: Prisma.PedidoCreateNestedOneWithoutPagamentoInput
+  id?: string
+  metodo: $Enums.MetodoPagamento
+  status: $Enums.StatusPagamento
+  valor: runtime.Decimal | runtime.DecimalJsLike | number | string
+  transactionId?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  pedido: Prisma.PedidoCreateNestedOneWithoutPagamentoInput
 }
 
 export type PagamentoUncheckedCreateInput = {
-  id: string
-  metodo: string
-  status: string
+  id?: string
+  metodo: $Enums.MetodoPagamento
+  status: $Enums.StatusPagamento
+  valor: runtime.Decimal | runtime.DecimalJsLike | number | string
+  transactionId?: string | null
   pedidoId: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
 }
 
 export type PagamentoUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  metodo?: Prisma.StringFieldUpdateOperationsInput | string
-  status?: Prisma.StringFieldUpdateOperationsInput | string
-  Pedido?: Prisma.PedidoUpdateOneRequiredWithoutPagamentoNestedInput
+  metodo?: Prisma.EnumMetodoPagamentoFieldUpdateOperationsInput | $Enums.MetodoPagamento
+  status?: Prisma.EnumStatusPagamentoFieldUpdateOperationsInput | $Enums.StatusPagamento
+  valor?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  transactionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  pedido?: Prisma.PedidoUpdateOneRequiredWithoutPagamentoNestedInput
 }
 
 export type PagamentoUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  metodo?: Prisma.StringFieldUpdateOperationsInput | string
-  status?: Prisma.StringFieldUpdateOperationsInput | string
+  metodo?: Prisma.EnumMetodoPagamentoFieldUpdateOperationsInput | $Enums.MetodoPagamento
+  status?: Prisma.EnumStatusPagamentoFieldUpdateOperationsInput | $Enums.StatusPagamento
+  valor?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  transactionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   pedidoId?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type PagamentoCreateManyInput = {
-  id: string
-  metodo: string
-  status: string
+  id?: string
+  metodo: $Enums.MetodoPagamento
+  status: $Enums.StatusPagamento
+  valor: runtime.Decimal | runtime.DecimalJsLike | number | string
+  transactionId?: string | null
   pedidoId: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
 }
 
 export type PagamentoUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  metodo?: Prisma.StringFieldUpdateOperationsInput | string
-  status?: Prisma.StringFieldUpdateOperationsInput | string
+  metodo?: Prisma.EnumMetodoPagamentoFieldUpdateOperationsInput | $Enums.MetodoPagamento
+  status?: Prisma.EnumStatusPagamentoFieldUpdateOperationsInput | $Enums.StatusPagamento
+  valor?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  transactionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type PagamentoUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  metodo?: Prisma.StringFieldUpdateOperationsInput | string
-  status?: Prisma.StringFieldUpdateOperationsInput | string
+  metodo?: Prisma.EnumMetodoPagamentoFieldUpdateOperationsInput | $Enums.MetodoPagamento
+  status?: Prisma.EnumStatusPagamentoFieldUpdateOperationsInput | $Enums.StatusPagamento
+  valor?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  transactionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   pedidoId?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type PagamentoNullableScalarRelationFilter = {
@@ -280,21 +392,41 @@ export type PagamentoCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   metodo?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  valor?: Prisma.SortOrder
+  transactionId?: Prisma.SortOrder
   pedidoId?: Prisma.SortOrder
+  createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
+}
+
+export type PagamentoAvgOrderByAggregateInput = {
+  valor?: Prisma.SortOrder
 }
 
 export type PagamentoMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   metodo?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  valor?: Prisma.SortOrder
+  transactionId?: Prisma.SortOrder
   pedidoId?: Prisma.SortOrder
+  createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
 }
 
 export type PagamentoMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   metodo?: Prisma.SortOrder
   status?: Prisma.SortOrder
+  valor?: Prisma.SortOrder
+  transactionId?: Prisma.SortOrder
   pedidoId?: Prisma.SortOrder
+  createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
+}
+
+export type PagamentoSumOrderByAggregateInput = {
+  valor?: Prisma.SortOrder
 }
 
 export type PagamentoCreateNestedOneWithoutPedidoInput = {
@@ -329,16 +461,32 @@ export type PagamentoUncheckedUpdateOneWithoutPedidoNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.PagamentoUpdateToOneWithWhereWithoutPedidoInput, Prisma.PagamentoUpdateWithoutPedidoInput>, Prisma.PagamentoUncheckedUpdateWithoutPedidoInput>
 }
 
+export type EnumMetodoPagamentoFieldUpdateOperationsInput = {
+  set?: $Enums.MetodoPagamento
+}
+
+export type EnumStatusPagamentoFieldUpdateOperationsInput = {
+  set?: $Enums.StatusPagamento
+}
+
 export type PagamentoCreateWithoutPedidoInput = {
-  id: string
-  metodo: string
-  status: string
+  id?: string
+  metodo: $Enums.MetodoPagamento
+  status: $Enums.StatusPagamento
+  valor: runtime.Decimal | runtime.DecimalJsLike | number | string
+  transactionId?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
 }
 
 export type PagamentoUncheckedCreateWithoutPedidoInput = {
-  id: string
-  metodo: string
-  status: string
+  id?: string
+  metodo: $Enums.MetodoPagamento
+  status: $Enums.StatusPagamento
+  valor: runtime.Decimal | runtime.DecimalJsLike | number | string
+  transactionId?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
 }
 
 export type PagamentoCreateOrConnectWithoutPedidoInput = {
@@ -359,14 +507,22 @@ export type PagamentoUpdateToOneWithWhereWithoutPedidoInput = {
 
 export type PagamentoUpdateWithoutPedidoInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  metodo?: Prisma.StringFieldUpdateOperationsInput | string
-  status?: Prisma.StringFieldUpdateOperationsInput | string
+  metodo?: Prisma.EnumMetodoPagamentoFieldUpdateOperationsInput | $Enums.MetodoPagamento
+  status?: Prisma.EnumStatusPagamentoFieldUpdateOperationsInput | $Enums.StatusPagamento
+  valor?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  transactionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type PagamentoUncheckedUpdateWithoutPedidoInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  metodo?: Prisma.StringFieldUpdateOperationsInput | string
-  status?: Prisma.StringFieldUpdateOperationsInput | string
+  metodo?: Prisma.EnumMetodoPagamentoFieldUpdateOperationsInput | $Enums.MetodoPagamento
+  status?: Prisma.EnumStatusPagamentoFieldUpdateOperationsInput | $Enums.StatusPagamento
+  valor?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  transactionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 
@@ -375,8 +531,12 @@ export type PagamentoSelect<ExtArgs extends runtime.Types.Extensions.InternalArg
   id?: boolean
   metodo?: boolean
   status?: boolean
+  valor?: boolean
+  transactionId?: boolean
   pedidoId?: boolean
-  Pedido?: boolean | Prisma.PedidoDefaultArgs<ExtArgs>
+  createdAt?: boolean
+  updatedAt?: boolean
+  pedido?: boolean | Prisma.PedidoDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["pagamento"]>
 
 
@@ -385,24 +545,32 @@ export type PagamentoSelectScalar = {
   id?: boolean
   metodo?: boolean
   status?: boolean
+  valor?: boolean
+  transactionId?: boolean
   pedidoId?: boolean
+  createdAt?: boolean
+  updatedAt?: boolean
 }
 
-export type PagamentoOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "metodo" | "status" | "pedidoId", ExtArgs["result"]["pagamento"]>
+export type PagamentoOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "metodo" | "status" | "valor" | "transactionId" | "pedidoId" | "createdAt" | "updatedAt", ExtArgs["result"]["pagamento"]>
 export type PagamentoInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  Pedido?: boolean | Prisma.PedidoDefaultArgs<ExtArgs>
+  pedido?: boolean | Prisma.PedidoDefaultArgs<ExtArgs>
 }
 
 export type $PagamentoPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "Pagamento"
   objects: {
-    Pedido: Prisma.$PedidoPayload<ExtArgs>
+    pedido: Prisma.$PedidoPayload<ExtArgs>
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
-    metodo: string
-    status: string
+    metodo: $Enums.MetodoPagamento
+    status: $Enums.StatusPagamento
+    valor: runtime.Decimal
+    transactionId: string | null
     pedidoId: string
+    createdAt: Date
+    updatedAt: Date
   }, ExtArgs["result"]["pagamento"]>
   composites: {}
 }
@@ -743,7 +911,7 @@ readonly fields: PagamentoFieldRefs;
  */
 export interface Prisma__PagamentoClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
-  Pedido<T extends Prisma.PedidoDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.PedidoDefaultArgs<ExtArgs>>): Prisma.Prisma__PedidoClient<runtime.Types.Result.GetResult<Prisma.$PedidoPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  pedido<T extends Prisma.PedidoDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.PedidoDefaultArgs<ExtArgs>>): Prisma.Prisma__PedidoClient<runtime.Types.Result.GetResult<Prisma.$PedidoPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -774,9 +942,13 @@ export interface Prisma__PagamentoClient<T, Null = never, ExtArgs extends runtim
  */
 export interface PagamentoFieldRefs {
   readonly id: Prisma.FieldRef<"Pagamento", 'String'>
-  readonly metodo: Prisma.FieldRef<"Pagamento", 'String'>
-  readonly status: Prisma.FieldRef<"Pagamento", 'String'>
+  readonly metodo: Prisma.FieldRef<"Pagamento", 'MetodoPagamento'>
+  readonly status: Prisma.FieldRef<"Pagamento", 'StatusPagamento'>
+  readonly valor: Prisma.FieldRef<"Pagamento", 'Decimal'>
+  readonly transactionId: Prisma.FieldRef<"Pagamento", 'String'>
   readonly pedidoId: Prisma.FieldRef<"Pagamento", 'String'>
+  readonly createdAt: Prisma.FieldRef<"Pagamento", 'DateTime'>
+  readonly updatedAt: Prisma.FieldRef<"Pagamento", 'DateTime'>
 }
     
 

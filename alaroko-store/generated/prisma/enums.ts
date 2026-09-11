@@ -9,7 +9,49 @@
 * 🟢 You can import this file directly.
 */
 
+export const MetodoPagamento = {
+  PIX: 'PIX',
+  CARTAO_CREDITO: 'CARTAO_CREDITO',
+  CARTAO_DEBITO: 'CARTAO_DEBITO',
+  BOLETO: 'BOLETO'
+} as const
+
+export type MetodoPagamento = (typeof MetodoPagamento)[keyof typeof MetodoPagamento]
 
 
-// This file is empty because there are no enums in the schema.
-export {}
+export const StatusPagamento = {
+  PENDENTE: 'PENDENTE',
+  PROCESSANDO: 'PROCESSANDO',
+  APROVADO: 'APROVADO',
+  RECUSADO: 'RECUSADO',
+  CANCELADO: 'CANCELADO',
+  ESTORNADO: 'ESTORNADO'
+} as const
+
+export type StatusPagamento = (typeof StatusPagamento)[keyof typeof StatusPagamento]
+
+
+export const StatusEntrega = {
+  PENDENTE: 'PENDENTE',
+  PREPARANDO: 'PREPARANDO',
+  ENVIADO: 'ENVIADO',
+  EM_TRANSITO: 'EM_TRANSITO',
+  SAIU_PARA_ENTREGA: 'SAIU_PARA_ENTREGA',
+  ENTREGUE: 'ENTREGUE',
+  CANCELADO: 'CANCELADO'
+} as const
+
+export type StatusEntrega = (typeof StatusEntrega)[keyof typeof StatusEntrega]
+
+
+export const OrderStatus = {
+  PENDING: 'PENDING',
+  CONFIRMED: 'CONFIRMED',
+  PROCESSING: 'PROCESSING',
+  SHIPPED: 'SHIPPED',
+  DELIVERED: 'DELIVERED',
+  CANCELED: 'CANCELED',
+  REFUNDED: 'REFUNDED'
+} as const
+
+export type OrderStatus = (typeof OrderStatus)[keyof typeof OrderStatus]
