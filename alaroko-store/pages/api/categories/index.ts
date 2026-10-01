@@ -6,33 +6,42 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  if (req.method !== 'POST') {
-    return res.status(405).json({
-      message: 'Método não permitido',
-    })
-  }
+  async function GET(req: NextApiRequest,
+  res: NextApiResponse
+) {
+  const collection = await prisma.categoria.findMany();
+  return res.status(200).json(collection);
+}
+}
 
+async function POST(req: NextApiRequest,
+res: NextApiResponse
+) {
   try {
-    const { name } = req.body
+    const {
+      name,
+      slug
+    } = req.body
 
-    if (!name || typeof name !== 'string' || !name.trim()) {
+    if (!name || !slug) {
       return res.status(400).json({
-        message: 'O nome da categoria é obrigatório.',
+        message: 'Preencha os campos obrigatórios.',
       })
     }
 
-    const category = await prisma.category.create({
+    const categoria = await prisma.categoria.create({
       data: {
-        name: name.trim(),
+        name,
+        slug
       },
     })
 
-    return res.status(201).json(category)
+    return res.status(201).json(categoria)
   } catch (error) {
     console.error(error)
 
     return res.status(500).json({
-      message: 'Erro ao cadastrar categoria.',
+      message: 'Erro ao cadastrar produto.',
     })
   }
 }
