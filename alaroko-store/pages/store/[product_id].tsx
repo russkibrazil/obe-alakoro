@@ -1,8 +1,7 @@
-import { PrismaClient } from '@prisma/client';
+import { prisma } from '../../lib/prisma'
 import { notFound } from 'next/navigation';
-import AddToCartForm from './add-to-cart-form';
+// import AddToCartForm from './add-to-cart-form';
 
-const prisma = new PrismaClient();
 
 interface ProductPageProps {
   params: {
@@ -17,7 +16,7 @@ export default async function ProductDetailPage({ params }: ProductPageProps) {
   const product = await prisma.product.findUnique({
     where: { id },
     include: {
-      category: true,
+      categoria: true,
     },
   });
 
@@ -30,7 +29,7 @@ export default async function ProductDetailPage({ params }: ProductPageProps) {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
         {/* Imagem do Produto */}
         <div className="w-full h-96 bg-gray-100 rounded-lg overflow-hidden flex items-center justify-center border">
-          {product.imageUrl ? (
+          {/* {product.imageUrl ? (
             <img
               src={product.imageUrl}
               alt={product.name}
@@ -38,14 +37,14 @@ export default async function ProductDetailPage({ params }: ProductPageProps) {
             />
           ) : (
             <span className="text-gray-400">Sem imagem disponível</span>
-          )}
+          )} */}
         </div>
 
         {/* Informações e Ações do Produto */}
         <div className="flex flex-col space-y-6">
           <div>
             <span className="text-xs font-semibold text-blue-600 uppercase tracking-wider">
-              {product.category.name}
+              {product.categoria.name}
             </span>
             <h1 className="text-3xl font-bold text-gray-900 mt-1">
               {product.name}
@@ -70,7 +69,7 @@ export default async function ProductDetailPage({ params }: ProductPageProps) {
             </p>
 
             {/* Form de Adicionar ao Carrinho */}
-            <AddToCartForm productId={product.id} stock={product.stock} />
+            {/* <AddToCartForm productId={product.id} stock={product.stock} /> */}
           </div>
         </div>
       </div>

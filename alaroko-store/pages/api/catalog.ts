@@ -1,7 +1,11 @@
 import { NextResponse } from 'next/server';
-import { PrismaClient } from '@prisma/client';
+import { prisma } from '../../lib/prisma'
+import { NextApiRequest, NextApiResponse } from 'next';
 
-const prisma = new PrismaClient();
+export default async function handler(
+  req: NextApiRequest,
+  res: NextApiResponse
+) {}
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
@@ -25,14 +29,14 @@ export async function GET(request: Request) {
         ],
       },
       include: {
-        category: {
+        categoria: {
           select: { name: true, slug: true },
         },
       },
       orderBy: { createdAt: 'desc' },
     });
 
-    const categories = await prisma.category.findMany();
+    const categories = await prisma.categoria.findMany();
 
     return NextResponse.json({ products, categories });
   } catch (error) {
