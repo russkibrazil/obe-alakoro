@@ -1,4 +1,4 @@
-import Image from "./Image";
+import Image from "../common/Image";
 
 interface CardProps {
   src: string;

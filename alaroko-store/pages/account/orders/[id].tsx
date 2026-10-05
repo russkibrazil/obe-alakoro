@@ -244,26 +244,7 @@ export const getServerSideProps: GetServerSideProps<
       id,
       clientId: userId,
     },
-    select: {
-      id: true,
-      status: true,
-      valor: true,
-      createdAt: true,
-
-      pagamento: {
-        select: {
-          metodo: true,
-          status: true,
-        },
-      },
-
-      entrega: {
-        select: {
-          endereco: true,
-          cidade: true,
-        },
-      },
-    },
+    include: { entrega: true, pagamento: true}
   })
 
   if (!order) {
@@ -278,6 +259,7 @@ export const getServerSideProps: GetServerSideProps<
     props: {
       order: {
         ...order,
+        valor: order.valor.toNumber(),
         createdAt: order.createdAt.toISOString(),
       },
     },

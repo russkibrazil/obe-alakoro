@@ -41,7 +41,7 @@ export const getServerSideProps: GetServerSideProps<
     props: {
       clients: clients.map((client) => ({
         id: String(client.id),
-        name: client.name,
+        name: client.name ?? "N/A",
         email: client.email,
         createdAt: client.createdAt.toISOString(),
         _count: client._count,

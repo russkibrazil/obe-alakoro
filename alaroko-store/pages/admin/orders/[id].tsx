@@ -53,7 +53,7 @@ export const getServerSideProps: GetServerSideProps<
         description: product.description,
         price: Number(product.price),
         stock: product.stock,
-        category: product.category,
+        category: product.categoriaId,
         image: product.image,
         createdAt: product.createdAt.toISOString(),
       },

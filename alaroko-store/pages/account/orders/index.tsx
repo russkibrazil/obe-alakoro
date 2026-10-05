@@ -186,6 +186,7 @@ export const getServerSideProps: GetServerSideProps<
 
   const orders = (user?.pedidos || []).map((order) => ({
     ...order,
+    valor: order.valor.toNumber(),
     createdAt: order.createdAt.toISOString(),
   }))
 

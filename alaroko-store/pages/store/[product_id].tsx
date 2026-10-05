@@ -1,28 +1,15 @@
+import { GetServerSideProps } from 'next';
 import { prisma } from '../../lib/prisma'
 import { notFound } from 'next/navigation';
+import { Product } from '@/generated/prisma/client';
 // import AddToCartForm from './add-to-cart-form';
 
 
 interface ProductPageProps {
-  params: {
-    id: string;
-  };
+  product: Product;
 }
 
-export default async function ProductDetailPage({ params }: ProductPageProps) {
-  const { id } = params;
-
-  // Busca diretamente no banco de dados via Server Component
-  const product = await prisma.product.findUnique({
-    where: { id },
-    include: {
-      categoria: true,
-    },
-  });
-
-  if (!product) {
-    notFound();
-  }
+export default async function ProductDetailPage({ product }: ProductPageProps) {
 
   return (
     <div className="max-w-5xl mx-auto p-6 my-8">
@@ -44,7 +31,7 @@ export default async function ProductDetailPage({ params }: ProductPageProps) {
         <div className="flex flex-col space-y-6">
           <div>
             <span className="text-xs font-semibold text-blue-600 uppercase tracking-wider">
-              {product.categoria.name}
+              {product.categoriaId}
             </span>
             <h1 className="text-3xl font-bold text-gray-900 mt-1">
               {product.name}
@@ -75,4 +62,30 @@ export default async function ProductDetailPage({ params }: ProductPageProps) {
       </div>
     </div>
   );
+}
+
+export const getServerSideProps: GetServerSideProps<
+  ProductPageProps
+> = async () => {
+  // Substitua pelo ID do cliente autenticado.
+  const userId = 'cliente-id'
+
+  const product = await prisma.product.findUnique({
+    where: {
+      id: userId,
+    },
+    
+  })
+
+  if (!product) {
+    return {
+      notFound: true,
+    }
+  }
+
+  return {
+    props: {
+      product 
+    },
+  }
 }

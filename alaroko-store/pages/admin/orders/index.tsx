@@ -13,7 +13,7 @@ type Order = {
   status: string
   createdAt: string
   user: {
-    name: string
+    name: any
     email: string
   } | null
 }
@@ -30,7 +30,7 @@ export const getServerSideProps: GetServerSideProps<
       createdAt: 'desc',
     },
     include: {
-      user: {
+      client: {
         select: {
           name: true,
           email: true,
@@ -43,10 +43,10 @@ export const getServerSideProps: GetServerSideProps<
     props: {
       orders: orders.map((order) => ({
         id: String(order.id),
-        total: Number(order.total),
+        total: order.valor.toNumber(),
         status: order.status,
         createdAt: order.createdAt.toISOString(),
-        user: order.user,
+        user: order.client,
       })),
     },
   }
