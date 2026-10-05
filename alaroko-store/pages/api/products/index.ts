@@ -37,7 +37,7 @@ res: NextApiResponse
       description,
       price,
       stock,
-      category,
+      categoriaId,
       image,
     } = req.body
 
@@ -53,7 +53,7 @@ res: NextApiResponse
         description,
         price,
         stock,
-        category,
+        categoriaId,
         image,
       },
     })
