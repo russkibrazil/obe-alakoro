@@ -12,6 +12,11 @@ services:
       - "3306:3306"
     volumes:
       - mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-proot_password_here"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
 
   app:
     build:
@@ -24,7 +29,11 @@ services:
     ports:
       - "3000:3000"
     environment:
-      DATABASE_URL: mysql://user_app:user_password_here@db:3306/loja_virtual
+      DATABASE_URL: mysql://user_app:user_password_here@db:3306/loja_virtual?connection_limit=20&pool_timeout=30
+      DATABASE_HOST: "db"
+      DATABASE_USER: "root"
+      DATABASE_PASSWORD: "user_password_here"
+      DATABASE_NAME: "loja_virtual"
       NODE_ENV: production
 
 volumes:

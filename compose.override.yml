@@ -22,11 +22,18 @@ services:
     ports:
       - "3000:3000"
     environment:
-      DATABASE_URL: mysql://root:root_password_here@db:3306/loja_virtual
+      DATABASE_URL: mysql://root:root_password_here@db:3306/loja_virtual?connection_limit=20&pool_timeout=30
       NODE_ENV: development
+      DATABASE_HOST: "db"
+      DATABASE_USER: "root"
+      DATABASE_PASSWORD: "user_password_here"
+      DATABASE_NAME: "loja_virtual"
     volumes:
-      - ./alaroko-store/generated:/app/generated # @isabellydemelolima48-sudo needs this
-      - ./alaroko-store/prisma:/app/prisma
+      # - ./alaroko-store/generated:/app/generated # @isabellydemelolima48-sudo needs this
+      # - ./alaroko-store/prisma:/app/prisma
+      - ./alaroko-store:/app
+      - /app/node_modules
+      - /app/.next
 
 volumes:
   mysql_data:
