@@ -1,59 +1,19 @@
-
+import { User } from '@/generated/prisma/client';
 import Link from 'next/link'
-import type {
-  GetServerSideProps,
-  InferGetServerSidePropsType,
-} from 'next'
-import { useMemo, useState } from 'react'
-import { prisma } from '../../../lib/prisma'
+import { useEffect, useMemo, useState } from 'react'
 
-type Client = {
-  id: string
-  name: string
-  email: string
-  createdAt: string
-  _count: {
-    pedidos: number
-  }
+interface Customers extends User {
+  _count: {pedidos: number};
 }
 
-type ClientsPageProps = {
-  clients: Client[]
-}
-
-export const getServerSideProps: GetServerSideProps<
-  ClientsPageProps
-> = async () => {
-  const clients = await prisma.user.findMany({
-    orderBy: {
-      createdAt: 'desc',
-    },
-    include: {
-      _count: {
-        select: {
-          pedidos: true,
-        },
-      },
-    },
-  })
-
-  return {
-    props: {
-      clients: clients.map((client) => ({
-        id: String(client.id),
-        name: client.name ?? "N/A",
-        email: client.email,
-        createdAt: client.createdAt.toISOString(),
-        _count: client._count,
-      })),
-    },
-  }
-}
-
-export default function ClientsPage({
-  clients,
-}: InferGetServerSidePropsType<typeof getServerSideProps>) {
-  const [search, setSearch] = useState('')
+export default function ClientsPage() {
+  const [search, setSearch] = useState('');
+  const [clients, setClients] = useState<Customers[]>([]);
+  useEffect(() => {
+    fetch('/api/customers')
+      .then(response => response.json())
+      .then(setClients);
+  }, [])
 
   const filteredClients = useMemo(() => {
     return clients.filter((client) => {
@@ -63,10 +23,6 @@ export default function ClientsPage({
       )
     })
   }, [clients, search])
-
-  const formatDate = (date: string) => {
-    return new Date(date).toLocaleDateString('pt-BR')
-  }
 
   return (
     <main className="min-h-screen bg-gray-50 p-6">
@@ -144,7 +100,7 @@ export default function ClientsPage({
                     </td>
 
                     <td className="whitespace-nowrap px-5 py-4 text-gray-600">
-                      {formatDate(client.createdAt)}
+                      {client.createdAt.toLocaleDateString('pt-BR')}
                     </td>
 
                     <td className="whitespace-nowrap px-5 py-4 text-right">
