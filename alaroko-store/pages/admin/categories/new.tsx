@@ -1,18 +1,16 @@
-
-import { useState, type FormEvent } from 'react'
+import { useState } from 'react'
 import { useRouter } from 'next/router'
+import { CategoryForm } from '@/components/forms/CategoryForm'
+import { Categoria } from '@/generated/prisma/client'
+import { FormError } from '@/components/forms/FormError'
 
 export default function NewCategoryPage() {
   const router = useRouter()
 
-  const [name, setName] = useState('')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
 
-  const handleSubmit = async (
-    event: FormEvent<HTMLFormElement>
-  ) => {
-    event.preventDefault()
+  const handleSubmit = async (values: any, { setSubmitting, setStatus, setErrors }: any) => {
     setLoading(true)
     setError('')
 
@@ -22,7 +20,7 @@ export default function NewCategoryPage() {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ name }),
+        body: JSON.stringify(values),
       })
 
       const data = await response.json()
@@ -33,7 +31,7 @@ export default function NewCategoryPage() {
         )
       }
 
-      await router.push('/adm/categories')
+      await router.push('/admin/categories')
     } catch (err) {
       setError(
         err instanceof Error
@@ -42,6 +40,7 @@ export default function NewCategoryPage() {
       )
     } finally {
       setLoading(false)
+      setSubmitting(false)
     }
   }
 
@@ -51,7 +50,7 @@ export default function NewCategoryPage() {
         <header className="mb-8">
           <button
             type="button"
-            onClick={() => router.push('/adm/categories')}
+            onClick={() => router.push('/admin/categories')}
             className="mb-4 text-sm font-medium text-violet-600 hover:text-violet-800"
           >
             ← Voltar para categorias
@@ -66,57 +65,12 @@ export default function NewCategoryPage() {
           </p>
         </header>
 
-        <form
-          onSubmit={handleSubmit}
-          className="rounded-xl border border-gray-200 bg-white p-6 shadow-sm"
-        >
-          <h2 className="mb-5 text-lg font-semibold text-gray-900">
-            Informações da categoria
-          </h2>
-
-          <div>
-            <label
-              htmlFor="name"
-              className="mb-2 block text-sm font-medium text-gray-700"
-            >
-              Nome da categoria
-            </label>
-
-            <input
-              id="name"
-              type="text"
-              required
-              value={name}
-              onChange={(event) => setName(event.target.value)}
-              placeholder="Ex.: Roupas, Acessórios, Casa"
-              className="w-full rounded-lg border border-gray-300 px-3 py-2.5 text-sm outline-none focus:border-violet-500 focus:ring-2 focus:ring-violet-100"
-            />
-          </div>
-
-          {error && (
-            <p className="mt-4 rounded-lg bg-red-50 p-3 text-sm text-red-600">
-              {error}
-            </p>
-          )}
-
-          <div className="mt-6 flex justify-end gap-3">
-            <button
-              type="button"
-              onClick={() => router.push('/adm/categories')}
-              className="rounded-lg border border-gray-300 px-5 py-2.5 text-sm font-semibold text-gray-700 hover:bg-gray-100"
-            >
-              Cancelar
-            </button>
-
-            <button
-              type="submit"
-              disabled={loading}
-              className="rounded-lg bg-violet-600 px-5 py-2.5 text-sm font-semibold text-white hover:bg-violet-700 disabled:cursor-not-allowed disabled:opacity-60"
-            >
-              {loading ? 'Salvando...' : 'Cadastrar categoria'}
-            </button>
-          </div>
-        </form>
+        <CategoryForm 
+          submitFn={handleSubmit}
+          isSubmitting={loading}
+          initialData={{} as Categoria} 
+        />
+        {error && <FormError errorTxt={error} />}
       </div>
     </main>
   )
