@@ -1,46 +1,17 @@
-
 import Link from 'next/link'
-import type { GetServerSideProps, InferGetServerSidePropsType } from 'next'
-import { useMemo, useState } from 'react'
-import { prisma } from '../../../lib/prisma'
+import { useEffect, useMemo, useState } from 'react'
+import { Product } from '@/generated/prisma/client'
 
-type Product = {
-  id: string
-  name: string
-  price: number
-  createdAt: string
-}
-
-type ProductsPageProps = {
-  products: Product[]
-}
-
-export const getServerSideProps: GetServerSideProps<
-  ProductsPageProps
-> = async () => {
-  const products = await prisma.product.findMany({
-    orderBy: {
-      createdAt: 'desc',
-    },
-  })
-
-  return {
-    props: {
-      products: products.map((product) => ({
-        id: product.id,
-        name: product.name,
-        price: Number(product.price),
-        createdAt: product.createdAt.toISOString(),
-      })),
-    },
-  }
-}
-
-export default function ProductsPage({
-  products,
-}: InferGetServerSidePropsType<typeof getServerSideProps>) {
+export default function ProductsPage() {
   const [search, setSearch] = useState('')
-  const [status, setStatus] = useState('all')
+  const [status, setStatus] = useState('all');
+  const [products, setProducts] = useState<Product[]>([]);
+
+  useEffect(() => {
+    fetch('/api/products')
+      .then(response => response.json())
+      .then(setProducts);
+  }, []);
 
   const filteredProducts = useMemo(() => {
     return products.filter((product) => {
@@ -73,7 +44,7 @@ export default function ProductsPage({
           </div>
 
           <Link
-            href="/adm/products/new"
+            href="/admin/products/new"
             className="rounded-lg bg-violet-600 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-violet-700"
           >
             + Novo produto
@@ -134,7 +105,7 @@ export default function ProductsPage({
                     </td>
 
                     <td className="whitespace-nowrap px-5 py-4 text-gray-600">
-                      {formatPrice(product.price)}
+                      {formatPrice(product.price.toNumber())}
                     </td>
 
                     <td className="whitespace-nowrap px-5 py-4 text-gray-600">
@@ -151,7 +122,7 @@ export default function ProductsPage({
 
                     <td className="whitespace-nowrap px-5 py-4 text-right">
                       <Link
-                        href={`/adm/products/${product.id}/edit`}
+                        href={`/admin/products/${product.id}`}
                         className="font-medium text-violet-600 hover:text-violet-800"
                       >
                         Editar
