@@ -1,10 +1,7 @@
-
 import Link from 'next/link'
-import type {
-  GetServerSideProps,
-  InferGetServerSidePropsType,
-} from 'next'
-import { prisma } from '../../lib/prisma'
+import { useRouter } from 'next/router'
+import { useEffect, useState } from 'react'
+import { User } from '@/generated/prisma/client'
 
 type Order = {
   id: string
@@ -13,67 +10,15 @@ type Order = {
   createdAt: string
 }
 
-type AccountPageProps = {
-  user: {
-    name: string | null
-    email: string
-  }
-  orders: Order[]
+interface ExtendedUser extends User{
+  pedidos: Order[];
 }
 
-export const getServerSideProps: GetServerSideProps<
-  AccountPageProps
-> = async () => {
-  // Substitua pelo ID do cliente autenticado.
-  const userId = 'cliente-id'
+export default function AccountPage() {
+  const router = useRouter();
+  const [profile, setProfile] = useState<ExtendedUser|null>(null);
+  const [loading, setLoading] = useState<boolean>(false);
 
-  const user = await prisma.user.findUnique({
-    where: {
-      id: userId,
-    },
-    select: {
-      name: true,
-      email: true,
-      pedidos: {
-        orderBy: {
-          createdAt: 'desc',
-        },
-        select: {
-          id: true,
-          status: true,
-          valor: true,
-          createdAt: true,
-        },
-      },
-    },
-  })
-
-  if (!user) {
-    return {
-      notFound: true,
-    }
-  }
-
-  return {
-    props: {
-      user: {
-        name: user.name,
-        email: user.email,
-      },
-      orders: user.pedidos.map((order) => ({
-        id: order.id,
-        status: order.status,
-        valor: Number(order.valor),
-        createdAt: order.createdAt.toISOString(),
-      })),
-    },
-  }
-}
-
-export default function AccountPage({
-  user,
-  orders,
-}: InferGetServerSidePropsType<typeof getServerSideProps>) {
   const formatPrice = (price: number) => {
     return new Intl.NumberFormat('pt-BR', {
       style: 'currency',
@@ -111,9 +56,22 @@ export default function AccountPage({
     return colors[status] ?? 'bg-gray-100 text-gray-700'
   }
 
-  const recentOrders = orders.slice(0, 3)
+  useEffect(() => {
+    if (!router.isReady) return;
+    setLoading(true);
+    fetch(`/api/account/profile`)
+      .then(response => response.json())
+      .then(setProfile)
+    setLoading(false);
+  }, [router.isReady])
 
-  const activeOrders = orders.filter(
+  if (loading)
+    return <>Loading...</>
+
+  const orders = profile?.pedidos;
+  const recentOrders = profile?.pedidos;
+
+  const activeOrders = orders?.filter(
     (order) =>
       !['DELIVERED', 'CANCELED'].includes(order.status)
   )
@@ -142,7 +100,7 @@ export default function AccountPage({
             </p>
 
             <p className="mt-2 text-3xl font-bold text-gray-900">
-              {orders.length}
+              {orders?.length}
             </p>
           </div>
 
@@ -152,7 +110,7 @@ export default function AccountPage({
             </p>
 
             <p className="mt-2 text-3xl font-bold text-gray-900">
-              {activeOrders.length}
+              {activeOrders?.length}
             </p>
           </div>
         </section>
@@ -200,7 +158,7 @@ export default function AccountPage({
               </thead>
 
               <tbody className="divide-y divide-gray-100">
-                {recentOrders.map((order) => (
+                {recentOrders?.map((order) => (
                   <tr
                     key={order.id}
                     className="hover:bg-gray-50"
@@ -238,7 +196,7 @@ export default function AccountPage({
               </tbody>
             </table>
 
-            {recentOrders.length === 0 && (
+            {recentOrders?.length === 0 && (
               <div className="p-10 text-center">
                 <p className="text-sm text-gray-500">
                   Você ainda não realizou nenhum pedido.
