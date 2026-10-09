@@ -27,7 +27,12 @@ async function GET(
   try {
     const pedido= await prisma.pedido.findUnique({
       where: { id },
-      
+      include: {
+        entrega: true,
+        itens: true,
+        pagamento: true,
+        client: true,
+      }
     });
 
     if (!pedido) {

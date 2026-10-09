@@ -22,7 +22,19 @@ export default async function handler(
 async function GET(req: NextApiRequest,
   res: NextApiResponse
 ) {
-  const collection = await prisma.pedido.findMany();
+  const collection = await prisma.pedido.findMany({
+    orderBy: {
+      createdAt: 'desc',
+    },
+    include: {
+      client: {
+        select: {
+          name: true,
+          email: true,
+        },
+      },
+    },
+  });
   return res.status(200).json(collection);
 }
 

@@ -1,62 +1,25 @@
-
 import Link from 'next/link'
-import type {
-  GetServerSideProps,
-  InferGetServerSidePropsType,
-} from 'next'
-import { useMemo, useState } from 'react'
-import { prisma } from '../../../lib/prisma'
+import { useEffect, useMemo, useState } from 'react'
+import { Pedido } from '@/generated/prisma/client'
 
-type Order = {
-  id: string
-  total: number
-  status: string
-  createdAt: string
+interface Order extends Pedido {
   user: {
     name: any
     email: string
   } | null
 }
 
-type OrdersPageProps = {
-  orders: Order[]
-}
-
-export const getServerSideProps: GetServerSideProps<
-  OrdersPageProps
-> = async () => {
-  const orders = await prisma.pedido.findMany({
-    orderBy: {
-      createdAt: 'desc',
-    },
-    include: {
-      client: {
-        select: {
-          name: true,
-          email: true,
-        },
-      },
-    },
-  })
-
-  return {
-    props: {
-      orders: orders.map((order) => ({
-        id: String(order.id),
-        total: order.valor.toNumber(),
-        status: order.status,
-        createdAt: order.createdAt.toISOString(),
-        user: order.client,
-      })),
-    },
-  }
-}
-
-export default function OrdersPage({
-  orders,
-}: InferGetServerSidePropsType<typeof getServerSideProps>) {
+export default function OrdersPage() {
   const [search, setSearch] = useState('')
   const [status, setStatus] = useState('all')
+  const [orders, setOrders] = useState<Order[]>([]);
+
+  useEffect(() => {
+    fetch('/api/orders')
+      .then(response => response.json())
+      .then(setOrders)
+    ;
+  }, [])
 
   const filteredOrders = useMemo(() => {
     return orders.filter((order) => {
@@ -77,10 +40,6 @@ export default function OrdersPage({
       style: 'currency',
       currency: 'BRL',
     }).format(price)
-  }
-
-  const formatDate = (date: string) => {
-    return new Date(date).toLocaleDateString('pt-BR')
   }
 
   const formatStatus = (status: string) => {
@@ -205,7 +164,7 @@ export default function OrdersPage({
                     </td>
 
                     <td className="whitespace-nowrap px-5 py-4 text-gray-600">
-                      {formatPrice(order.total)}
+                      {formatPrice(order.valor.toNumber())}
                     </td>
 
                     <td className="whitespace-nowrap px-5 py-4">
@@ -217,12 +176,12 @@ export default function OrdersPage({
                     </td>
 
                     <td className="whitespace-nowrap px-5 py-4 text-gray-600">
-                      {formatDate(order.createdAt)}
+                      {order.createdAt.toLocaleDateString('pt-BR')}
                     </td>
 
                     <td className="whitespace-nowrap px-5 py-4 text-right">
                       <Link
-                        href={`/adm/orders/${order.id}`}
+                        href={`/admin/orders/${order.id}`}
                         className="font-medium text-violet-600 hover:text-violet-800"
                       >
                         Ver detalhes
