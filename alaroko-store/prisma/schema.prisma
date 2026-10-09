@@ -124,8 +124,6 @@ model Categoria {
 
 model ItemPedido {
   id         String   @id @default(cuid())
-  quantidade Int
-  preco      Decimal
 
   pedidoId   String
   pedido     Pedido   @relation(fields: [pedidoId], references: [id])
