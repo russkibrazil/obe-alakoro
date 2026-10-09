@@ -1,6 +1,6 @@
 import Link from 'next/link'
-import { GetServerSideProps } from 'next'
-import { prisma } from '@/lib/prisma'
+import { useRouter } from 'next/router'
+import { useEffect, useState } from 'react'
 
 type Order = {
   id: string
@@ -17,13 +17,10 @@ type Order = {
   } | null
 }
 
-type OrderPageProps = {
-  order: Order | null
-}
-
-export default function OrderDetailsPage({
-  order,
-}: OrderPageProps) {
+export default function OrderDetailsPage() {
+  const router = useRouter();
+  const [loading, setLoading] = useState<boolean>(false);
+  const [order, setOrder] = useState<Order|null>(null);
   function formatPrice(value: number) {
     return value.toLocaleString('pt-BR', {
       style: 'currency',
@@ -62,6 +59,17 @@ export default function OrderDetailsPage({
 
     return classes[status] || 'bg-gray-100 text-gray-700'
   }
+
+  
+  useEffect(() => {
+    setLoading(true);
+    const id = router.query.id;
+    fetch(`/api/orders/${id}`)
+      .then(response => response.json())
+      .then(setOrder);
+      
+    setLoading(false);
+  },[router.isReady])
 
   if (!order) {
     return (
@@ -229,39 +237,4 @@ export default function OrderDetailsPage({
       </div>
     </main>
   )
-}
-
-export const getServerSideProps: GetServerSideProps<
-  OrderPageProps
-> = async (context) => {
-  const { id } = context.params as { id: string }
-
-  // Substitua pelo ID obtido através do sistema de autenticação.
-  const userId = 'cliente-id'
-
-  const order = await prisma.pedido.findFirst({
-    where: {
-      id,
-      clientId: userId,
-    },
-    include: { entrega: true, pagamento: true}
-  })
-
-  if (!order) {
-    return {
-      props: {
-        order: null,
-      },
-    }
-  }
-
-  return {
-    props: {
-      order: {
-        ...order,
-        valor: order.valor.toNumber(),
-        createdAt: order.createdAt.toISOString(),
-      },
-    },
-  }
 }

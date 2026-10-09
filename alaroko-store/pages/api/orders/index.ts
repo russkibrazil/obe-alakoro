@@ -22,7 +22,10 @@ export default async function handler(
 async function GET(req: NextApiRequest,
   res: NextApiResponse
 ) {
+  const client = req.query.clientId;
+  const whereFilter = typeof client === 'string' ? {clientId: client} : undefined;
   const collection = await prisma.pedido.findMany({
+    where: whereFilter,
     orderBy: {
       createdAt: 'desc',
     },

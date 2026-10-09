@@ -1,28 +1,17 @@
 import Link from 'next/link'
-import { GetServerSideProps } from 'next'
-import { prisma } from '@/lib/prisma'
+import { useEffect, useState } from 'react'
+import { useRouter } from 'next/router'
+import { Pedido } from '@/generated/prisma/client'
 
-type Order = {
-  id: string
-  status: string
-  valor: number
-  createdAt: string
-}
-
-type OrdersPageProps = {
-  orders: Order[]
-}
-
-export default function OrdersPage({ orders }: OrdersPageProps) {
+export default function OrdersPage() {
+  const router = useRouter();
+  const [loading, setLoading] = useState<boolean>(false);
+  const [orders, setOrders] = useState<Pedido[]>([]);
   function formatPrice(value: number) {
     return value.toLocaleString('pt-BR', {
       style: 'currency',
       currency: 'BRL',
     })
-  }
-
-  function formatDate(date: string) {
-    return new Date(date).toLocaleDateString('pt-BR')
   }
 
   function getStatusLabel(status: string) {
@@ -48,6 +37,17 @@ export default function OrdersPage({ orders }: OrdersPageProps) {
 
     return classes[status] || 'bg-gray-100 text-gray-700'
   }
+
+  useEffect(() => {
+    if (!router.isReady) {
+      return;
+    }
+    setLoading(true);
+    fetch(`/api/orders?clientId=${'sdsda'}`)
+      .then(response => response.json())
+      .then(setOrders);
+    setLoading(false);
+  }, [router.isReady]);
 
   return (
     <main className="min-h-screen bg-gray-50 px-4 py-8">
@@ -122,11 +122,11 @@ export default function OrdersPage({ orders }: OrdersPageProps) {
                       </td>
 
                       <td className="px-6 py-4 text-sm text-gray-600">
-                        {formatDate(order.createdAt)}
+                        {order.createdAt.toLocaleDateString('pt-BR')}
                       </td>
 
                       <td className="px-6 py-4 text-sm text-gray-800">
-                        {formatPrice(order.valor)}
+                        {formatPrice(order.valor.toNumber())}
                       </td>
 
                       <td className="px-6 py-4">
@@ -157,42 +157,4 @@ export default function OrdersPage({ orders }: OrdersPageProps) {
       </div>
     </main>
   )
-}
-
-export const getServerSideProps: GetServerSideProps<
-  OrdersPageProps
-> = async () => {
-  // Substitua pelo ID obtido através do sistema de autenticação.
-  const userId = 'cliente-id'
-
-  const user = await prisma.user.findUnique({
-    where: {
-      id: userId,
-    },
-    select: {
-      pedidos: {
-        orderBy: {
-          createdAt: 'desc',
-        },
-        select: {
-          id: true,
-          status: true,
-          valor: true,
-          createdAt: true,
-        },
-      },
-    },
-  })
-
-  const orders = (user?.pedidos || []).map((order) => ({
-    ...order,
-    valor: order.valor.toNumber(),
-    createdAt: order.createdAt.toISOString(),
-  }))
-
-  return {
-    props: {
-      orders,
-    },
-  }
 }
