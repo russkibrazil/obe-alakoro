@@ -1,27 +1,10 @@
+import { CardProduct } from '@/components/cards/CardProduct';
+import { Product, Categoria } from '@/generated/prisma/client';
 import React, { useEffect, useState } from 'react';
 
-interface Category {
-  id: string;
-  name: string;
-  slug: string;
-}
-
-interface Product {
-  id: string;
-  name: string;
-  description?: string;
-  price: number;
-  imageUrl?: string;
-  category: { name: string };
-}
-
-interface ProductCatalogProps {
-  cartId: string;
-}
-
-export default function ProductCatalog({ cartId }: ProductCatalogProps) {
+export default function ProductCatalog() {
   const [products, setProducts] = useState<Product[]>([]);
-  const [categories, setCategories] = useState<Category[]>([]);
+  const [categories, setCategories] = useState<Categoria[]>([]);
   const [search, setSearch] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('');
   const [loading, setLoading] = useState(true);
@@ -120,45 +103,14 @@ export default function ProductCatalog({ cartId }: ProductCatalogProps) {
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
           {products.map((product) => (
-            <div
-              key={product.id}
-              className="border rounded-lg overflow-hidden shadow-sm flex flex-col justify-between p-4"
-            >
-              <div>
-                <div className="h-40 bg-gray-100 rounded-md mb-4 flex items-center justify-center text-gray-400">
-                  {product.imageUrl ? (
-                    <img
-                      src={product.imageUrl}
-                      alt={product.name}
-                      className="h-full w-full object-cover rounded-md"
-                    />
-                  ) : (
-                    <span>Sem imagem</span>
-                  )}
-                </div>
-                <span className="text-xs text-blue-600 font-semibold uppercase">
-                  {product.category.name}
-                </span>
-                <h3 className="font-bold text-lg mt-1">{product.name}</h3>
-                <p className="text-sm text-gray-500 line-clamp-2 mt-1">
-                  {product.description}
-                </p>
-              </div>
-
-              <div className="mt-4 pt-4 border-t flex items-center justify-between">
-                <span className="text-xl font-bold text-gray-900">
-                  R$ {product.price.toFixed(2)}
-                </span>
-                <button
-                  onClick={() => handleAddToCart(product.id)}
-                  disabled={addingId === product.id}
-                  className="px-3 py-1.5 bg-green-600 text-white rounded-md text-sm font-medium hover:bg-green-700 disabled:opacity-50"
-                >
-                  {addingId === product.id ? 'Adicionando...' : 'Adicionar'}
-                </button>
-              </div>
-            </div>
-          ))}
+        <CardProduct 
+          productName={product.name}
+          price={product.price.toNumber()}
+          active
+          stock={product.stock}
+          id={product.id}
+        />
+      ))}
         </div>
       )}
     </div>

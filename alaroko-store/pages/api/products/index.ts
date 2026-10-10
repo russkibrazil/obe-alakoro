@@ -23,7 +23,11 @@ export default async function handler(
 async function GET(req: NextApiRequest,
   res: NextApiResponse
 ) {
-  const collection = await prisma.product.findMany();
+  const {categoriaId, name} = req.query;
+  const filterQuery = typeof categoriaId === 'string' ? {categoriaId} : undefined;
+  const collection = await prisma.product.findMany({
+    where: filterQuery
+  });
   return res.status(200).json(collection);
 }
 

@@ -23,7 +23,11 @@ export default async function handler(
 async function GET(req: NextApiRequest,
   res: NextApiResponse
 ) {
-  const collection = await prisma.categoria.findMany();
+  const {slug} = req.query;
+  const filterQuery = typeof slug === 'string' ? {slug} : undefined;
+  const collection = await prisma.categoria.findMany({
+    where: filterQuery
+  });
   return res.status(200).json(collection);
 }
 
