@@ -1,6 +1,5 @@
-'use client';
-
-import React, { useEffect, useState } from 'react';
+import Button from '@/components/common/Button';
+import { useEffect, useState } from 'react';
 
 interface CartItem {
   id: string;
@@ -20,7 +19,7 @@ export default function Cart({ cartId }: CartProps) {
   useEffect(() => {
     async function fetchCart() {
       try {
-        const response = await fetch(`/api/cart?cartId=${cartId}`);
+        const response = await fetch(`/api/account/cart`);
         const data = await response.json();
         if (data?.items) {
           setItems(data.items);
@@ -40,7 +39,7 @@ export default function Cart({ cartId }: CartProps) {
   // Função para remover um item
   const handleRemoveItem = async (itemId: string) => {
     try {
-      const response = await fetch(`/api/cart?itemId=${itemId}`, {
+      const response = await fetch(`/api/account/cart?item=${itemId}`, {
         method: 'DELETE',
       });
 
@@ -56,10 +55,12 @@ export default function Cart({ cartId }: CartProps) {
     return <p>Carregando carrinho...</p>;
   }
 
+  const emptyCart = items.length === 0;
+
   return (
     <div className="p-4 border rounded-md max-w-md mx-auto">
       <h2 className="text-xl font-bold mb-4">Seu Carrinho</h2>
-      {items.length === 0 ? (
+      {emptyCart ? (
         <p>O seu carrinho está vazio.</p>
       ) : (
         <ul className="divide-y">
@@ -79,6 +80,8 @@ export default function Cart({ cartId }: CartProps) {
           ))}
         </ul>
       )}
+      <Button disabled={emptyCart}>Ir para pagamento</Button>
+      <Button disabled={emptyCart}>Limpar carrinho</Button>
     </div>
   );
 }

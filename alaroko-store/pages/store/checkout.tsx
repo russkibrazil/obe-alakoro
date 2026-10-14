@@ -1,61 +1,116 @@
-import React, { useState } from 'react';
+import { useEffect, useState } from "react";
+import DeliveryForm from "../../components/forms/DeliveryForm";
+import { Address } from "@/generated/prisma/client";
+import { FormError } from "@/components/forms/FormError";
+import { useRouter } from "next/router";
 
-interface CheckoutProps {
-  cartId: string;
-  userId?: string;
-}
-
-export default function Checkout({ cartId, userId }: CheckoutProps) {
-  const [loading, setLoading] = useState<boolean>(false);
-  const [success, setSuccess] = useState<boolean>(false);
+export default function CheckoutPage() {
+  const router = useRouter();
+  const [addresses, setAddresses] = useState<Address[]>([]);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const handleProcessCheckout = async () => {
-    setLoading(true);
-    setError(null);
+  useEffect(() => {
+    const controller = new AbortController();
+
+    async function fetchAddresses() {
+      setLoading(true)
+      try {
+        const response = await fetch("/api/addresses", {
+          signal: controller.signal,
+        });
+
+        if (!response.ok) {
+          throw new Error("Não foi possível carregar os endereços salvos.");
+        }
+
+        const data: Address[] = await response.json();
+        setAddresses(data);
+      } catch (error) {
+        if (error instanceof Error && error.name === "AbortError") {
+          return;
+        }
+
+        setError(
+          error instanceof Error
+            ? error.message
+            : "Ocorreu um erro ao carregar os endereços."
+        );
+      } finally {
+        if (!controller.signal.aborted) {
+          setLoading(false);
+        }
+      }
+    }
+
+    fetchAddresses();
+
+    return () => controller.abort();
+  }, []);
+
+  const handleSubmit = async (values: any, { setSubmitting, setStatus, setErrors }: any) => {
+    setLoading(true)
+    setError('')
 
     try {
-      const response = await fetch('/api/checkout', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ cartId, userId }),
-      });
-
-      const data = await response.json();
+      const response = await fetch(`/api/addresses/${'#...'}`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(values),
+      })
 
       if (!response.ok) {
-        throw new Error(data.error || 'Falha ao processar o checkout');
+        throw new Error('Não foi possível cadastrar a categoria.')
       }
 
-      setSuccess(true);
-    } catch (err: any) {
-      setError(err.message);
+      await router.push('/profile/addresses')
+    } catch (err) {
+      setError(
+        err instanceof Error
+          ? err.message
+          : 'Ocorreu um erro ao cadastrar.'
+      )
     } finally {
-      setLoading(false);
+      setLoading(false)
+      setSubmitting(false)
     }
-  };
+  }
 
-  if (success) {
-    return (
-      <div className="p-6 border rounded-md max-w-md mx-auto text-center">
-        <h2 className="text-2xl font-bold text-green-600 mb-2">Pedido Confirmado!</h2>
-        <p className="text-gray-600">Obrigado pela sua compra. Seu pedido já está sendo processado.</p>
-      </div>
-    );
+  if (loading) {
+    return ( 
+    <main className="mx-auto max-w-3xl px-4 py-10">
+      <header className="mb-8">
+        <h1 className="text-2xl font-bold text-gray-900">
+          Finalizar pedido
+        </h1>
+      </header>
+      <p className="text-sm text-gray-500">
+        Carregando seus endereços...
+      </p>
+    </main>);
   }
 
   return (
-    <div className="p-6 border rounded-md max-w-md mx-auto">
-      <h2 className="text-xl font-bold mb-4">Finalizar Compra</h2>
-      {error && <p className="text-red-500 mb-4 text-sm">{error}</p>}
-      <p className="mb-6 text-gray-600">Clique no botão abaixo para simular o pagamento e fechar o pedido.</p>
-      <button
-        onClick={handleProcessCheckout}
-        disabled={loading}
-        className="w-full py-2 bg-blue-600 text-white rounded font-medium hover:bg-blue-700 disabled:opacity-50"
-      >
-        {loading ? 'Processando...' : 'Confirmar e Pagar'}
-      </button>
-    </div>
+    <main className="mx-auto max-w-3xl px-4 py-10">
+      <header className="mb-8">
+        <h1 className="text-2xl font-bold text-gray-900">
+          Finalizar pedido
+        </h1>
+
+        <p className="mt-2 text-gray-600">
+          Informe onde deseja receber sua compra.
+        </p>
+      </header>
+
+      <DeliveryForm
+        submitFn={handleSubmit}
+        isSubmitting={loading}
+        initialData={{} as Address}
+        userAddresses={addresses}
+      />
+      {error && <FormError errorTxt={error} />}
+    </main>
   );
 }
