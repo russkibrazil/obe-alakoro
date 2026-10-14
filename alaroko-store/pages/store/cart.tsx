@@ -1,4 +1,5 @@
 import Button from '@/components/common/Button';
+import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
 interface CartItem {
@@ -12,6 +13,7 @@ interface CartProps {
 }
 
 export default function Cart({ cartId }: CartProps) {
+  const router = useRouter();
   const [items, setItems] = useState<CartItem[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
 
@@ -51,6 +53,34 @@ export default function Cart({ cartId }: CartProps) {
     }
   };
 
+  const clearCart = async () => {
+    try {
+      const response = await fetch(`/api/account/cart`, {
+        method: 'DELETE',
+      });
+
+      if (response.ok) {
+        setItems([]);
+      }
+    } catch (error) {
+      console.error('Erro ao limpar o carrinho. Detalhes: ', error);
+    }
+  }
+
+  const makeOrder = async () => {
+    try {
+      const response = await fetch(`/api/account/cart/checkout`, {
+        method: 'POST',
+      });
+
+      if (response.ok) {
+        router.push('/store/checkout');
+      }
+    } catch (error) {
+      console.error('Erro ao realizar pedido. Detalhes: ', error);
+    }
+  }
+
   if (loading) {
     return <p>Carregando carrinho...</p>;
   }
@@ -80,8 +110,18 @@ export default function Cart({ cartId }: CartProps) {
           ))}
         </ul>
       )}
-      <Button disabled={emptyCart}>Ir para pagamento</Button>
-      <Button disabled={emptyCart}>Limpar carrinho</Button>
+      <Button 
+        disabled={emptyCart}
+        onClick={makeOrder}
+      >
+        Ir para pagamento
+      </Button>
+      <Button 
+        disabled={emptyCart}
+        onClick={clearCart}
+      >
+        Limpar carrinho
+      </Button>
     </div>
   );
 }
