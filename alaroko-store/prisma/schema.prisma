@@ -18,6 +18,8 @@ model User {
   name      String?
   cpf       String?  @unique
   phone     String?
+  password  String
+  role      UserRoles   @default(ROLE_USER)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -232,4 +234,9 @@ enum OrderStatus {
   DELIVERED     // Pedido entregue
   CANCELED      // Pedido cancelado
   REFUNDED      // Pedido estornado
+}
+
+enum UserRoles {
+  ROLE_ADMIN
+  ROLE_USER
 }

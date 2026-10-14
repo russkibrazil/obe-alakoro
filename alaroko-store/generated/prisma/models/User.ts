@@ -30,6 +30,8 @@ export type UserMinAggregateOutputType = {
   name: string | null
   cpf: string | null
   phone: string | null
+  password: string | null
+  role: $Enums.UserRoles | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -40,6 +42,8 @@ export type UserMaxAggregateOutputType = {
   name: string | null
   cpf: string | null
   phone: string | null
+  password: string | null
+  role: $Enums.UserRoles | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -50,6 +54,8 @@ export type UserCountAggregateOutputType = {
   name: number
   cpf: number
   phone: number
+  password: number
+  role: number
   createdAt: number
   updatedAt: number
   _all: number
@@ -62,6 +68,8 @@ export type UserMinAggregateInputType = {
   name?: true
   cpf?: true
   phone?: true
+  password?: true
+  role?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -72,6 +80,8 @@ export type UserMaxAggregateInputType = {
   name?: true
   cpf?: true
   phone?: true
+  password?: true
+  role?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -82,6 +92,8 @@ export type UserCountAggregateInputType = {
   name?: true
   cpf?: true
   phone?: true
+  password?: true
+  role?: true
   createdAt?: true
   updatedAt?: true
   _all?: true
@@ -165,6 +177,8 @@ export type UserGroupByOutputType = {
   name: string | null
   cpf: string | null
   phone: string | null
+  password: string
+  role: $Enums.UserRoles
   createdAt: Date
   updatedAt: Date
   _count: UserCountAggregateOutputType | null
@@ -196,6 +210,8 @@ export type UserWhereInput = {
   name?: Prisma.StringNullableFilter<"User"> | string | null
   cpf?: Prisma.StringNullableFilter<"User"> | string | null
   phone?: Prisma.StringNullableFilter<"User"> | string | null
+  password?: Prisma.StringFilter<"User"> | string
+  role?: Prisma.EnumUserRolesFilter<"User"> | $Enums.UserRoles
   createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
   pedidos?: Prisma.PedidoListRelationFilter
@@ -209,6 +225,8 @@ export type UserOrderByWithRelationInput = {
   name?: Prisma.SortOrderInput | Prisma.SortOrder
   cpf?: Prisma.SortOrderInput | Prisma.SortOrder
   phone?: Prisma.SortOrderInput | Prisma.SortOrder
+  password?: Prisma.SortOrder
+  role?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   pedidos?: Prisma.PedidoOrderByRelationAggregateInput
@@ -226,6 +244,8 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   NOT?: Prisma.UserWhereInput | Prisma.UserWhereInput[]
   name?: Prisma.StringNullableFilter<"User"> | string | null
   phone?: Prisma.StringNullableFilter<"User"> | string | null
+  password?: Prisma.StringFilter<"User"> | string
+  role?: Prisma.EnumUserRolesFilter<"User"> | $Enums.UserRoles
   createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
   pedidos?: Prisma.PedidoListRelationFilter
@@ -239,6 +259,8 @@ export type UserOrderByWithAggregationInput = {
   name?: Prisma.SortOrderInput | Prisma.SortOrder
   cpf?: Prisma.SortOrderInput | Prisma.SortOrder
   phone?: Prisma.SortOrderInput | Prisma.SortOrder
+  password?: Prisma.SortOrder
+  role?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   _count?: Prisma.UserCountOrderByAggregateInput
@@ -255,6 +277,8 @@ export type UserScalarWhereWithAggregatesInput = {
   name?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
   cpf?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
   phone?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
+  password?: Prisma.StringWithAggregatesFilter<"User"> | string
+  role?: Prisma.EnumUserRolesWithAggregatesFilter<"User"> | $Enums.UserRoles
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"User"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"User"> | Date | string
 }
@@ -265,6 +289,8 @@ export type UserCreateInput = {
   name?: string | null
   cpf?: string | null
   phone?: string | null
+  password: string
+  role?: $Enums.UserRoles
   createdAt?: Date | string
   updatedAt?: Date | string
   pedidos?: Prisma.PedidoCreateNestedManyWithoutClientInput
@@ -278,6 +304,8 @@ export type UserUncheckedCreateInput = {
   name?: string | null
   cpf?: string | null
   phone?: string | null
+  password: string
+  role?: $Enums.UserRoles
   createdAt?: Date | string
   updatedAt?: Date | string
   pedidos?: Prisma.PedidoUncheckedCreateNestedManyWithoutClientInput
@@ -291,6 +319,8 @@ export type UserUpdateInput = {
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cpf?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumUserRolesFieldUpdateOperationsInput | $Enums.UserRoles
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   pedidos?: Prisma.PedidoUpdateManyWithoutClientNestedInput
@@ -304,6 +334,8 @@ export type UserUncheckedUpdateInput = {
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cpf?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumUserRolesFieldUpdateOperationsInput | $Enums.UserRoles
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   pedidos?: Prisma.PedidoUncheckedUpdateManyWithoutClientNestedInput
@@ -317,6 +349,8 @@ export type UserCreateManyInput = {
   name?: string | null
   cpf?: string | null
   phone?: string | null
+  password: string
+  role?: $Enums.UserRoles
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -327,6 +361,8 @@ export type UserUpdateManyMutationInput = {
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cpf?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumUserRolesFieldUpdateOperationsInput | $Enums.UserRoles
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -337,6 +373,8 @@ export type UserUncheckedUpdateManyInput = {
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cpf?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumUserRolesFieldUpdateOperationsInput | $Enums.UserRoles
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -353,6 +391,8 @@ export type UserCountOrderByAggregateInput = {
   name?: Prisma.SortOrder
   cpf?: Prisma.SortOrder
   phone?: Prisma.SortOrder
+  password?: Prisma.SortOrder
+  role?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -363,6 +403,8 @@ export type UserMaxOrderByAggregateInput = {
   name?: Prisma.SortOrder
   cpf?: Prisma.SortOrder
   phone?: Prisma.SortOrder
+  password?: Prisma.SortOrder
+  role?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -373,6 +415,8 @@ export type UserMinOrderByAggregateInput = {
   name?: Prisma.SortOrder
   cpf?: Prisma.SortOrder
   phone?: Prisma.SortOrder
+  password?: Prisma.SortOrder
+  role?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -388,6 +432,10 @@ export type StringFieldUpdateOperationsInput = {
 
 export type NullableStringFieldUpdateOperationsInput = {
   set?: string | null
+}
+
+export type EnumUserRolesFieldUpdateOperationsInput = {
+  set?: $Enums.UserRoles
 }
 
 export type DateTimeFieldUpdateOperationsInput = {
@@ -442,6 +490,8 @@ export type UserCreateWithoutEnderecosInput = {
   name?: string | null
   cpf?: string | null
   phone?: string | null
+  password: string
+  role?: $Enums.UserRoles
   createdAt?: Date | string
   updatedAt?: Date | string
   pedidos?: Prisma.PedidoCreateNestedManyWithoutClientInput
@@ -454,6 +504,8 @@ export type UserUncheckedCreateWithoutEnderecosInput = {
   name?: string | null
   cpf?: string | null
   phone?: string | null
+  password: string
+  role?: $Enums.UserRoles
   createdAt?: Date | string
   updatedAt?: Date | string
   pedidos?: Prisma.PedidoUncheckedCreateNestedManyWithoutClientInput
@@ -482,6 +534,8 @@ export type UserUpdateWithoutEnderecosInput = {
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cpf?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumUserRolesFieldUpdateOperationsInput | $Enums.UserRoles
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   pedidos?: Prisma.PedidoUpdateManyWithoutClientNestedInput
@@ -494,6 +548,8 @@ export type UserUncheckedUpdateWithoutEnderecosInput = {
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cpf?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumUserRolesFieldUpdateOperationsInput | $Enums.UserRoles
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   pedidos?: Prisma.PedidoUncheckedUpdateManyWithoutClientNestedInput
@@ -506,6 +562,8 @@ export type UserCreateWithoutCarrinhoInput = {
   name?: string | null
   cpf?: string | null
   phone?: string | null
+  password: string
+  role?: $Enums.UserRoles
   createdAt?: Date | string
   updatedAt?: Date | string
   pedidos?: Prisma.PedidoCreateNestedManyWithoutClientInput
@@ -518,6 +576,8 @@ export type UserUncheckedCreateWithoutCarrinhoInput = {
   name?: string | null
   cpf?: string | null
   phone?: string | null
+  password: string
+  role?: $Enums.UserRoles
   createdAt?: Date | string
   updatedAt?: Date | string
   pedidos?: Prisma.PedidoUncheckedCreateNestedManyWithoutClientInput
@@ -546,6 +606,8 @@ export type UserUpdateWithoutCarrinhoInput = {
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cpf?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumUserRolesFieldUpdateOperationsInput | $Enums.UserRoles
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   pedidos?: Prisma.PedidoUpdateManyWithoutClientNestedInput
@@ -558,6 +620,8 @@ export type UserUncheckedUpdateWithoutCarrinhoInput = {
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cpf?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumUserRolesFieldUpdateOperationsInput | $Enums.UserRoles
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   pedidos?: Prisma.PedidoUncheckedUpdateManyWithoutClientNestedInput
@@ -570,6 +634,8 @@ export type UserCreateWithoutPedidosInput = {
   name?: string | null
   cpf?: string | null
   phone?: string | null
+  password: string
+  role?: $Enums.UserRoles
   createdAt?: Date | string
   updatedAt?: Date | string
   enderecos?: Prisma.AddressCreateNestedManyWithoutUserInput
@@ -582,6 +648,8 @@ export type UserUncheckedCreateWithoutPedidosInput = {
   name?: string | null
   cpf?: string | null
   phone?: string | null
+  password: string
+  role?: $Enums.UserRoles
   createdAt?: Date | string
   updatedAt?: Date | string
   enderecos?: Prisma.AddressUncheckedCreateNestedManyWithoutUserInput
@@ -610,6 +678,8 @@ export type UserUpdateWithoutPedidosInput = {
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cpf?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumUserRolesFieldUpdateOperationsInput | $Enums.UserRoles
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   enderecos?: Prisma.AddressUpdateManyWithoutUserNestedInput
@@ -622,6 +692,8 @@ export type UserUncheckedUpdateWithoutPedidosInput = {
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cpf?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumUserRolesFieldUpdateOperationsInput | $Enums.UserRoles
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   enderecos?: Prisma.AddressUncheckedUpdateManyWithoutUserNestedInput
@@ -674,6 +746,8 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   name?: boolean
   cpf?: boolean
   phone?: boolean
+  password?: boolean
+  role?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   pedidos?: boolean | Prisma.User$pedidosArgs<ExtArgs>
@@ -690,11 +764,13 @@ export type UserSelectScalar = {
   name?: boolean
   cpf?: boolean
   phone?: boolean
+  password?: boolean
+  role?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "email" | "name" | "cpf" | "phone" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
+export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "email" | "name" | "cpf" | "phone" | "password" | "role" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
 export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   pedidos?: boolean | Prisma.User$pedidosArgs<ExtArgs>
   enderecos?: boolean | Prisma.User$enderecosArgs<ExtArgs>
@@ -715,6 +791,8 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     name: string | null
     cpf: string | null
     phone: string | null
+    password: string
+    role: $Enums.UserRoles
     createdAt: Date
     updatedAt: Date
   }, ExtArgs["result"]["user"]>
@@ -1094,6 +1172,8 @@ export interface UserFieldRefs {
   readonly name: Prisma.FieldRef<"User", 'String'>
   readonly cpf: Prisma.FieldRef<"User", 'String'>
   readonly phone: Prisma.FieldRef<"User", 'String'>
+  readonly password: Prisma.FieldRef<"User", 'String'>
+  readonly role: Prisma.FieldRef<"User", 'UserRoles'>
   readonly createdAt: Prisma.FieldRef<"User", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"User", 'DateTime'>
 }

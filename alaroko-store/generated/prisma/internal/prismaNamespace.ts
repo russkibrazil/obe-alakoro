@@ -1118,6 +1118,8 @@ export const UserScalarFieldEnum = {
   name: 'name',
   cpf: 'cpf',
   phone: 'phone',
+  password: 'password',
+  role: 'role',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
@@ -1275,7 +1277,8 @@ export const UserOrderByRelevanceFieldEnum = {
   email: 'email',
   name: 'name',
   cpf: 'cpf',
-  phone: 'phone'
+  phone: 'phone',
+  password: 'password'
 } as const
 
 export type UserOrderByRelevanceFieldEnum = (typeof UserOrderByRelevanceFieldEnum)[keyof typeof UserOrderByRelevanceFieldEnum]
@@ -1389,6 +1392,13 @@ export type EntregaOrderByRelevanceFieldEnum = (typeof EntregaOrderByRelevanceFi
  * Reference to a field of type 'String'
  */
 export type StringFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'String'>
+    
+
+
+/**
+ * Reference to a field of type 'UserRoles'
+ */
+export type EnumUserRolesFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'UserRoles'>
     
 
 

@@ -1,6 +1,7 @@
 import "dotenv/config";
 import { prisma } from "../lib/prisma";
 import { Prisma } from "../generated/prisma/client";
+import { hashPassword } from "@/services/userHash";
 
 const users = [
   {
@@ -9,6 +10,8 @@ const users = [
     email: "maria.oliveira@example.com",
     cpf: "52998224725",
     phone: "(11) 99999-1001",
+    password: await hashPassword('user-maria'),
+    role: "ROLE_ADMIN"
   },
   {
     id: "fixture-user-joao",
@@ -16,6 +19,8 @@ const users = [
     email: "joao.santos@example.com",
     cpf: "11144477735",
     phone: "(21) 99999-1002",
+    password: await hashPassword('user-joao'),
+    role: "ROLE_USER"
   },
   {
     id: "fixture-user-ana",
@@ -23,6 +28,8 @@ const users = [
     email: "ana.costa@example.com",
     cpf: "93541134780",
     phone: "(31) 99999-1003",
+    password: await hashPassword('user-ana'),
+    role: "ROLE_USER"
   },
 ] satisfies Prisma.UserUncheckedCreateInput[];
 

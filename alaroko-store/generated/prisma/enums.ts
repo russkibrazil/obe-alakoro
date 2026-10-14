@@ -55,3 +55,11 @@ export const OrderStatus = {
 } as const
 
 export type OrderStatus = (typeof OrderStatus)[keyof typeof OrderStatus]
+
+
+export const UserRoles = {
+  ROLE_ADMIN: 'ROLE_ADMIN',
+  ROLE_USER: 'ROLE_USER'
+} as const
+
+export type UserRoles = (typeof UserRoles)[keyof typeof UserRoles]
