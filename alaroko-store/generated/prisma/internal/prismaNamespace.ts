@@ -1197,8 +1197,6 @@ export type CategoriaScalarFieldEnum = (typeof CategoriaScalarFieldEnum)[keyof t
 
 export const ItemPedidoScalarFieldEnum = {
   id: 'id',
-  quantidade: 'quantidade',
-  preco: 'preco',
   pedidoId: 'pedidoId',
   productId: 'productId',
   unitPrice: 'unitPrice',

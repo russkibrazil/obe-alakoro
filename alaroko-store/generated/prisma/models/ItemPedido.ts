@@ -27,23 +27,17 @@ export type AggregateItemPedido = {
 }
 
 export type ItemPedidoAvgAggregateOutputType = {
-  quantidade: number | null
-  preco: runtime.Decimal | null
   unitPrice: runtime.Decimal | null
   quantity: number | null
 }
 
 export type ItemPedidoSumAggregateOutputType = {
-  quantidade: number | null
-  preco: runtime.Decimal | null
   unitPrice: runtime.Decimal | null
   quantity: number | null
 }
 
 export type ItemPedidoMinAggregateOutputType = {
   id: string | null
-  quantidade: number | null
-  preco: runtime.Decimal | null
   pedidoId: string | null
   productId: string | null
   unitPrice: runtime.Decimal | null
@@ -53,8 +47,6 @@ export type ItemPedidoMinAggregateOutputType = {
 
 export type ItemPedidoMaxAggregateOutputType = {
   id: string | null
-  quantidade: number | null
-  preco: runtime.Decimal | null
   pedidoId: string | null
   productId: string | null
   unitPrice: runtime.Decimal | null
@@ -64,8 +56,6 @@ export type ItemPedidoMaxAggregateOutputType = {
 
 export type ItemPedidoCountAggregateOutputType = {
   id: number
-  quantidade: number
-  preco: number
   pedidoId: number
   productId: number
   unitPrice: number
@@ -76,23 +66,17 @@ export type ItemPedidoCountAggregateOutputType = {
 
 
 export type ItemPedidoAvgAggregateInputType = {
-  quantidade?: true
-  preco?: true
   unitPrice?: true
   quantity?: true
 }
 
 export type ItemPedidoSumAggregateInputType = {
-  quantidade?: true
-  preco?: true
   unitPrice?: true
   quantity?: true
 }
 
 export type ItemPedidoMinAggregateInputType = {
   id?: true
-  quantidade?: true
-  preco?: true
   pedidoId?: true
   productId?: true
   unitPrice?: true
@@ -102,8 +86,6 @@ export type ItemPedidoMinAggregateInputType = {
 
 export type ItemPedidoMaxAggregateInputType = {
   id?: true
-  quantidade?: true
-  preco?: true
   pedidoId?: true
   productId?: true
   unitPrice?: true
@@ -113,8 +95,6 @@ export type ItemPedidoMaxAggregateInputType = {
 
 export type ItemPedidoCountAggregateInputType = {
   id?: true
-  quantidade?: true
-  preco?: true
   pedidoId?: true
   productId?: true
   unitPrice?: true
@@ -211,8 +191,6 @@ export type ItemPedidoGroupByArgs<ExtArgs extends runtime.Types.Extensions.Inter
 
 export type ItemPedidoGroupByOutputType = {
   id: string
-  quantidade: number
-  preco: runtime.Decimal
   pedidoId: string
   productId: string
   unitPrice: runtime.Decimal
@@ -245,8 +223,6 @@ export type ItemPedidoWhereInput = {
   OR?: Prisma.ItemPedidoWhereInput[]
   NOT?: Prisma.ItemPedidoWhereInput | Prisma.ItemPedidoWhereInput[]
   id?: Prisma.StringFilter<"ItemPedido"> | string
-  quantidade?: Prisma.IntFilter<"ItemPedido"> | number
-  preco?: Prisma.DecimalFilter<"ItemPedido"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   pedidoId?: Prisma.StringFilter<"ItemPedido"> | string
   productId?: Prisma.StringFilter<"ItemPedido"> | string
   unitPrice?: Prisma.DecimalFilter<"ItemPedido"> | runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -258,8 +234,6 @@ export type ItemPedidoWhereInput = {
 
 export type ItemPedidoOrderByWithRelationInput = {
   id?: Prisma.SortOrder
-  quantidade?: Prisma.SortOrder
-  preco?: Prisma.SortOrder
   pedidoId?: Prisma.SortOrder
   productId?: Prisma.SortOrder
   unitPrice?: Prisma.SortOrder
@@ -276,8 +250,6 @@ export type ItemPedidoWhereUniqueInput = Prisma.AtLeast<{
   AND?: Prisma.ItemPedidoWhereInput | Prisma.ItemPedidoWhereInput[]
   OR?: Prisma.ItemPedidoWhereInput[]
   NOT?: Prisma.ItemPedidoWhereInput | Prisma.ItemPedidoWhereInput[]
-  quantidade?: Prisma.IntFilter<"ItemPedido"> | number
-  preco?: Prisma.DecimalFilter<"ItemPedido"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   pedidoId?: Prisma.StringFilter<"ItemPedido"> | string
   productId?: Prisma.StringFilter<"ItemPedido"> | string
   unitPrice?: Prisma.DecimalFilter<"ItemPedido"> | runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -289,8 +261,6 @@ export type ItemPedidoWhereUniqueInput = Prisma.AtLeast<{
 
 export type ItemPedidoOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
-  quantidade?: Prisma.SortOrder
-  preco?: Prisma.SortOrder
   pedidoId?: Prisma.SortOrder
   productId?: Prisma.SortOrder
   unitPrice?: Prisma.SortOrder
@@ -308,8 +278,6 @@ export type ItemPedidoScalarWhereWithAggregatesInput = {
   OR?: Prisma.ItemPedidoScalarWhereWithAggregatesInput[]
   NOT?: Prisma.ItemPedidoScalarWhereWithAggregatesInput | Prisma.ItemPedidoScalarWhereWithAggregatesInput[]
   id?: Prisma.StringWithAggregatesFilter<"ItemPedido"> | string
-  quantidade?: Prisma.IntWithAggregatesFilter<"ItemPedido"> | number
-  preco?: Prisma.DecimalWithAggregatesFilter<"ItemPedido"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   pedidoId?: Prisma.StringWithAggregatesFilter<"ItemPedido"> | string
   productId?: Prisma.StringWithAggregatesFilter<"ItemPedido"> | string
   unitPrice?: Prisma.DecimalWithAggregatesFilter<"ItemPedido"> | runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -319,8 +287,6 @@ export type ItemPedidoScalarWhereWithAggregatesInput = {
 
 export type ItemPedidoCreateInput = {
   id?: string
-  quantidade: number
-  preco: runtime.Decimal | runtime.DecimalJsLike | number | string
   unitPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
   quantity: number
   createdAt?: Date | string
@@ -330,8 +296,6 @@ export type ItemPedidoCreateInput = {
 
 export type ItemPedidoUncheckedCreateInput = {
   id?: string
-  quantidade: number
-  preco: runtime.Decimal | runtime.DecimalJsLike | number | string
   pedidoId: string
   productId: string
   unitPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -341,8 +305,6 @@ export type ItemPedidoUncheckedCreateInput = {
 
 export type ItemPedidoUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  quantidade?: Prisma.IntFieldUpdateOperationsInput | number
-  preco?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   unitPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   quantity?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -352,8 +314,6 @@ export type ItemPedidoUpdateInput = {
 
 export type ItemPedidoUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  quantidade?: Prisma.IntFieldUpdateOperationsInput | number
-  preco?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   pedidoId?: Prisma.StringFieldUpdateOperationsInput | string
   productId?: Prisma.StringFieldUpdateOperationsInput | string
   unitPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -363,8 +323,6 @@ export type ItemPedidoUncheckedUpdateInput = {
 
 export type ItemPedidoCreateManyInput = {
   id?: string
-  quantidade: number
-  preco: runtime.Decimal | runtime.DecimalJsLike | number | string
   pedidoId: string
   productId: string
   unitPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -374,8 +332,6 @@ export type ItemPedidoCreateManyInput = {
 
 export type ItemPedidoUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  quantidade?: Prisma.IntFieldUpdateOperationsInput | number
-  preco?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   unitPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   quantity?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -383,8 +339,6 @@ export type ItemPedidoUpdateManyMutationInput = {
 
 export type ItemPedidoUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  quantidade?: Prisma.IntFieldUpdateOperationsInput | number
-  preco?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   pedidoId?: Prisma.StringFieldUpdateOperationsInput | string
   productId?: Prisma.StringFieldUpdateOperationsInput | string
   unitPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -415,8 +369,6 @@ export type ItemPedidoPedidoIdProductIdCompoundUniqueInput = {
 
 export type ItemPedidoCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
-  quantidade?: Prisma.SortOrder
-  preco?: Prisma.SortOrder
   pedidoId?: Prisma.SortOrder
   productId?: Prisma.SortOrder
   unitPrice?: Prisma.SortOrder
@@ -425,16 +377,12 @@ export type ItemPedidoCountOrderByAggregateInput = {
 }
 
 export type ItemPedidoAvgOrderByAggregateInput = {
-  quantidade?: Prisma.SortOrder
-  preco?: Prisma.SortOrder
   unitPrice?: Prisma.SortOrder
   quantity?: Prisma.SortOrder
 }
 
 export type ItemPedidoMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
-  quantidade?: Prisma.SortOrder
-  preco?: Prisma.SortOrder
   pedidoId?: Prisma.SortOrder
   productId?: Prisma.SortOrder
   unitPrice?: Prisma.SortOrder
@@ -444,8 +392,6 @@ export type ItemPedidoMaxOrderByAggregateInput = {
 
 export type ItemPedidoMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
-  quantidade?: Prisma.SortOrder
-  preco?: Prisma.SortOrder
   pedidoId?: Prisma.SortOrder
   productId?: Prisma.SortOrder
   unitPrice?: Prisma.SortOrder
@@ -454,8 +400,6 @@ export type ItemPedidoMinOrderByAggregateInput = {
 }
 
 export type ItemPedidoSumOrderByAggregateInput = {
-  quantidade?: Prisma.SortOrder
-  preco?: Prisma.SortOrder
   unitPrice?: Prisma.SortOrder
   quantity?: Prisma.SortOrder
 }
@@ -546,8 +490,6 @@ export type ItemPedidoUncheckedUpdateManyWithoutPedidoNestedInput = {
 
 export type ItemPedidoCreateWithoutProductInput = {
   id?: string
-  quantidade: number
-  preco: runtime.Decimal | runtime.DecimalJsLike | number | string
   unitPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
   quantity: number
   createdAt?: Date | string
@@ -556,8 +498,6 @@ export type ItemPedidoCreateWithoutProductInput = {
 
 export type ItemPedidoUncheckedCreateWithoutProductInput = {
   id?: string
-  quantidade: number
-  preco: runtime.Decimal | runtime.DecimalJsLike | number | string
   pedidoId: string
   unitPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
   quantity: number
@@ -595,8 +535,6 @@ export type ItemPedidoScalarWhereInput = {
   OR?: Prisma.ItemPedidoScalarWhereInput[]
   NOT?: Prisma.ItemPedidoScalarWhereInput | Prisma.ItemPedidoScalarWhereInput[]
   id?: Prisma.StringFilter<"ItemPedido"> | string
-  quantidade?: Prisma.IntFilter<"ItemPedido"> | number
-  preco?: Prisma.DecimalFilter<"ItemPedido"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   pedidoId?: Prisma.StringFilter<"ItemPedido"> | string
   productId?: Prisma.StringFilter<"ItemPedido"> | string
   unitPrice?: Prisma.DecimalFilter<"ItemPedido"> | runtime.Decimal | runtime.DecimalJsLike | number | string
@@ -606,8 +544,6 @@ export type ItemPedidoScalarWhereInput = {
 
 export type ItemPedidoCreateWithoutPedidoInput = {
   id?: string
-  quantidade: number
-  preco: runtime.Decimal | runtime.DecimalJsLike | number | string
   unitPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
   quantity: number
   createdAt?: Date | string
@@ -616,8 +552,6 @@ export type ItemPedidoCreateWithoutPedidoInput = {
 
 export type ItemPedidoUncheckedCreateWithoutPedidoInput = {
   id?: string
-  quantidade: number
-  preco: runtime.Decimal | runtime.DecimalJsLike | number | string
   productId: string
   unitPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
   quantity: number
@@ -652,8 +586,6 @@ export type ItemPedidoUpdateManyWithWhereWithoutPedidoInput = {
 
 export type ItemPedidoCreateManyProductInput = {
   id?: string
-  quantidade: number
-  preco: runtime.Decimal | runtime.DecimalJsLike | number | string
   pedidoId: string
   unitPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
   quantity: number
@@ -662,8 +594,6 @@ export type ItemPedidoCreateManyProductInput = {
 
 export type ItemPedidoUpdateWithoutProductInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  quantidade?: Prisma.IntFieldUpdateOperationsInput | number
-  preco?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   unitPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   quantity?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -672,8 +602,6 @@ export type ItemPedidoUpdateWithoutProductInput = {
 
 export type ItemPedidoUncheckedUpdateWithoutProductInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  quantidade?: Prisma.IntFieldUpdateOperationsInput | number
-  preco?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   pedidoId?: Prisma.StringFieldUpdateOperationsInput | string
   unitPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   quantity?: Prisma.IntFieldUpdateOperationsInput | number
@@ -682,8 +610,6 @@ export type ItemPedidoUncheckedUpdateWithoutProductInput = {
 
 export type ItemPedidoUncheckedUpdateManyWithoutProductInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  quantidade?: Prisma.IntFieldUpdateOperationsInput | number
-  preco?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   pedidoId?: Prisma.StringFieldUpdateOperationsInput | string
   unitPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   quantity?: Prisma.IntFieldUpdateOperationsInput | number
@@ -692,8 +618,6 @@ export type ItemPedidoUncheckedUpdateManyWithoutProductInput = {
 
 export type ItemPedidoCreateManyPedidoInput = {
   id?: string
-  quantidade: number
-  preco: runtime.Decimal | runtime.DecimalJsLike | number | string
   productId: string
   unitPrice: runtime.Decimal | runtime.DecimalJsLike | number | string
   quantity: number
@@ -702,8 +626,6 @@ export type ItemPedidoCreateManyPedidoInput = {
 
 export type ItemPedidoUpdateWithoutPedidoInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  quantidade?: Prisma.IntFieldUpdateOperationsInput | number
-  preco?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   unitPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   quantity?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -712,8 +634,6 @@ export type ItemPedidoUpdateWithoutPedidoInput = {
 
 export type ItemPedidoUncheckedUpdateWithoutPedidoInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  quantidade?: Prisma.IntFieldUpdateOperationsInput | number
-  preco?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   productId?: Prisma.StringFieldUpdateOperationsInput | string
   unitPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   quantity?: Prisma.IntFieldUpdateOperationsInput | number
@@ -722,8 +642,6 @@ export type ItemPedidoUncheckedUpdateWithoutPedidoInput = {
 
 export type ItemPedidoUncheckedUpdateManyWithoutPedidoInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  quantidade?: Prisma.IntFieldUpdateOperationsInput | number
-  preco?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   productId?: Prisma.StringFieldUpdateOperationsInput | string
   unitPrice?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   quantity?: Prisma.IntFieldUpdateOperationsInput | number
@@ -734,8 +652,6 @@ export type ItemPedidoUncheckedUpdateManyWithoutPedidoInput = {
 
 export type ItemPedidoSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
-  quantidade?: boolean
-  preco?: boolean
   pedidoId?: boolean
   productId?: boolean
   unitPrice?: boolean
@@ -749,8 +665,6 @@ export type ItemPedidoSelect<ExtArgs extends runtime.Types.Extensions.InternalAr
 
 export type ItemPedidoSelectScalar = {
   id?: boolean
-  quantidade?: boolean
-  preco?: boolean
   pedidoId?: boolean
   productId?: boolean
   unitPrice?: boolean
@@ -758,7 +672,7 @@ export type ItemPedidoSelectScalar = {
   createdAt?: boolean
 }
 
-export type ItemPedidoOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "quantidade" | "preco" | "pedidoId" | "productId" | "unitPrice" | "quantity" | "createdAt", ExtArgs["result"]["itemPedido"]>
+export type ItemPedidoOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "pedidoId" | "productId" | "unitPrice" | "quantity" | "createdAt", ExtArgs["result"]["itemPedido"]>
 export type ItemPedidoInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   pedido?: boolean | Prisma.PedidoDefaultArgs<ExtArgs>
   product?: boolean | Prisma.ProductDefaultArgs<ExtArgs>
@@ -772,8 +686,6 @@ export type $ItemPedidoPayload<ExtArgs extends runtime.Types.Extensions.Internal
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
-    quantidade: number
-    preco: runtime.Decimal
     pedidoId: string
     productId: string
     unitPrice: runtime.Decimal
@@ -1151,8 +1063,6 @@ export interface Prisma__ItemPedidoClient<T, Null = never, ExtArgs extends runti
  */
 export interface ItemPedidoFieldRefs {
   readonly id: Prisma.FieldRef<"ItemPedido", 'String'>
-  readonly quantidade: Prisma.FieldRef<"ItemPedido", 'Int'>
-  readonly preco: Prisma.FieldRef<"ItemPedido", 'Decimal'>
   readonly pedidoId: Prisma.FieldRef<"ItemPedido", 'String'>
   readonly productId: Prisma.FieldRef<"ItemPedido", 'String'>
   readonly unitPrice: Prisma.FieldRef<"ItemPedido", 'Decimal'>
