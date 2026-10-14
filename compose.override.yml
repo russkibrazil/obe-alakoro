@@ -22,11 +22,11 @@ services:
     ports:
       - "3000:3000"
     environment:
-      DATABASE_URL: mysql://root:root_password_here@db:3306/loja_virtual?connection_limit=20&pool_timeout=30
+      DATABASE_URL: mysql://root:root_password_here@db:3306/loja_virtual?connection_limit=20&pool_timeout=30&allowPublicKeyRetrieval=true
       NODE_ENV: development
       DATABASE_HOST: "db"
       DATABASE_USER: "root"
-      DATABASE_PASSWORD: "user_password_here"
+      DATABASE_PASSWORD: "root_password_here"
       DATABASE_NAME: "loja_virtual"
     volumes:
       # - ./alaroko-store/generated:/app/generated # @isabellydemelolima48-sudo needs this
