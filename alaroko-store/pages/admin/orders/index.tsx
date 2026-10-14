@@ -164,7 +164,7 @@ export default function OrdersPage() {
                     </td>
 
                     <td className="whitespace-nowrap px-5 py-4 text-gray-600">
-                      {formatPrice(order.valor.toNumber())}
+                      {formatPrice(Number(order.valor))}
                     </td>
 
                     <td className="whitespace-nowrap px-5 py-4">

@@ -105,7 +105,7 @@ export default function ProductCatalog() {
           {products.map((product) => (
         <CardProduct 
           productName={product.name}
-          price={product.price.toNumber()}
+          price={Number(product.price)}
           active
           stock={product.stock}
           id={product.id}

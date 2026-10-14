@@ -34,7 +34,7 @@ export async function POST(req: NextApiRequest, res: NextApiResponse) {
     records.push({
       productId: item.productId,
       quantity: item.quantity,
-      unitPrice: productData?.price.toNumber() ?? 0
+      unitPrice: Number(productData?.price) ?? 0
     });
     newProductStock[item.productId] = currentProductStock - item.quantity
   }

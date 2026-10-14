@@ -105,7 +105,7 @@ export default function ProductsPage() {
                     </td>
 
                     <td className="whitespace-nowrap px-5 py-4 text-gray-600">
-                      {formatPrice(product.price.toNumber())}
+                      {formatPrice(Number(product.price))}
                     </td>
 
                     <td className="whitespace-nowrap px-5 py-4 text-gray-600">
