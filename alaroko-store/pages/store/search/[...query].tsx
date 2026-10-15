@@ -10,14 +10,14 @@ export default function SearchResultsPage() {
   const searchKey = router.query.query;
 
   useEffect(() => {
-    if (typeof searchKey !== 'string') return;
+    if (!router.isReady) return;
     setLoading(true);
     fetch(`/api/products?name=${searchKey}`)
       .then(response => response.json())
       .then(setProducts);
 
     setLoading(false);
-  }, [router.isReady]);
+  }, [router.isReady, searchKey]);
 
   if (loading) return <>Carregando...</>
   if (products.length === 0) return <>Nenhum produto encontrado</>;

@@ -25,11 +25,31 @@ async function GET(req: NextApiRequest,
   res: NextApiResponse
 ) {
   const {categoriaId, name} = req.query;
-  const filterQuery = typeof categoriaId === 'string' ? {categoriaId} : undefined;
-  const collection = await prisma.product.findMany({
-    where: filterQuery
-  });
+  const catFilterQuery = typeof categoriaId === 'string' ? {categoriaId: categoriaId} : undefined;
+  const keywordFilterQuery = typeof name === 'string' ? {OR:[{ name: { contains: name } }, { description: { contains: name } },]} : undefined
+  const collection = await prisma.product.findMany(buildFilter(catFilterQuery, keywordFilterQuery));
   return res.status(200).json(collection);
+}
+
+function buildFilter(categoryFilter, keywordFilter) {
+  if (!categoryFilter && !keywordFilter) {
+    return {}
+  }
+  if (categoryFilter && keywordFilter) {
+    return {
+      where: {
+        AND: [categoryFilter, keywordFilter]
+      }
+    }
+  }
+  if (categoryFilter) {
+    return {where: categoryFilter};
+  }
+  if (keywordFilter) {
+    return {
+      where: keywordFilter
+    }
+  }
 }
 
 
