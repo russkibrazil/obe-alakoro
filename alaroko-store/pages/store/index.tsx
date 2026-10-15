@@ -21,8 +21,8 @@ export default function ProductCatalog() {
       const res = await fetch(`/api/products?${queryParams.toString()}`);
       const data = await res.json();
 
-      setProducts(data.products || []);
-      setCategories(data.categories || []);
+      setProducts(data || []);
+      
     } catch (err) {
       console.error('Erro ao buscar catálogo:', err);
     } finally {
@@ -30,8 +30,19 @@ export default function ProductCatalog() {
     }
   };
 
+  const loadCategories = async () => {
+    setLoading(true);
+    const res = await fetch(`/api/categories`);
+    const data = await res.json();
+    setCategories(data || []);
+    setLoading(false);
+  }
+
   useEffect(() => {
     loadProducts();
+    if (categories.length == 0) {
+      loadCategories();
+    }
   }, [selectedCategory]);
 
   // Handler do formulário de busca
