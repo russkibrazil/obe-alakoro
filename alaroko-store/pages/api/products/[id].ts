@@ -43,7 +43,15 @@ async function GET(
       );
     }
 
-    return res.status(200).json(product);
+    const similarProducts = await prisma.product.findMany({
+      where: {
+        NOT: {id: product.id},
+        AND: {categoriaId: product.categoriaId}
+      },
+      take: 5
+    })
+
+    return res.status(200).json({...product, similarProducts});
   } catch (error) {
     return res.status(500).json(
       { message: 'Erro ao buscar o produto' },

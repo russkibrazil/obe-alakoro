@@ -6,9 +6,10 @@ import { Product } from '@/generated/prisma/client';
 
 export default function ProductPage() {
   const router = useRouter();
-  const { id } = router.query;
+  const id = router.query.id;
+  type QueryProduct = Product&{similarProducts: Product[]}
 
-  const [productData, setProductData] = useState<Product | null>(null);
+  const [productData, setProductData] = useState<QueryProduct | null>(null);
   const [loading, setLoading] = useState(true);
   const [quantity, setQuantity] = useState(1);
   const [submitting, setSubmitting] = useState(false);
@@ -17,7 +18,6 @@ export default function ProductPage() {
 
   useEffect(() => {
     if (!id) return; // Aguarda o router carregar o parâmetro da URL
-    if (typeof id !== 'string' && router.isReady) setError(true);
 
     fetch(`/api/products/${id}`)
       .then((res) => res.json())
@@ -27,9 +27,10 @@ export default function ProductPage() {
       })
       .catch((err) => {
         console.error('Erro ao buscar produto:', err);
+        setError(true);
         setLoading(false);
       });
-  }, [id]);
+  }, [router.isReady, id]);
 
   const handleAddToCart = async () => {
     setSubmitting(true);
@@ -82,7 +83,7 @@ export default function ProductPage() {
           <div>
             <span className="text-sm font-semibold text-blue-600 uppercase tracking-wider">{product.categoriaId}</span>
             <h1 className="text-3xl font-bold mt-1 mb-3 text-gray-900">{product.name}</h1>
-            <p className="text-2xl font-semibold text-gray-800 mb-4">R$ {product.price.toFixed(2)}</p>
+            <p className="text-2xl font-semibold text-gray-800 mb-4">R$ {Number(product.price).toFixed(2)}</p>
             <p className="text-gray-600 leading-relaxed mb-6">{product.description}</p>
           </div>
 
@@ -113,22 +114,22 @@ export default function ProductPage() {
       </div>
 
       {/* Banner de Sugestões da Mesma Categoria */}
-      {/* {suggestions && suggestions.length > 0 && (
+      {product.similarProducts && product.similarProducts.length > 0 && (
         <section className="mt-16 border-t pt-10">
           <h2 className="text-2xl font-bold mb-6 text-gray-900">Você também pode gostar</h2>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
-            {suggestions.map((item) => (
-              <Link key={item.id} href={`/products/${item.id}`} className="group border rounded-lg p-4 bg-white shadow-sm hover:shadow-md transition block">
+            {product.similarProducts.map((item) => (
+              <Link key={item.id} href={`/store/products/${item.id}`} className="group border rounded-lg p-4 bg-white shadow-sm hover:shadow-md transition block">
                 <div className="relative w-full h-48 bg-gray-100 rounded-md mb-3 overflow-hidden">
-                  <Image src={item.image} alt={item.name} fill className="object-cover group-hover:scale-105 transition duration-200" />
+                  <Image src="/" alt={item.name} fill className="object-cover group-hover:scale-105 transition duration-200" />
                 </div>
                 <h3 className="font-semibold text-gray-800 group-hover:text-blue-600 transition">{item.name}</h3>
-                <p className="text-gray-600 font-medium mt-1">R$ {item.price.toFixed(2)}</p>
+                <p className="text-gray-600 font-medium mt-1">R$ {Number(item.price).toFixed(2)}</p>
               </Link>
             ))}
           </div>
         </section>
-      )} */}
+      )}
     </main>
   );
 }
