@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { OrderStatus, MetodoPagamento, StatusEntrega, StatusPagamento } from '@/generated/prisma/enums';
 import { Entrega, Pagamento } from '@/generated/prisma/client';
+import { withAuthorization } from '@/components/withAuthorization';
 
 type OrderItem = {
   id: string;
@@ -88,7 +89,7 @@ function formatDate(value: string): string {
   return dateFormatter.format(new Date(value));
 }
 
-export default function OrderDetailsPage() {
+function OrderDetailsPage() {
   const router = useRouter();
   const { id } = router.query;
 
@@ -394,3 +395,5 @@ export default function OrderDetailsPage() {
     </main>
   );
 }
+
+export default withAuthorization(OrderDetailsPage, ["ROLE_ADMIN"]);

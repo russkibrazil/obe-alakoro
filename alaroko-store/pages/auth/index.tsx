@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useRouter } from "next/router";
 import LoginForm from "@/components/forms/LoginForm";
 import { FormError } from "@/components/forms/FormError";
+import { signIn } from 'next-auth/react';
 
 export default function LoginPage() {
   const router = useRouter();
@@ -10,40 +11,36 @@ export default function LoginPage() {
 
   const handleSubmit = async (values: any, { setSubmitting, setStatus, setErrors }: any) => {
     setError(null);
+    setLoading(true);
 
-    const response = await fetch("/api/auth/login", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      credentials: "include",
-      body: JSON.stringify(values),
-    });
+    try {
+      const result = await signIn('credentials', {
+        email: values.email,
+        password: values.password,
+        redirect: false,
+      });
 
-    if (!response.ok) {
-      if (response.status === 401) {
-        setError("Credenciais inválidas.");
+      if (!result || result.error) {
+        setError('Credenciais inválidas.');
+        return;
       }
 
-      setError("Não foi possível realizar o login.");
+      const redirect = router.query.redirect;
+
+      const destination =
+        typeof redirect === 'string' &&
+        redirect.startsWith('/') &&
+        !redirect.startsWith('//')
+          ? redirect
+          : '/account';
+
+      await router.replace(destination);
+    } catch {
+      setError('Não foi possível realizar o login.');
+    } finally {
       setLoading(false);
       setSubmitting(false);
-      return;
     }
-
-    // Se o backend utilizar cookie de sessão ou JWT HttpOnly,
-    // não é necessário armazenar o token no JavaScript.
-    const redirect = router.query.redirect;
-
-    const destination =
-      typeof redirect === "string" && redirect.startsWith("/") &&
-      !redirect.startsWith("//")
-        ? redirect
-        : "/account";
-
-    setLoading(false);
-    setSubmitting(false);
-    await router.replace(destination);
   }
 
   return (

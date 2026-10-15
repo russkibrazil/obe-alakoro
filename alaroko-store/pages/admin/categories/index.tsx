@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { Categoria } from '@/generated/prisma/client'
+import { withAuthorization } from '@/components/withAuthorization';
 
-export default function ListCategoriesPage() {
+function ListCategoriesPage() {
   const router = useRouter();
 
   const [categories, setCategories] = useState<Categoria[]>([]);
@@ -206,3 +207,6 @@ export default function ListCategoriesPage() {
     </main>
   );
 }
+
+
+export default withAuthorization(ListCategoriesPage, ["ROLE_ADMIN"]);

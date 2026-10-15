@@ -2,6 +2,7 @@ import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import { User } from '@/generated/prisma/client'
+import { withAuthorization } from '@/components/withAuthorization'
 
 type Order = {
   id: string
@@ -14,7 +15,7 @@ interface ExtendedUser extends User{
   pedidos: Order[];
 }
 
-export default function AccountPage() {
+function AccountPage() {
   const router = useRouter();
   const [profile, setProfile] = useState<ExtendedUser|null>(null);
   const [loading, setLoading] = useState<boolean>(false);
@@ -257,3 +258,5 @@ export default function AccountPage() {
     </main>
   )
 }
+
+export default withAuthorization(AccountPage, ["ROLE_ADMIN", "ROLE_USER"]);

@@ -35,6 +35,8 @@ services:
       DATABASE_PASSWORD: "user_password_here"
       DATABASE_NAME: "loja_virtual"
       NODE_ENV: production
+      NEXTAUTH_SECRET: "!CHANGETHISSECRET!"
+      NEXTAUTH_URL: ""
 
 volumes:
   mysql_data:

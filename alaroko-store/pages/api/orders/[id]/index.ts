@@ -1,3 +1,4 @@
+import { authorize } from '@/lib/auth/authorizeApi';
 import { prisma } from '../../../lib/prisma';
 import { NextApiRequest, NextApiResponse } from 'next';
 
@@ -23,6 +24,10 @@ async function GET(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
+  const user = authorize(req, res, ["ROLE_ADMIN", "ROLE_USER"]);
+  if (Object.hasOwn(user, "status")) {
+    return user;
+  }
   const id = typeof req.query.id === 'string' ? req.query.id : req.query.id?.at(0);
   try {
     const pedido= await prisma.pedido.findUnique({
@@ -50,6 +55,10 @@ async function GET(
 }
 
 async function PATCH(req: NextApiRequest, res: NextApiResponse) {
+  const user = authorize(req, res, ["ROLE_ADMIN", "ROLE_USER"]);
+  if (Object.hasOwn(user, "status")) {
+    return user;
+  }
   const id = typeof req.query.id === 'string' ? req.query.id : req.query.id?.at(0);
   try {
     const {

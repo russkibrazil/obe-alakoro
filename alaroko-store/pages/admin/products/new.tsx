@@ -3,8 +3,9 @@ import { useRouter } from 'next/router'
 import { ProductForm } from '@/components/forms/ProductForm'
 import { Categoria, Product } from '@/generated/prisma/client'
 import { FormError } from '@/components/forms/FormError'
+import { withAuthorization } from '@/components/withAuthorization'
 
-export default function NewProductPage() {
+function NewProductPage() {
   const router = useRouter()
 
   const [loading, setLoading] = useState(false)
@@ -77,3 +78,5 @@ export default function NewProductPage() {
     </main>
   )
 }
+
+export default withAuthorization(NewProductPage, ["ROLE_ADMIN"]);

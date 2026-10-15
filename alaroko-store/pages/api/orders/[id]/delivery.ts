@@ -1,5 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { prisma } from '../../../../lib/prisma'
+import { authorize } from '@/lib/auth/authorizeApi';
 
 export default async function handler(
   req: NextApiRequest,
@@ -23,6 +24,10 @@ async function GET(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
+  const user = authorize(req, res, ["ROLE_ADMIN", "ROLE_USER"]);
+  if (Object.hasOwn(user, "status")) {
+    return user;
+  }
   const orderId = req.query.id;
   if (typeof orderId !== 'string') {
     return res.status(400).json({error: "Pedido inválido"});
@@ -42,6 +47,10 @@ async function POST (
   req: NextApiRequest,
   res: NextApiResponse
 ) {
+  const user = authorize(req, res, ["ROLE_ADMIN", "ROLE_USER"]);
+  if (Object.hasOwn(user, "status")) {
+    return user;
+  }
   const {
     endereco,
     numero,

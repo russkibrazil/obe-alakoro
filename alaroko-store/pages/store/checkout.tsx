@@ -3,8 +3,9 @@ import DeliveryForm from "../../components/forms/DeliveryForm";
 import { Address } from "@/generated/prisma/client";
 import { FormError } from "@/components/forms/FormError";
 import { useRouter } from "next/router";
+import { withAuthorization } from "@/components/withAuthorization";
 
-export default function CheckoutPage() {
+function CheckoutPage() {
   const router = useRouter();
   const [addresses, setAddresses] = useState<Address[]>([]);
   const [loading, setLoading] = useState(false);
@@ -114,3 +115,5 @@ export default function CheckoutPage() {
     </main>
   );
 }
+
+export default withAuthorization(CheckoutPage, ['ROLE_USER', 'ROLE_ADMIN']);

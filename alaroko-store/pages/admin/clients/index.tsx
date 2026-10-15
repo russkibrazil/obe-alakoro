@@ -1,3 +1,4 @@
+import { withAuthorization } from '@/components/withAuthorization';
 import { User } from '@/generated/prisma/client';
 import Link from 'next/link'
 import { useEffect, useMemo, useState } from 'react'
@@ -6,7 +7,7 @@ interface Customers extends User {
   _count: {pedidos: number};
 }
 
-export default function ClientsPage() {
+function ClientsPage() {
   const [search, setSearch] = useState('');
   const [clients, setClients] = useState<Customers[]>([]);
   useEffect(() => {
@@ -127,3 +128,5 @@ export default function ClientsPage() {
     </main>
   )
 }
+
+export default withAuthorization(ClientsPage, ["ROLE_ADMIN"]);

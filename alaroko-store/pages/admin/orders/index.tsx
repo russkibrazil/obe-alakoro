@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import { useEffect, useMemo, useState } from 'react'
 import { Pedido } from '@/generated/prisma/client'
+import { withAuthorization } from '@/components/withAuthorization'
 
 interface Order extends Pedido {
   user: {
@@ -9,7 +10,7 @@ interface Order extends Pedido {
   } | null
 }
 
-export default function OrdersPage() {
+function OrdersPage() {
   const [search, setSearch] = useState('')
   const [status, setStatus] = useState('all')
   const [orders, setOrders] = useState<Order[]>([]);
@@ -203,3 +204,5 @@ export default function OrdersPage() {
     </main>
   )
 }
+
+export default withAuthorization(OrdersPage, ["ROLE_ADMIN"]);

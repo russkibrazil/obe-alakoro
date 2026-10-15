@@ -1,5 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { prisma } from '../../../../lib/prisma'
+import { authorize } from '@/lib/auth/authorizeApi';
 
 export default async function handler(
   req: NextApiRequest,
@@ -31,6 +32,10 @@ function getCartId(req: NextApiRequest) {
 }
 
 async function GET(req: NextApiRequest, res: NextApiResponse) {
+  const user = authorize(req, res, ["ROLE_ADMIN", "ROLE_USER"]);
+  if (Object.hasOwn(user, "status")) {
+    return user;
+  }
   const id = getCartId(req)
 
   if (!id) {
@@ -61,6 +66,10 @@ async function GET(req: NextApiRequest, res: NextApiResponse) {
 }
 
 async function DELETE(req: NextApiRequest, res: NextApiResponse) {
+  const user = authorize(req, res, ["ROLE_ADMIN", "ROLE_USER"]);
+  if (Object.hasOwn(user, "status")) {
+    return user;
+  }
   const selectedItem = req.query.item;
   if (typeof selectedItem === 'string') {
     try {
@@ -86,10 +95,18 @@ async function DELETE(req: NextApiRequest, res: NextApiResponse) {
 }
 
 async function PATCH(req: NextApiRequest, res: NextApiResponse) {
+  const user = authorize(req, res, ["ROLE_ADMIN", "ROLE_USER"]);
+  if (Object.hasOwn(user, "status")) {
+    return user;
+  }
 
 }
 
 async function POST(req: NextApiRequest, res: NextApiResponse) {
+  const user = authorize(req, res, ["ROLE_ADMIN", "ROLE_USER"]);
+  if (Object.hasOwn(user, "status")) {
+    return user;
+  }
   const {
     productId,
     quantity

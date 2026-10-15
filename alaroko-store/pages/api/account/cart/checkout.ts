@@ -1,3 +1,4 @@
+import { authorize } from '@/lib/auth/authorizeApi';
 import { prisma } from '../../../../lib/prisma'
 import { NextApiRequest, NextApiResponse } from 'next';
 
@@ -11,6 +12,10 @@ export default async function handler(
 }
 
 export async function POST(req: NextApiRequest, res: NextApiResponse) {
+  const user = authorize(req, res, ["ROLE_ADMIN", "ROLE_USER"]);
+  if (Object.hasOwn(user, "status")) {
+    return user;
+  }
   const items = await prisma.cartItem.findMany({
     where: {cart: {userId: 'asdsadsad'}}
   });

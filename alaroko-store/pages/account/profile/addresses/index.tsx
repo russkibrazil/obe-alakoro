@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { FormError } from '@/components/forms/FormError';
 import Button from '@/components/common/Button';
+import { withAuthorization } from '@/components/withAuthorization';
 
 type Address = {
   id: string;
@@ -20,7 +21,7 @@ type Address = {
   updatedAt: string;
 };
 
-export default function AddressesPage() {
+function AddressesPage() {
   const router = useRouter();
 
   const [addresses, setAddresses] = useState<Address[]>([]);
@@ -188,3 +189,5 @@ export default function AddressesPage() {
     </main>
   );
 }
+
+export default withAuthorization(AddressesPage, ["ROLE_ADMIN", "ROLE_USER"]);

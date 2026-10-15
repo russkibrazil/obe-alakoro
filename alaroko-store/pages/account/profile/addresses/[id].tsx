@@ -1,11 +1,12 @@
 import Button from "@/components/common/Button";
 import { AddressForm } from "@/components/forms/AddressForm";
 import { FormError } from "@/components/forms/FormError";
+import { withAuthorization } from "@/components/withAuthorization";
 import { Address } from "@/generated/prisma/client";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
-export function EditProfileAddress() {
+function EditProfileAddress() {
   const router = useRouter();
   const [loading, setLoading] = useState<boolean>(false);
   const [address, setAddress] = useState<Address|null>(null);
@@ -81,3 +82,5 @@ export function EditProfileAddress() {
     </main>
   )
 }
+
+export default withAuthorization(EditProfileAddress, ["ROLE_ADMIN", "ROLE_USER"]);

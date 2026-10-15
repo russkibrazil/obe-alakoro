@@ -2,8 +2,9 @@ import Link from 'next/link'
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 import { Pedido } from '@/generated/prisma/client'
+import { withAuthorization } from '@/components/withAuthorization';
 
-export default function OrdersPage() {
+function OrdersPage() {
   const router = useRouter();
   const [loading, setLoading] = useState<boolean>(false);
   const [orders, setOrders] = useState<Pedido[]>([]);
@@ -158,3 +159,5 @@ export default function OrdersPage() {
     </main>
   )
 }
+
+export default withAuthorization(OrdersPage, ["ROLE_ADMIN", "ROLE_USER"]);

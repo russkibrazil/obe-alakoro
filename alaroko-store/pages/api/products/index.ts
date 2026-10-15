@@ -1,6 +1,7 @@
 
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { prisma } from '../../../lib/prisma'
+import { authorize } from '@/lib/auth/authorizeApi';
 
 export default async function handler(
   req: NextApiRequest,
@@ -35,6 +36,10 @@ async function GET(req: NextApiRequest,
 async function POST(req: NextApiRequest,
 res: NextApiResponse
 ) {
+  const user = authorize(req, res, ["ROLE_ADMIN"]);
+  if (Object.hasOwn(user, "status")) {
+    return user;
+  }
   try {
     const {
       name,

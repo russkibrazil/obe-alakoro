@@ -1,3 +1,4 @@
+import { withAuthorization } from '@/components/withAuthorization'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
@@ -17,7 +18,7 @@ type Order = {
   } | null
 }
 
-export default function OrderDetailsPage() {
+function OrderDetailsPage() {
   const router = useRouter();
   const [loading, setLoading] = useState<boolean>(false);
   const [order, setOrder] = useState<Order|null>(null);
@@ -238,3 +239,5 @@ export default function OrderDetailsPage() {
     </main>
   )
 }
+
+export default withAuthorization(OrderDetailsPage, ["ROLE_ADMIN", "ROLE_USER"]);

@@ -3,8 +3,9 @@ import { useRouter } from 'next/router'
 import { ProductForm } from '@/components/forms/ProductForm'
 import { Categoria, Product } from '@/generated/prisma/client'
 import { FormError } from '@/components/forms/FormError'
+import { withAuthorization } from '@/components/withAuthorization'
 
-export default function EditProductPage() {
+function EditProductPage() {
   const router = useRouter()
   const productId = typeof router.query.id === 'string' ? router.query.id : router.query.id?.at(0);
 
@@ -87,3 +88,5 @@ export default function EditProductPage() {
     </main>
   )
 }
+
+export default withAuthorization(EditProductPage, ["ROLE_ADMIN"]);

@@ -3,6 +3,7 @@ import { useRouter } from 'next/router'
 import { Categoria } from '@/generated/prisma/client'
 import { FormError } from '@/components/forms/FormError'
 import { CategoryForm } from '@/components/forms/CategoryForm'
+import { withAuthorization } from '@/components/withAuthorization'
 
 function ShowCategoryPage() {
   const router = useRouter()
@@ -83,4 +84,4 @@ function ShowCategoryPage() {
   );
 }
 
-export default ShowCategoryPage;
+export default withAuthorization(ShowCategoryPage, ["ROLE_ADMIN"]);

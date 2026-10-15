@@ -1,11 +1,12 @@
 import { FormError } from "@/components/forms/FormError";
 import { UserForm } from "@/components/forms/UserForm";
+import { withAuthorization } from "@/components/withAuthorization";
 import { User } from "@/generated/prisma/client";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
-export function EditProfile() {
+function EditProfile() {
   const router = useRouter();
   const [loading, setLoading] = useState<boolean>(false);
   const [profile, setProfile] = useState<User|null>(null);
@@ -77,3 +78,5 @@ export function EditProfile() {
     </main>
   );
 }
+
+export default withAuthorization(EditProfile, ["ROLE_ADMIN", "ROLE_USER"]);

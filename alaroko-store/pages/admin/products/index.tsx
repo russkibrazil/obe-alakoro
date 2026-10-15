@@ -1,8 +1,9 @@
 import Link from 'next/link'
 import { useEffect, useMemo, useState } from 'react'
 import { Product } from '@/generated/prisma/client'
+import { withAuthorization } from '@/components/withAuthorization';
 
-export default function ProductsPage() {
+function ProductsPage() {
   const [search, setSearch] = useState('')
   const [status, setStatus] = useState('all');
   const [products, setProducts] = useState<Product[]>([]);
@@ -144,3 +145,5 @@ export default function ProductsPage() {
     </main>
   )
 }
+
+export default withAuthorization(ProductsPage, ["ROLE_ADMIN"]);
