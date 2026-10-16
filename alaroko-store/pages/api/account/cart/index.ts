@@ -14,15 +14,15 @@ export default async function handler(
     return POST(req, res);
   }
 
-  // if (req.method === 'PATCH') {
-  //   return PATCH(req, res)
-  // }
+  if (req.method === 'PUT') {
+    return PUT(req, res)
+  }
 
   if (req.method === 'DELETE') {
     return DELETE(req, res)
   }
 
-  res.setHeader('Allow', ['GET', 'PATCH', 'DELETE'])
+  res.setHeader('Allow', ['GET', 'PUT', 'POST', 'DELETE'])
   return res.status(405).json({ message: 'Método não permitido.' })
 }
 
@@ -94,12 +94,64 @@ async function DELETE(req: NextApiRequest, res: NextApiResponse) {
   }
 }
 
-async function PATCH(req: NextApiRequest, res: NextApiResponse) {
+async function PUT(req: NextApiRequest, res: NextApiResponse) {
   const user = authorize(req, res, ["ROLE_ADMIN", "ROLE_USER"]);
   if (Object.hasOwn(user, "status")) {
     return user;
   }
 
+  const {
+    productId,
+    quantity
+  } = req.body;
+
+  if (!productId || !quantity) {
+    return res.status(400).json({error: "Determine o item a ser adicionado"});
+  }
+
+  if (quantity < 1) {
+    return res.status(400).json({error: "Quantidade insuficiente"});
+  }
+
+  let cartData = await prisma.cart.findUnique({
+    where: {userId: user.id},
+    select: {
+      id: true,
+      items: true
+    }
+  });
+
+  if (cartData == null) {
+    cartData = await prisma.cart.create({
+      data:{ 
+        userId: user.id
+      },
+      select: {id: true,
+        items: true
+      }
+    })
+  }
+
+  const prod = cartData.items.find(el => el.productId === productId);
+  let cartItem = undefined;
+  if (!prod) {
+    await prisma.cartItem.create({
+      data:{
+        productId: productId,
+        quantity: quantity,
+        cartId: cartData.id
+      }
+    })
+  } else {
+    await prisma.cartItem.update({
+      where: {id: prod.id},
+      data: {
+        quantity: quantity
+      }
+    })
+  }
+
+  return cartItem;
 }
 
 async function POST(req: NextApiRequest, res: NextApiResponse) {
@@ -119,10 +171,19 @@ async function POST(req: NextApiRequest, res: NextApiResponse) {
   if (quantity < 1) {
     return res.status(400).json({error: "Quantidade insuficiente"});
   }
-  const cartData = await prisma.cart.findUnique({
-    where: {userId: 'asdasda'},
+  let cartData = await prisma.cart.findUnique({
+    where: {userId: user.id},
     select: {id: true}
   });
+
+  if (cartData == null) {
+    cartData = await prisma.cart.create({
+      data:{ 
+        userId: user.id
+      }
+    })
+  }
+
   try {
     await prisma.cartItem.create({
       data: {

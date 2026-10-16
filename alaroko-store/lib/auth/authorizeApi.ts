@@ -13,9 +13,9 @@ export async function authorize(
     return res.status(401).end();
   }
 
-  if (!allowedRoles.includes(session.role)) {
+  if (!allowedRoles.includes(session.user.role)) {
     return res.status(403).end();
   }
 
-  return session;
+  return session.user;
 }
