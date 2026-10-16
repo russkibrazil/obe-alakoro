@@ -28,6 +28,7 @@ services:
       DATABASE_USER: "root"
       DATABASE_PASSWORD: "root_password_here"
       DATABASE_NAME: "loja_virtual"
+      NEXTAUTH_URL: "http://localhost:3000"
     volumes:
       # - ./alaroko-store/generated:/app/generated # @isabellydemelolima48-sudo needs this
       # - ./alaroko-store/prisma:/app/prisma
