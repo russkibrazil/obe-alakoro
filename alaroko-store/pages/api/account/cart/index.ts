@@ -175,14 +175,14 @@ async function POST(req: NextApiRequest, res: NextApiResponse) {
   }
 
   try {
-    await prisma.cartItem.create({
+    const ci = await prisma.cartItem.create({
       data: {
         productId,
         quantity,
         cartId: cartData?.id ?? ""
       }
     })
-    return res.status(201);
+    return res.status(201).json(ci);
   } catch {
     return res.status(500).json({error: 'Não foi possível adicionar o item ao carrinho do usuário'});
   }

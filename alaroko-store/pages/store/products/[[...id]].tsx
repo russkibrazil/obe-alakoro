@@ -1,12 +1,14 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { useRouter } from 'next/router';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Product } from '@/generated/prisma/client';
+import { CustomerCartManagement } from '@/services/cartManagement';
+import { useSession } from "next-auth/react"
 
 export default function ProductPage() {
   const router = useRouter();
-  const id = router.query.id;
+  const id = typeof router.query.id === 'string' ? router.query.id : router.query.id?.at(0);
   type QueryProduct = Product&{similarProducts: Product[]}
 
   const [productData, setProductData] = useState<QueryProduct | null>(null);
@@ -15,6 +17,11 @@ export default function ProductPage() {
   const [submitting, setSubmitting] = useState(false);
   const [message, setMessage] = useState('');
   const [error, setError] = useState<boolean>(false);
+  const {status} = useSession();
+  const cart = useMemo(
+    () => new CustomerCartManagement(status === 'authenticated'),
+    [status]
+  );
 
   useEffect(() => {
     if (!id) return; // Aguarda o router carregar o parâmetro da URL
@@ -36,27 +43,10 @@ export default function ProductPage() {
     setSubmitting(true);
     setMessage('');
 
-    try {
-      const response = await fetch('/api/cart', {
-        method: 'POST',
-        headers: { 
-          'Content-Type': 'application/json',
-          // 'Authorization': 'Bearer TOKEN_SE_AUTENTICADO' 
-        },
-        body: JSON.stringify({ productId: id, quantity }),
-      });
+    await cart.addItem(String(id), quantity, {id: String(id), name: product.name, price: Number(product.price), stock: product.stock});
 
-      const data = await response.json();
-      if (response.ok) {
-        setMessage('Produto adicionado com sucesso ao carrinho!');
-      } else {
-        setMessage(data.error || 'Erro ao adicionar ao carrinho.');
-      }
-    } catch (error) {
-      setMessage('Erro de conexão ao adicionar ao carrinho.');
-    } finally {
-      setSubmitting(false);
-    }
+    setMessage('Item adicionado');
+    setSubmitting(false);
   };
 
   if (loading) return <div className="p-8 text-center">Carregando produto...</div>;

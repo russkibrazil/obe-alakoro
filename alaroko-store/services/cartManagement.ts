@@ -31,7 +31,7 @@ export class CustomerCartManagement implements CartService {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({productId, quantity})
+        body: JSON.stringify({productId: String(productId), quantity: quantity})
       })
     }
 

@@ -1,6 +1,9 @@
 import { CardProduct } from '@/components/cards/CardProduct';
 import { Product, Categoria } from '@/generated/prisma/client';
+import { CustomerCartManagement } from '@/services/cartManagement';
 import React, { useEffect, useState } from 'react';
+import { useSession } from "next-auth/react";
+import { AnonymousCartProduct } from '@/store/cartStore';
 
 export default function ProductCatalog() {
   const [products, setProducts] = useState<Product[]>([]);
@@ -9,6 +12,8 @@ export default function ProductCatalog() {
   const [selectedCategory, setSelectedCategory] = useState('');
   const [loading, setLoading] = useState(true);
   const [addingId, setAddingId] = useState<string | null>(null);
+  const {status} = useSession();
+  const cart = new CustomerCartManagement(status === 'authenticated');
 
   // Carrega os produtos e categorias da API
   const loadProducts = async () => {
@@ -52,20 +57,10 @@ export default function ProductCatalog() {
   };
 
   // Função para adicionar o produto ao carrinho
-  const handleAddToCart = async (productId: string) => {
-    setAddingId(productId);
-    try {
-      await fetch('/api/cart', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ cartId, productId, quantity: 1 }),
-      });
-      alert('Produto adicionado ao carrinho!');
-    } catch (err) {
-      console.error('Erro ao adicionar item:', err);
-    } finally {
-      setAddingId(null);
-    }
+  const handleAddToCart = async (productData: AnonymousCartProduct) => {
+    setAddingId(productData.id);
+    cart.addItem(addingId, 1, productData)
+    setAddingId(null);
   };
 
   return (
@@ -120,6 +115,7 @@ export default function ProductCatalog() {
           active
           stock={product.stock}
           id={product.id}
+          onAddToCart={() => handleAddToCart({...product, price: Number(product.price)})}
         />
       ))}
         </div>

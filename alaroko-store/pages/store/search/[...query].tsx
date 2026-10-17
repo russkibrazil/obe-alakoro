@@ -1,12 +1,21 @@
 import { CardProduct } from "@/components/cards/CardProduct";
 import { Product } from "@/generated/prisma/client";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import { CustomerCartManagement } from '@/services/cartManagement';
+import { useSession } from "next-auth/react";
+import { AnonymousCartProduct } from "@/store/cartStore";
 
 export default function SearchResultsPage() {
   const router = useRouter();
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
+  const [addingId, setAddingId] = useState<string | null>(null);
+  const {status} = useSession();
+  const cart = useMemo(
+    () => new CustomerCartManagement(status === 'authenticated'),
+    [status]
+  );
   const searchKey = router.query.query;
 
   useEffect(() => {
@@ -18,6 +27,12 @@ export default function SearchResultsPage() {
 
     setLoading(false);
   }, [router.isReady, searchKey]);
+
+  const handleAddToCart = async (productData: AnonymousCartProduct) => {
+    setAddingId(productData.id);
+    cart.addItem(addingId, 1, productData)
+    setAddingId(null);
+  };
 
   if (loading) return <>Carregando...</>
   if (products.length === 0) return <>Nenhum produto encontrado</>;
@@ -32,6 +47,7 @@ export default function SearchResultsPage() {
           active
           stock={product.stock}
           id={product.id}
+          onAddToCart={() => handleAddToCart({...product, price: Number(product.price)})}
         />
       ))}
     </div>

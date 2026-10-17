@@ -1,7 +1,11 @@
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import {CardProduct} from "../../../components/cards/CardProduct";
+import { CustomerCartManagement } from '@/services/cartManagement';
+import { useSession } from "next-auth/react";
+import { AnonymousCartProduct } from "@/store/cartStore";
+const [addingId, setAddingId] = useState<string | null>(null);
 
 interface Product {
   id: string;
@@ -28,6 +32,11 @@ export default function CategoryProductsPage() {
   const [category, setCategory] = useState<Category | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const {status} = useSession();
+  const cart = useMemo(
+    () => new CustomerCartManagement(status === 'authenticated'),
+    [status]
+  );
 
   useEffect(() => {
     if (!router.isReady || typeof slug !== "string") {
@@ -132,6 +141,12 @@ export default function CategoryProductsPage() {
     (product) => product.active
   );
 
+  const handleAddToCart = async (productData: AnonymousCartProduct) => {
+    setAddingId(productData.id);
+    cart.addItem(addingId, 1, productData)
+    setAddingId(null);
+    };
+
   return (
     <main className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
       {/* Navegação */}
@@ -196,6 +211,7 @@ export default function CategoryProductsPage() {
               stock={product.stock}
               active={product.active}
               categoryName={category.name}
+              onAddToCart={() => handleAddToCart({...product, price: Number(product.price)})}
             />
           ))}
         </section>
