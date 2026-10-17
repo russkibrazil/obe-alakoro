@@ -3,11 +3,14 @@ import { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 import { Pedido } from '@/generated/prisma/client'
 import { withAuthorization } from '@/components/withAuthorization';
+import { useSession } from "next-auth/react"
 
 function OrdersPage() {
   const router = useRouter();
   const [loading, setLoading] = useState<boolean>(false);
   const [orders, setOrders] = useState<Pedido[]>([]);
+  const {data: session} = useSession();
+
   function formatPrice(value: number) {
     return value.toLocaleString('pt-BR', {
       style: 'currency',
@@ -44,7 +47,7 @@ function OrdersPage() {
       return;
     }
     setLoading(true);
-    fetch(`/api/orders?clientId=${'sdsda'}`)
+    fetch(`/api/orders?clientId=${session.user.id}`)
       .then(response => response.json())
       .then(setOrders);
     setLoading(false);
@@ -123,7 +126,7 @@ function OrdersPage() {
                       </td>
 
                       <td className="px-6 py-4 text-sm text-gray-600">
-                        {order.createdAt.toLocaleDateString('pt-BR')}
+                        {new Date(order.createdAt).toLocaleDateString('pt-BR')}
                       </td>
 
                       <td className="px-6 py-4 text-sm text-gray-800">

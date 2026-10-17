@@ -177,7 +177,7 @@ function OrdersPage() {
                     </td>
 
                     <td className="whitespace-nowrap px-5 py-4 text-gray-600">
-                      {order.createdAt.toLocaleDateString('pt-BR')}
+                      {new Date(order.createdAt).toLocaleDateString('pt-BR')}
                     </td>
 
                     <td className="whitespace-nowrap px-5 py-4 text-right">

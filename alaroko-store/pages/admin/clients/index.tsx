@@ -101,7 +101,7 @@ function ClientsPage() {
                     </td>
 
                     <td className="whitespace-nowrap px-5 py-4 text-gray-600">
-                      {client.createdAt.toLocaleDateString('pt-BR')}
+                      {new Date(client.createdAt).toLocaleDateString('pt-BR')}
                     </td>
 
                     <td className="whitespace-nowrap px-5 py-4 text-right">
