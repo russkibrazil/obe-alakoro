@@ -1,6 +1,9 @@
 import Button from '@/components/common/Button';
+import { CustomerCartManagement } from '@/services/cartManagement';
 import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
+import { useSession } from "next-auth/react";
+import Link from 'next/link';
 
 interface CartItem {
   id: string;
@@ -8,64 +11,99 @@ interface CartItem {
   quantity: number;
 }
 
-interface CartProps {
-  cartId: string;
-}
-
-export default function Cart({ cartId }: CartProps) {
+export default function Cart() {
   const router = useRouter();
   const [items, setItems] = useState<CartItem[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string|null>(null);
+  const [processing, setProcessing] = useState<boolean>(false);
+  const {status} = useSession();
+  
+  const cart = useMemo(
+    () => new CustomerCartManagement(status === 'authenticated'),
+    [status]
+  );
 
-  // Carrega os dados do carrinho ao montar o componente
   useEffect(() => {
-    async function fetchCart() {
+    if (status === 'loading') {
+      return;
+    }
+
+    let cancelled = false;
+
+    async function loadCart() {
+      setLoading(true);
+      setError(null);
+
       try {
-        const response = await fetch(`/api/account/cart`);
-        const data = await response.json();
-        if (data?.items) {
-          setItems(data.items);
+        if (status === 'authenticated') {
+          await cart.setIsUserAutenticated(true);
         }
-      } catch (error) {
-        console.error('Erro ao carregar o carrinho:', error);
+
+        const result = await cart.getCart();
+
+        if (!cancelled) {
+          setItems(result);
+        }
+      } catch (err) {
+        if (!cancelled) {
+          setError(
+            err instanceof Error
+              ? err.message
+              : 'Erro ao carregar o carrinho.'
+          );
+        }
       } finally {
-        setLoading(false);
+        if (!cancelled) {
+          setLoading(false);
+        }
       }
     }
 
-    if (cartId) {
-      fetchCart();
-    }
-  }, [cartId]);
+    void loadCart();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [cart, status]);
+  
 
   // Função para remover um item
-  const handleRemoveItem = async (itemId: string) => {
-    try {
-      const response = await fetch(`/api/account/cart?item=${itemId}`, {
-        method: 'DELETE',
-      });
+  const handleRemoveItem = async (productId: string) => {
+    setProcessing(true);
+    setError(null);
 
-      if (response.ok) {
-        setItems((prevItems) => prevItems.filter((item) => item.id !== itemId));
-      }
-    } catch (error) {
-      console.error('Erro ao remover o item:', error);
+    try {
+      await cart.removeItem(productId);
+      setItems(await cart.getCart());
+    } catch (err) {
+      setError(
+        err instanceof Error
+          ? err.message
+          : 'Erro ao remover o produto.'
+      );
+    } finally {
+      setProcessing(false);
     }
   };
 
   const clearCart = async () => {
-    try {
-      const response = await fetch(`/api/account/cart`, {
-        method: 'DELETE',
-      });
+    setProcessing(true);
+    setError(null);
 
-      if (response.ok) {
-        setItems([]);
-      }
-    } catch (error) {
-      console.error('Erro ao limpar o carrinho. Detalhes: ', error);
+    try {
+      await cart.clearCart();
+      setItems([]);
+    } catch (err) {
+      setError(
+        err instanceof Error
+          ? err.message
+          : 'Erro ao limpar o carrinho.'
+      );
+    } finally {
+      setProcessing(false);
     }
-  }
+  };
 
   const makeOrder = async () => {
     try {
@@ -110,12 +148,25 @@ export default function Cart({ cartId }: CartProps) {
           ))}
         </ul>
       )}
-      <Button 
-        disabled={emptyCart}
-        onClick={makeOrder}
-      >
-        Ir para pagamento
-      </Button>
+      {
+        status === 'authenticated' ? (
+          <Button 
+            disabled={emptyCart}
+            onClick={makeOrder}
+          >
+            Ir para pagamento
+          </Button>
+        ) : (<>
+          <p>Antes de concluir a compra, acesse seu perfil.</p>
+          <Link
+            href={`/auth?redirect=${encodeURIComponent("/store/cart")}`}
+            className="bg-violet-600 text-white hover:bg-violet-700 px-5 py-2.5 rounded-lg font-semibold text-base"
+          >
+            Entrar
+          </Link>
+        </>)
+      }
+      
       <Button 
         disabled={emptyCart}
         onClick={clearCart}

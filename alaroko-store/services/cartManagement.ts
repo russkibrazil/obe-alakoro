@@ -17,7 +17,7 @@ interface CartService {
   // persistCart(): Promise<any>;
 }
 
-class CustomerCartManagement implements CartService {
+export class CustomerCartManagement implements CartService {
   protected isUserAuthenticated: boolean = false;
 
   constructor(userAuthenticated: boolean) {
@@ -27,6 +27,10 @@ class CustomerCartManagement implements CartService {
     if (this.isUserAuthenticated) {
       return fetch('/api/account/cart', {
         method: "POST",
+        credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json',
+        },
         body: JSON.stringify({productId, quantity})
       })
     }
@@ -36,38 +40,54 @@ class CustomerCartManagement implements CartService {
     }
 
     // add to store
-    return useAnonymousCartStore((state) => state.addItem(productData, quantity));
+    return useAnonymousCartStore.getState().addItem(productData, quantity);
   }
 
   public updateQuantity(productId: string, quantity: number): Promise<any> {
     if (this.isUserAuthenticated) {
       return fetch('/api/account/cart', {
         method: "PATCH",
+        credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json',
+        },
         body: JSON.stringify({productId, quantity})
       })
     }
-    return useAnonymousCartStore((state) => state.udpateQuantity(productId, quantity))
+    return useAnonymousCartStore.getState().updateQuantity(productId, quantity);
   }
 
   public removeItem(productId: string): Promise<any> {
     if (this.isUserAuthenticated) {
       return fetch(`/api/account/cart?=${productId}`, {
-        method: 'DELETE'
+        method: 'DELETE',
+        credentials: 'include',
       });
     }
     // remove from store
-    return useAnonymousCartStore((state) => state.removeItem(productId));
+    return useAnonymousCartStore.getState().removeItem(productId);
+  }
+
+  public clearCart(): Promise<any> {
+    if (this.isUserAuthenticated) {
+      return fetch(`/api/account/cart`, {
+          method: 'DELETE',
+          credentials: 'include',
+        });
+    }
+    return useAnonymousCartStore.getState().clearCart();
   }
 
   public async getCart(): Promise<object[]> {
     if (this.isUserAuthenticated) {
       const response = await fetch('/api/account/cart', {
-        method: "GET"
+        method: "GET",
+        credentials: 'include'
       });
       return await response.json();
     }
     // get stored cart products
-    return useAnonymousCartStore((state) => state.items);
+    return useAnonymousCartStore.getState().items;
   }
 
   protected async persistCart(): Promise<any> {
@@ -88,6 +108,7 @@ class CustomerCartManagement implements CartService {
     this.isUserAuthenticated = newState;
     if (!oldState && newState) {
       this.persistCart();
+      useAnonymousCartStore.getState().clearCart();
     }
   }
 }

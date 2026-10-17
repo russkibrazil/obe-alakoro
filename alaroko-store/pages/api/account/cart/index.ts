@@ -26,25 +26,15 @@ export default async function handler(
   return res.status(405).json({ message: 'Método não permitido.' })
 }
 
-function getCartId(req: NextApiRequest) {
-  const { id } = req.query
-  return typeof id === 'string' && id.trim() ? id : undefined
-}
-
 async function GET(req: NextApiRequest, res: NextApiResponse) {
   const user = authorize(req, res, ["ROLE_ADMIN", "ROLE_USER"]);
   if (Object.hasOwn(user, "status")) {
     return user;
   }
-  const id = getCartId(req)
-
-  if (!id) {
-    return res.status(400).json({ message: 'Informe um ID de carrinho válido.' })
-  }
 
   try {
-    const cart = await prisma.cart.findUnique({
-      where: { id },
+    const cart = await prisma.cart.findFirst({
+      where: { userId: user.id },
       include: {
         items: {
           include: {
@@ -58,7 +48,7 @@ async function GET(req: NextApiRequest, res: NextApiResponse) {
       return res.status(404).json({ message: 'Carrinho não encontrado.' })
     }
 
-    return res.status(200).json(cart)
+    return res.status(200).json(cart.items)
   } catch (error) {
     console.error('Erro ao buscar carrinho:', error)
     return res.status(500).json({ message: 'Erro ao buscar carrinho.' })
