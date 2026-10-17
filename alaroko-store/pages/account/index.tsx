@@ -60,7 +60,7 @@ function AccountPage() {
   useEffect(() => {
     if (!router.isReady) return;
     setLoading(true);
-    fetch(`/api/account/profile`)
+    fetch(`/api/account`)
       .then(response => response.json())
       .then(setProfile)
     setLoading(false);
@@ -86,7 +86,7 @@ function AccountPage() {
           </p>
 
           <h1 className="mt-1 text-2xl font-bold text-gray-900">
-            Olá, {user.name || 'cliente'}!
+            Olá, {profile?.name || 'cliente'}!
           </h1>
 
           <p className="mt-1 text-sm text-gray-500">

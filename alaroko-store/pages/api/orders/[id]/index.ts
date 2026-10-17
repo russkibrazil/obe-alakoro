@@ -31,12 +31,12 @@ async function GET(
   const id = typeof req.query.id === 'string' ? req.query.id : req.query.id?.at(0);
   try {
     const pedido= await prisma.pedido.findUnique({
-      where: { id },
+      where: user.role === 'ROLE_ADMIN' ? { id } : {id, clientId: user.id},
       include: {
         entrega: true,
         itens: true,
         pagamento: true,
-        client: true,
+        client: user.role === 'ROLE_ADMIN',
       }
     });
 

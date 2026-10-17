@@ -28,21 +28,32 @@ async function GET(req: NextApiRequest,
     return user;
   }
   const client = req.query.clientId;
-  const whereFilter = typeof client === 'string' ? {clientId: client} : undefined;
-  const collection = await prisma.pedido.findMany({
-    where: whereFilter,
-    orderBy: {
-      createdAt: 'desc',
-    },
-    include: {
-      client: {
-        select: {
-          name: true,
-          email: true,
+  if (["ROLE_ADMIN"].includes(user.role)) {
+    const whereFilter = typeof client === 'string' ? {clientId: client} : undefined;
+    const collection = await prisma.pedido.findMany({
+      where: whereFilter,
+      orderBy: {
+        createdAt: 'desc',
+      },
+      include: {
+        client: {
+          select: {
+            name: true,
+            email: true,
+          },
         },
       },
-    },
-  });
+    });
+    return res.status(200).json(collection);
+  }
+
+  const collection = await prisma.pedido.findMany({
+    where: {clientId: user.id},
+    orderBy: {
+      createdAt: 'desc'
+    }
+  })
+
   return res.status(200).json(collection);
 }
 
@@ -58,7 +69,6 @@ res: NextApiResponse
     const {
       status,
       valor,
-      clientId
     } = req.body
 
     if (!status ||!valor) {
@@ -71,7 +81,7 @@ res: NextApiResponse
         data: {
         status,
         valor,
-        clientId
+        clientId: user.id
       }
     }
 )

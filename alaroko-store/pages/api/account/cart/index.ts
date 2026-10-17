@@ -74,7 +74,7 @@ async function DELETE(req: NextApiRequest, res: NextApiResponse) {
   }
   try {
     await prisma.cartItem.deleteMany({
-      where: { cart: {userId : 'asdasw'} },
+      where: { cart: {userId : user.id} },
     })
 
     return res.status(204);

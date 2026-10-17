@@ -17,7 +17,7 @@ export async function POST(req: NextApiRequest, res: NextApiResponse) {
     return user;
   }
   const items = await prisma.cartItem.findMany({
-    where: {cart: {userId: 'asdsadsad'}}
+    where: {cart: {userId: user.id}}
   });
 
   if (items.length === 0) {
@@ -51,7 +51,7 @@ export async function POST(req: NextApiRequest, res: NextApiResponse) {
 
       const newOrder = await tx.pedido.create({
         data: {
-          clientId: '#...',
+          clientId: user.id,
           valor: totalAmount,
           status: 'PENDING',
           itens: {
