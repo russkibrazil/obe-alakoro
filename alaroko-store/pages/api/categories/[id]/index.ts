@@ -48,7 +48,7 @@ async function GET(
 }
 
 async function PATCH(req: NextApiRequest, res: NextApiResponse) {
-  const user = authorize(req, res, ["ROLE_ADMIN", "ROLE_USER"]);
+  const user = await authorize(req, res, ["ROLE_ADMIN", "ROLE_USER"]);
   if (Object.hasOwn(user, "status")) {
     return user;
   }
@@ -78,7 +78,7 @@ async function PATCH(req: NextApiRequest, res: NextApiResponse) {
 }
 
 async function DELETE(req: NextApiRequest, res: NextApiResponse) {
-  const user = authorize(req, res, ["ROLE_ADMIN"]);
+  const user = await authorize(req, res, ["ROLE_ADMIN"]);
   if (Object.hasOwn(user, "status")) {
     return user;
   }

@@ -56,7 +56,7 @@ function buildFilter(categoryFilter, keywordFilter) {
 async function POST(req: NextApiRequest,
 res: NextApiResponse
 ) {
-  const user = authorize(req, res, ["ROLE_ADMIN"]);
+  const user = await authorize(req, res, ["ROLE_ADMIN"]);
   if (Object.hasOwn(user, "status")) {
     return user;
   }

@@ -12,13 +12,13 @@ export default async function handler(
     })
   }
 
-  const user = authorize(req, res, ["ROLE_ADMIN", "ROLE_USER"]);
+  const user = await authorize(req, res, ["ROLE_ADMIN", "ROLE_USER"]);
   if (Object.hasOwn(user, "status")) {
     return user;
   }
 
-  return await prisma.user.findUnique({
-    where: {id: ''},
+  const accountData =  await prisma.user.findUnique({
+    where: {id: user.id},
     select: {pedidos: {
       select: {
         id: true,
@@ -29,5 +29,7 @@ export default async function handler(
       take: 5,
       orderBy: {createdAt: 'desc'}
     }}
-  })
+  });
+
+  return res.status(200).json(accountData);
 }

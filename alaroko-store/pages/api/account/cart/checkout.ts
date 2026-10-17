@@ -12,7 +12,7 @@ export default async function handler(
 }
 
 export async function POST(req: NextApiRequest, res: NextApiResponse) {
-  const user = authorize(req, res, ["ROLE_ADMIN", "ROLE_USER"]);
+  const user = await authorize(req, res, ["ROLE_ADMIN", "ROLE_USER"]);
   if (Object.hasOwn(user, "status")) {
     return user;
   }

@@ -23,7 +23,7 @@ export default async function handler(
     })
   }
 
-  const user = authorize(req, res, ["ROLE_ADMIN", "ROLE_USER"]);
+  const user = await authorize(req, res, ["ROLE_ADMIN", "ROLE_USER"]);
   if (Object.hasOwn(user, "status")) {
     return user;
   }
