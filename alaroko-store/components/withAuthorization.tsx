@@ -10,20 +10,32 @@ export function withAuthorization<P extends object>(
 ) {
   return function ProtectedPage(props: P) {
     const router = useRouter();
-    const { data: session } = useSession()
+    const { data: session, status } = useSession();
+
+    const role = session?.user?.role;
+
+    const authorized =
+        status === 'authenticated' &&
+        role !== undefined &&
+        allowedRoles.includes(role);
+
     useEffect(() => {
-      if (!session) {
-        router.replace('/auth');
-        return;
-      }
+        if (status === 'loading') {
+            return;
+        }
 
-      if (!allowedRoles.includes(session.user.role)) {
-        router.replace('/');
-      }
-    }, [session, router]);
+        if (status === 'unauthenticated') {
+            void router.replace('/auth');
+            return;
+        }
 
-    if (!session || !allowedRoles.includes(session.user.role)) {
-      return null;
+        if (status === 'authenticated' && !authorized) {
+            void router.replace('/');
+        }
+    }, [status, authorized, router]);
+
+    if (status === 'loading' || !authorized) {
+        return null;
     }
 
     return <Component {...props} />;
