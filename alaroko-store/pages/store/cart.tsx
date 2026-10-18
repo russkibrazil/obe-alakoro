@@ -69,22 +69,22 @@ export default function Cart() {
   
 
   // Função para remover um item
-  const handleRemoveItem = async (productId: string) => {
+  const handleRemoveItem = (productId: string) => {
     setProcessing(true);
     setError(null);
 
-    try {
-      await cart.removeItem(productId);
-      setItems(await cart.getCart());
-    } catch (err) {
-      setError(
-        err instanceof Error
-          ? err.message
-          : 'Erro ao remover o produto.'
-      );
-    } finally {
-      setProcessing(false);
-    }
+    cart.removeItem(productId)
+    .then(async response => {
+      console.log('Status:', response.status);
+  
+      if (!response.ok) {
+        throw new Error(`Erro HTTP: ${response.status}`);
+      }
+  
+      return cart.getCart();
+    })
+    .then(setItems)
+    .catch(console.error);
   };
 
   const clearCart = async () => {
@@ -139,7 +139,7 @@ export default function Cart() {
                 <p className="text-sm text-gray-500">Qtd: {item.quantity}</p>
               </div>
               <button
-                onClick={() => handleRemoveItem(item.id)}
+                onClick={() => handleRemoveItem(item.productId)}
                 className="px-3 py-1 bg-red-500 text-white rounded text-sm hover:bg-red-600"
               >
                 Remover

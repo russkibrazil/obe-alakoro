@@ -60,24 +60,26 @@ async function DELETE(req: NextApiRequest, res: NextApiResponse) {
   if (Object.hasOwn(user, "status")) {
     return user;
   }
-  const selectedItem = req.query.item;
+  const selectedItem = typeof req.query.selectedItem === 'string' ? req.query.selectedItem : req.query.selectedItem?.at(0);
   if (typeof selectedItem === 'string') {
-    try {
-      const r = await prisma.cartItem.delete({
-        where: { id: selectedItem}
-      });
-      return res.status(204);
-    }
-    catch {
+    const r = await prisma.cartItem.deleteMany({
+      where: {AND: [
+        {productId: selectedItem},
+        {cart: {userId: user.id}}
+      ]
+      }
+    });
+    if (r.count === 0) {
       return res.status(404).json({error: "O item não existe"});
     }
+    return res.status(204).end();
   }
   try {
     await prisma.cartItem.deleteMany({
       where: { cart: {userId : user.id} },
     })
 
-    return res.status(204);
+    return res.status(204).end();
   } catch (error) {
     console.error('Erro ao buscar carrinho:', error)
     return res.status(500).json({ message: 'Erro ao buscar carrinho.' })

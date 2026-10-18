@@ -59,8 +59,8 @@ export class CustomerCartManagement implements CartService {
 
   public removeItem(productId: string): Promise<any> {
     if (this.isUserAuthenticated) {
-      return fetch(`/api/account/cart?=${productId}`, {
-        method: 'DELETE',
+      return fetch(`/api/account/cart?selectedItem=${productId}`, {
+        method: "DELETE",
         credentials: 'include',
       });
     }
