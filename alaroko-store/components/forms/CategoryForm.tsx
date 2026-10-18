@@ -11,7 +11,7 @@ export const CategoryForm: FunctionComponent<CommonFormProps<Categoria>> = ({
   initialData
 }) => {
   return (<Formik
-    initialValue={initialData}
+    initialValues={initialData}
     onSubmit={submitFn}
   >
     <Form>

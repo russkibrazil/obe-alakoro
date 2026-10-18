@@ -11,7 +11,7 @@ export const AddressForm: FunctionComponent<CommonFormProps<Address>> = ({
   initialData
 }) => {
   return (<Formik
-    initialValue={initialData}
+    initialValues={initialData}
     onSubmit={submitFn}
   >
     <Form>

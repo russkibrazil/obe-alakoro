@@ -11,7 +11,7 @@ export const UserForm: FunctionComponent<CommonFormProps<User>> = ({
   initialData
 }) => {
   return (<Formik
-    initialValue={initialData}
+    initialValues={initialData}
     onSubmit={submitFn}
   >
     <Form>
