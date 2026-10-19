@@ -11,7 +11,7 @@ export default async function handler(
     })
   }
 
-  const categories = prisma.categoria.findMany({
+  const categories = await prisma.categoria.findMany({
     take: 6,
     orderBy: { name: "asc" },
     include: {

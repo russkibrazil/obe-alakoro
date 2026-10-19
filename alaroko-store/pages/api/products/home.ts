@@ -11,7 +11,7 @@ export default async function handler(
     })
   }
 
-  const products = prisma.product.findMany({
+  const products = await prisma.product.findMany({
     where: {
       active: true,
     },
