@@ -242,7 +242,7 @@ function AccountPage() {
           </Link>
 
           <Link
-            href="/account/addresses"
+            href="/account/profile/addresses"
             className="rounded-xl border border-gray-200 bg-white p-5 shadow-sm transition hover:border-violet-300 hover:shadow-md"
           >
             <h3 className="font-semibold text-gray-900">

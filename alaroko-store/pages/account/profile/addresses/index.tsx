@@ -33,7 +33,7 @@ function AddressesPage() {
     setLoading(true);
     setError(null);
 
-    fetch('/api/addresses')
+    fetch('/api/account/addresses')
       .then(response => response.json())
       .then(setAddresses);
 
@@ -49,7 +49,7 @@ function AddressesPage() {
       setDeletingId(id);
       setError(null);
 
-      const response = await fetch(`/api/addresses/${id}`, {
+      const response = await fetch(`/api/account/addresses/${id}`, {
         method: 'DELETE',
       });
 
@@ -87,7 +87,7 @@ function AddressesPage() {
 
         <Button
           variant='primary'
-          onClick={() => router.push('/addresses/new')}
+          onClick={() => router.push('/account/profile/addresses/new')}
         >
           Novo endereço
         </Button>
@@ -161,7 +161,7 @@ function AddressesPage() {
                       <button
                         type="button"
                         onClick={() =>
-                          router.push(`/addresses/${address.id}`)
+                          router.push(`/account/profile/addresses/${address.id}`)
                         }
                         className="text-blue-600 hover:underline"
                       >

@@ -8,17 +8,17 @@ import { useEffect, useState } from "react";
 
 function EditProfileAddress() {
   const router = useRouter();
-  const [loading, setLoading] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(true);
   const [address, setAddress] = useState<Address|null>(null);
   const[error, setError] = useState<string|null>(null)
+  const id = router.query.id;
 
   useEffect(() => {
-    const id = router.query.id;
-    if (router.isReady || typeof id !== 'string') {
+    if (!router.isReady || typeof id !== 'string') {
       return;
     }
     setLoading(true);
-    fetch(`/api/addresses/${"#..."}`)
+    fetch(`/api/account/addresses/${id}`)
       .then(response => response.json())
       .then(setAddress);
     setLoading(false);
@@ -29,7 +29,7 @@ function EditProfileAddress() {
     setError('')
 
     try {
-      const response = await fetch(`/api/addresses/${'#...'}`, {
+      const response = await fetch(`/api/account/addresses/${id}`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
@@ -41,7 +41,7 @@ function EditProfileAddress() {
         throw new Error('Não foi possível cadastrar a categoria.')
       }
 
-      await router.push('/profile/addresses')
+      await router.push('/account/profile/addresses')
     } catch (err) {
       setError(
         err instanceof Error
@@ -54,6 +54,9 @@ function EditProfileAddress() {
     }
   }
 
+  if (loading)
+    return <>Loading...</>
+
   if (address === null) {
     return <>Not found</>
   }
@@ -63,13 +66,13 @@ function EditProfileAddress() {
       <div className="mx-auto max-w-4xl">
         <header className="mb-8">
           <Button
-            onClick={() => router.push('/admin/categories')}
+            onClick={() => router.push('/account/profile/addresses')}
             variant="secondary"
           >
             ← Voltar para endereços
           </Button>
           <h1 className="text-2xl font-bold text-gray-900">
-            MOdificar Endereço
+            Modificar Endereço
           </h1>
 
           <p className="mt-1 text-sm text-gray-500">
