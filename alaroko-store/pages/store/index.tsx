@@ -11,7 +11,6 @@ export default function ProductCatalog() {
   const [search, setSearch] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('');
   const [loading, setLoading] = useState(true);
-  const [addingId, setAddingId] = useState<string | null>(null);
   const {status} = useSession();
   const cart = new CustomerCartManagement(status === 'authenticated');
 
@@ -23,7 +22,7 @@ export default function ProductCatalog() {
       if (search) queryParams.append('q', search);
       if (selectedCategory) queryParams.append('category', selectedCategory);
 
-      const res = await fetch(`/api/products?${queryParams.toString()}`);
+      const res = await fetch(`/api/products${selectedCategory ? `?categoriaId=${selectedCategory}` : ''}`);
       const data = await res.json();
 
       setProducts(data || []);
@@ -58,9 +57,7 @@ export default function ProductCatalog() {
 
   // Função para adicionar o produto ao carrinho
   const handleAddToCart = async (productData: AnonymousCartProduct) => {
-    setAddingId(productData.id);
-    cart.addItem(addingId, 1, productData)
-    setAddingId(null);
+    await cart.addItem(productData.id, 1, productData)
   };
 
   return (
