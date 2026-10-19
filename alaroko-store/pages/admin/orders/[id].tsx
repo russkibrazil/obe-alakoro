@@ -169,7 +169,7 @@ function OrderDetailsPage() {
         <div>
           <button
             type="button"
-            onClick={() => router.push('/orders')}
+            onClick={() => router.push('/admin/orders')}
             className="mb-2 text-sm text-gray-600 hover:underline"
           >
             ← Voltar para pedidos
