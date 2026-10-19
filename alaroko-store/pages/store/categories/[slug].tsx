@@ -5,7 +5,6 @@ import {CardProduct} from "../../../components/cards/CardProduct";
 import { CustomerCartManagement } from '@/services/cartManagement';
 import { useSession } from "next-auth/react";
 import { AnonymousCartProduct } from "@/store/cartStore";
-const [addingId, setAddingId] = useState<string | null>(null);
 
 interface Product {
   id: string;
@@ -142,10 +141,8 @@ export default function CategoryProductsPage() {
   );
 
   const handleAddToCart = async (productData: AnonymousCartProduct) => {
-    setAddingId(productData.id);
-    cart.addItem(addingId, 1, productData)
-    setAddingId(null);
-    };
+    await cart.addItem(productData.id, 1, productData)
+  };
 
   return (
     <main className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">

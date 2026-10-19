@@ -32,6 +32,8 @@ export class CustomerCartManagement implements CartService {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({productId: String(productId), quantity: quantity})
+      }).catch(r => {
+        return this.updateQuantity(productId, 1);
       })
     }
 

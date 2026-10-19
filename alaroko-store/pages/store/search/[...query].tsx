@@ -10,7 +10,6 @@ export default function SearchResultsPage() {
   const router = useRouter();
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
-  const [addingId, setAddingId] = useState<string | null>(null);
   const {status} = useSession();
   const cart = useMemo(
     () => new CustomerCartManagement(status === 'authenticated'),
@@ -29,9 +28,7 @@ export default function SearchResultsPage() {
   }, [router.isReady, searchKey]);
 
   const handleAddToCart = async (productData: AnonymousCartProduct) => {
-    setAddingId(productData.id);
-    cart.addItem(addingId, 1, productData)
-    setAddingId(null);
+    await cart.addItem(productData.id, 1, productData)
   };
 
   if (loading) return <>Carregando...</>
