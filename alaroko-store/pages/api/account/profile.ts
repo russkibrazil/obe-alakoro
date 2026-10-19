@@ -13,16 +13,45 @@ type ResponseData = {
 
 export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse<ResponseData>
+  res: NextApiResponse
 ) {
-  if (req.method !== 'PUT') {
-    res.setHeader('Allow', ['PUT'])
+  const method = req.method ?? 'null';
 
-    return res.status(405).json({
-      message: 'Método não permitido.',
-    })
+  if (method === 'GET') {
+    return GET(req, res);
   }
 
+  if (method === 'PUT') {
+    return PUT(req, res);
+  }
+
+  res.setHeader('Allow', ["GET", 'PUT'])
+
+  return res.status(405).json({
+    message: 'Método não permitido.',
+  })
+}
+
+async function GET(req: NextApiRequest,
+  res: NextApiResponse) {
+  const user = await authorize(req, res, ["ROLE_ADMIN", "ROLE_USER"]);
+  if (Object.hasOwn(user, "status")) {
+    return user;
+  }
+  const u = await prisma.user.findUnique({
+    where: {id: user.id}
+  });
+
+  if (u == null) {
+    return res.status(404).json({error: "Usuário não existe"});
+  }
+  return res.status(200).json(u);
+}
+
+async function PUT(
+  req: NextApiRequest,
+  res: NextApiResponse
+) {
   const user = await authorize(req, res, ["ROLE_ADMIN", "ROLE_USER"]);
   if (Object.hasOwn(user, "status")) {
     return user;
