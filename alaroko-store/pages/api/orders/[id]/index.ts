@@ -1,5 +1,5 @@
 import { authorize } from '@/lib/auth/authorizeApi';
-import { prisma } from '../../../lib/prisma';
+import { prisma } from '../../../../lib/prisma';
 import { NextApiRequest, NextApiResponse } from 'next';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
