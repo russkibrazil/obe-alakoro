@@ -13,7 +13,7 @@ function EditProfile() {
   const [error, setError] = useState<string|null>(null);
   useEffect(() => {
     setLoading(true);
-    fetch(`/api/users/${'###'}`)
+    fetch(`/api/account/profile`)
       .then(response => response.json())
       .then(setProfile);
     setLoading(false);
@@ -24,8 +24,8 @@ function EditProfile() {
     setError('');
 
     try {
-      const response = await fetch(`/api/users/${'#...'}`, {
-        method: 'PATCH',
+      const response = await fetch(`/api/account/profile`, {
+        method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
         },

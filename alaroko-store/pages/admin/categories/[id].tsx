@@ -9,7 +9,7 @@ function ShowCategoryPage() {
   const router = useRouter()
   const categoryId = typeof router.query.id === 'string' ? router.query.id : router.query.id?.at(0);
 
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(true)
   const [error, setError] = useState('');
   const [category, setCategory] = useState<Categoria|null>(null);
 
@@ -18,8 +18,8 @@ function ShowCategoryPage() {
     setError('')
 
     try {
-      const response = await fetch('/api/categories', {
-        method: 'POST',
+      const response = await fetch(`/api/categories/${categoryId}`, {
+        method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
         },
@@ -44,10 +44,15 @@ function ShowCategoryPage() {
   }
 
   useEffect(() => {
-    fetch(`api/categories/${categoryId}`)
+    fetch(`/api/categories/${categoryId}`)
       .then(response => response.json())
-      .then(setCategory);
+      .then(setCategory)
+      .finally(() => setLoading(false));
   }, [categoryId]);
+
+  if (loading) {
+    return <>Loading...</>
+  }
 
   if (category == null) {
     return <>Not found</>
