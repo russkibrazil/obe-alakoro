@@ -34,9 +34,10 @@ async function GET(
       where: user.role === 'ROLE_ADMIN' ? { id } : {id, clientId: user.id},
       include: {
         entrega: true,
-        itens: true,
+        itens: {include: {product: true}},
         pagamento: true,
         client: user.role === 'ROLE_ADMIN',
+
       }
     });
 
