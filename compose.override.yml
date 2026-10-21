@@ -23,6 +23,7 @@ services:
       - "3000:3000"
     environment:
       DATABASE_URL: mysql://root:root_password_here@db:3306/loja_virtual?connection_limit=20&pool_timeout=30&allowPublicKeyRetrieval=true
+      # DATABASE_URL: file:./prisma/dev.db
       NODE_ENV: development
       DATABASE_HOST: "db"
       DATABASE_USER: "root"

@@ -1,5 +1,6 @@
 import "dotenv/config";
 import { PrismaMariaDb } from "@prisma/adapter-mariadb";
+import { PrismaBetterSqlite3 } from "@prisma/adapter-better-sqlite3";
 import { PrismaClient } from "../generated/prisma/client";
 
 const adapter = new PrismaMariaDb({
@@ -10,6 +11,8 @@ const adapter = new PrismaMariaDb({
   connectionLimit: 30,
   allowPublicKeyRetrieval: true
 });
-const prisma = new PrismaClient({ adapter });
+
+const sqliteAdapter =  new PrismaBetterSqlite3({ url: process.env["DATABASE_URL"] });
+const prisma = new PrismaClient({adapter: adapter});
 
 export { prisma };

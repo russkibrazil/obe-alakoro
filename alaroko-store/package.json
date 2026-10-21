@@ -17,6 +17,7 @@
     "prisma:fixtures": "tsx prisma/fixtures.ts"
   },
   "dependencies": {
+    "@prisma/adapter-better-sqlite3": "^7.10.1",
     "@prisma/adapter-mariadb": "^7.6.0",
     "@prisma/client": "^7.6.0",
     "bcrypt": "^6.0.0",
