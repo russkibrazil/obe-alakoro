@@ -62,7 +62,7 @@ export function CardProduct({
             className="object-contain p-4 transition-transform duration-300 group-hover:scale-105"
           />
         ) : (
-          <div className="flex h-full items-center justify-center text-sm text-gray-400">
+          <div className="flex h-full items-center justify-center text-sm text-gray-500">
             Sem imagem
           </div>
         )}
@@ -104,7 +104,7 @@ export function CardProduct({
         {/* Preço */}
         <div className="mt-auto pt-4">
           {hasDiscount && (
-            <p className="text-sm text-gray-400 line-through">
+            <p className="text-sm text-gray-500 line-through">
               {formatPrice(originalPrice!)}
             </p>
           )}

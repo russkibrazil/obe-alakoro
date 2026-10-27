@@ -352,7 +352,7 @@ function AdminDashboardPage() {
                             )}
                           />
                         ) : (
-                          <span className="text-gray-400">
+                          <span className="text-gray-500">
                             Não registrado
                           </span>
                         )}

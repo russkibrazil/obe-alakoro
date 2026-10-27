@@ -117,7 +117,7 @@ export default function StoreCategoriesPage() {
 
                   <span
                     aria-hidden="true"
-                    className="text-xl text-gray-400 transition group-hover:translate-x-1 group-hover:text-gray-900"
+                    className="text-xl text-gray-500 transition group-hover:translate-x-1 group-hover:text-gray-900"
                   >
                     →
                   </span>

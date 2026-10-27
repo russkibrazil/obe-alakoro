@@ -36,7 +36,7 @@ function Input({
           outline-none
           transition-colors
           duration-200
-          placeholder:text-gray-400
+          placeholder:text-gray-500
           focus:ring-2
           disabled:cursor-not-allowed
           disabled:bg-gray-100

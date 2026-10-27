@@ -85,7 +85,7 @@ function ProductCard({ product }: { product: StoreProduct }) {
             aria-disabled={unavailable}
             className={`mt-3 flex w-full items-center justify-center rounded-xl px-4 py-3 text-sm font-semibold transition ${
               unavailable
-                ? "pointer-events-none bg-gray-100 text-gray-400"
+                ? "pointer-events-none bg-gray-100 text-gray-600"
                 : "bg-gray-900 text-white hover:bg-indigo-700"
             }`}
           >

@@ -104,7 +104,7 @@ export default function Home() {
                   value={search}
                   onChange={(event) => setSearch(event.target.value)}
                   placeholder="O que você está procurando?"
-                  className="w-full bg-transparent text-sm outline-none placeholder:text-gray-400"
+                  className="w-full bg-transparent text-sm outline-none placeholder:text-gray-500"
                 />
               </div>
             </div>
