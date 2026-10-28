@@ -38,7 +38,7 @@ export default function CategoryProductsPage() {
   );
 
   useEffect(() => {
-    if (!router.isReady || typeof slug !== "string") {
+    if (!router.isReady) {
       return;
     }
 
@@ -64,9 +64,9 @@ export default function CategoryProductsPage() {
           throw new Error("Não foi possível carregar os produtos.");
         }
 
-        const category: Category = await responseCategory.json();
+        const category: Category[] = await responseCategory.json();
 
-        const responseProducts = await fetch(`/api/products?categoriaId=${category?.id}`,
+        const responseProducts = await fetch(`/api/products?categoriaId=${category[0].id}`,
           { signal: controller.signal }
         );
 
@@ -77,7 +77,7 @@ export default function CategoryProductsPage() {
         const products:Product[] = await responseProducts.json();
 
         setCategory({
-          ...category,
+          ...category[0],
           products
         });
       } catch (err) {
