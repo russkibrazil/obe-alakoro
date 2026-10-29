@@ -19,7 +19,7 @@ function EditProductPage() {
     setError('')
 
     try {
-      const response = await fetch('/api/products', {
+      const response = await fetch('/api/products/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -48,7 +48,7 @@ function EditProductPage() {
     fetch('/api/categories')
       .then(response => response.json())
       .then(setCategories);
-    fetch(`api/product/${productId}`)
+    fetch(`/api/products/${productId}`)
       .then(response => response.json())
       .then(setProduct);
   }, [productId]);
